@@ -40,7 +40,7 @@ namespace Remotely.Agent.Services
                     $"-requester \"{requesterID}\" " +
                     $"-organization \"{orgName}\" " +
                     $"-host \"{ConnectionInfo.Host}\" " +
-                    $"-orgid \"{ConnectionInfo.OrganizationID}\"";
+                    $"-orgid \"{ConnectionInfo.OrganizationID}\" & disown";
                 return StartLinuxDesktopApp(args);
             }
             catch (Exception ex)
@@ -63,14 +63,14 @@ namespace Remotely.Agent.Services
 
 
                 // Start Desktop app.
-                await hubConnection.SendAsync("DisplayMessage", $"Starting remote control...", "Starting remote control.", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", $"Démarrage téléassistance...", "Démarrage téléassistance", requesterID);
                 var args = $"{_rcBinaryPath} " +
                     $"-mode Unattended " +
                     $"-requester \"{requesterID}\" " +
                     $"-serviceid \"{serviceID}\" " +
                     $"-deviceid {ConnectionInfo.DeviceID} " +
                     $"-host \"{ConnectionInfo.Host}\" " +
-                    $"-orgid \"{ConnectionInfo.OrganizationID}\"";
+                    $"-orgid \"{ConnectionInfo.OrganizationID}\" & disown";
                 StartLinuxDesktopApp(args);
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace Remotely.Agent.Services
                     $"-host \"{ConnectionInfo.Host}\" " +
                     $"-orgid \"{ConnectionInfo.OrganizationID}\" " +
                     $"-relaunch true " +
-                    $"-viewers {string.Join(",", viewerIDs)}";
+                    $"-viewers {string.Join(",", viewerIDs)} & disown";
                 StartLinuxDesktopApp(args);
             }
             catch (Exception ex)

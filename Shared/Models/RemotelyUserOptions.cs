@@ -9,23 +9,23 @@ namespace Remotely.Shared.Models
         [StringLength(5)]
         public string ConsolePrompt { get; set; } = "~>";
 
-        [Display(Name = "Web Shortcut")]
+        [Display(Name = "Raccourci Web")]
         [StringLength(10)]
         public string CommandModeShortcutWeb { get; set; } = "/web";
-        [Display(Name = "PS Core Shortcut")]
+        [Display(Name = "PS Core")]
         [StringLength(10)]
         public string CommandModeShortcutPSCore { get; set; } = "/pscore";
-        [Display(Name = "Windows PS Shortcut")]
+        [Display(Name = "Windows PS")]
         [StringLength(10)]
         public string CommandModeShortcutWinPS { get; set; } = "/winps";
-        [Display(Name = "CMD Shortcut")]
+        [Display(Name = "Raccourci CMD")]
         [StringLength(10)]
         public string CommandModeShortcutCMD { get; set; } = "/cmd";
-        [Display(Name = "Bash Shortcut")]
+        [Display(Name = "Raccourci Bash")]
         [StringLength(10)]
         public string CommandModeShortcutBash { get; set; } = "/bash";
 
-        [Display(Name = "Theme")]
+        [Display(Name = "Thème")]
         public Theme Theme { get; set; }
     }
 }

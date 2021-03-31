@@ -26,16 +26,16 @@ export function ApplyInputEventHandlers() {
 }
 
 function addGridPaginationHandlers() {
-    UI.LeftPaginationButton.addEventListener("click", () => {
+        UI.LeftPaginationButton.addEventListener("click", () => {
         DataGrid.PageDown();
     });
 
-    UI.RightPaginationButton.addEventListener("click", () => {
+     UI.RightPaginationButton.addEventListener("click", () => {
         DataGrid.PageUp();
     });
 
     var changePageTimeout = -1;
-    UI.CurrentPageInput.addEventListener("input", () => {
+        UI.CurrentPageInput.addEventListener("input", () => {
         if (changePageTimeout > 0) {
             window.clearTimeout(changePageTimeout);
         }
@@ -53,8 +53,8 @@ function addAlertHandlers() {
     UI.CloseAlertsButton.addEventListener("click", () => {
         UI.AlertsFrame.classList.toggle("open");
     });
-
-    UI.ClearAllAlertsButton.addEventListener("click", () => {
+	
+	 UI.ClearAllAlertsButton.addEventListener("click", () => {
         var result = confirm("Are you sure you want to delete all alerts?");
         if (result) {
             var xhr = new XMLHttpRequest();

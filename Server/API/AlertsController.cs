@@ -104,7 +104,8 @@ namespace Remotely.Server.API
 
             return Unauthorized();
         }
-
+		
+		
         [HttpDelete("DeleteAll")]
         public async Task<IActionResult> DeleteAll()
         {

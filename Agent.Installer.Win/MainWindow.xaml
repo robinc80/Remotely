@@ -12,7 +12,7 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
-        Title="Remotely Installer" Height="335" Width="500"  Icon="{Binding Icon}">
+        Title="Installateur Remotely" Height="335" Width="500"  Icon="{Binding Icon}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
@@ -32,7 +32,7 @@
                     <Image Height="50" Width="50"  Margin="0,0,10,0" Source="{Binding Icon}"></Image>
                     <TextBlock Foreground="{Binding TitleForegroundColor}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center">
                         <Run Text="{Binding ProductName}"></Run>
-                        <Run Text="Installer"></Run>
+                        
                     </TextBlock>
                 </DockPanel>
                 <Button Style="{StaticResource TitlebarButton}" Click="CloseButton_Click" Content="X" Foreground="{Binding TitleButtonForegroundColor}" Background="{Binding TitleBackgroundColor}" />
@@ -57,7 +57,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,0,15,0" FontSize="14">
-                        <Run>Server URL:</Run>
+                        <Run>URL du serveur:</Run>
                         <Run Text="&#xE897;" 
                              FontWeight="Bold"
                              FontFamily="Segoe MDL2 Assets" 
@@ -67,7 +67,7 @@
                     <TextBox Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Text="{Binding ServerUrl}" FontSize="14" />
 
                     <TextBlock Grid.Column="0" Grid.Row="2" Margin="0,0,15,0" FontSize="14">
-                        <Run>Organization ID:</Run>
+                        <Run>ID:</Run>
                         <Run Text="&#xE897;" 
                              FontWeight="Bold"
                              FontFamily="Segoe MDL2 Assets" 
@@ -77,7 +77,7 @@
                     <TextBox  Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="{Binding OrganizationID}" FontSize="14" />
 
                     <TextBlock Grid.Column="0" Grid.Row="4" Margin="0,0,15,0" FontSize="14">
-                        <Run>Support Shortcut:</Run>
+                        <Run>Raccourci:</Run>
                         <Run Text="&#xE897;" 
                              FontWeight="Bold"
                              FontFamily="Segoe MDL2 Assets" 
@@ -108,7 +108,7 @@
                     Style="{StaticResource NormalButton}" 
                     Margin="5,0,0,0"
                     Click="CloseButton_Click">
-                Close
+                Fermer
             </Button>
             <Button DockPanel.Dock="Right" 
                     HorizontalAlignment="Right"
@@ -117,7 +117,7 @@
                     IsEnabled="{Binding IsReadyState}"
                     Visibility="{Binding IsServiceInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding UninstallCommand}">
-                Uninstall
+                Désinstaller
             </Button>
             <Button DockPanel.Dock="Right" 
                     HorizontalAlignment="Right" 

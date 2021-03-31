@@ -176,7 +176,7 @@ namespace Remotely.Desktop.Core.Services
                         }
                         else
                         {
-                            if (viewer.PeakBytesPerSecond > 0)
+							if (viewer.PeakBytesPerSecond > 0)
                             {
                                 var expectedSize = clone.Height * clone.Width * 4 * .1;
                                 var timeToSend = expectedSize / viewer.PeakBytesPerSecond;

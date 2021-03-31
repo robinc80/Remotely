@@ -9,19 +9,19 @@ namespace Remotely.Desktop.Linux.Services
 {
     public class ConfigServiceLinux : IConfigService
     {
-        private static string ConfigFile => Path.Combine(ConfigFolder, "Config.json");
-        private static string ConfigFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "remotely.json");
+                private static string _configFile => Path.Combine(_configFolder, "Config.json");
+        private static string _configFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "remotely.json");
 
         public DesktopAppConfig GetConfig()
         {
             var config = new DesktopAppConfig();
 
             if (string.IsNullOrWhiteSpace(config.Host) &&
-                File.Exists(ConfigFile))
+                File.Exists(_configFile))
             {
                 try
                 {
-                    config = JsonSerializer.Deserialize<DesktopAppConfig>(File.ReadAllText(ConfigFile));
+                    config = JsonSerializer.Deserialize<DesktopAppConfig>(File.ReadAllText(_configFile));
                 }
                 catch (Exception ex)
                 {
@@ -36,8 +36,8 @@ namespace Remotely.Desktop.Linux.Services
         {
             try
             {
-                Directory.CreateDirectory(ConfigFolder);
-                File.WriteAllText(ConfigFile, JsonSerializer.Serialize(config));
+                                Directory.CreateDirectory(_configFolder);
+                File.WriteAllText(_configFile, JsonSerializer.Serialize(config));
             }
             catch (Exception ex)
             {

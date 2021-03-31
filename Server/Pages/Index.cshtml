@@ -3,7 +3,7 @@
 @using Remotely.Shared.Utilities 
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostEnv
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Accueil";
 
 }
 
@@ -14,15 +14,15 @@
 else
 {
     <div id="motdAlert" class="alert alert-info alert-dismissible mr-5" role="alert" hidden>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span aria-hidden="true">×</span></button>
         <span id="motdContentSpan">@Model.Motd</span>
     </div>
 
     @if (Model.IsNewVersionAvailable)
     {
         <div class="alert alert-info alert-dismissible mr-5" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-            <span class="mr-1">A new version is available!  Upgrade scripts:</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span aria-hidden="true">×</span></button>
+            <span class="mr-1">Une nouvelle version est disponible !  Scripts dispo ici :</span>
             <a class="mr-1" href="~/Downloads/Ubuntu-Upgrade.sh">Ubuntu</a>
             <a class="mr-1" href="~/Downloads/Windows-Upgrade.ps1">Windows</a>
             <a class="mr-1" href="~/Downloads/CentOS-Upgrade.sh">CentOS</a>

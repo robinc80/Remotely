@@ -6,18 +6,18 @@
     <h1 id="remotelyHeader">
     </h1>
     <div class="lead">
-        Welcome.  Please log in@(Model.RegistrationAvailable ? " or register" : "").
+        Bienvenue.  Connectez-vous @(Model.RegistrationAvailable ? " ou inscrivez-vous" : "").
     </div>
     <div class="mt-5">
         <a href="~/Identity/Account/Login" class="btn btn-primary btn-lg">
-            Login
+            Connexion
         </a>
         @if (Model.RegistrationAvailable)
         {
             <br />
             <br />
             <a href="~/Identity/Account/Register" class="btn btn-secondary btn-lg">
-                Register
+                Inscription
             </a>
         }
     </div>

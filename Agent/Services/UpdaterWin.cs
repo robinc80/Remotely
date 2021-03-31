@@ -82,17 +82,17 @@ namespace Remotely.Agent.Services
                     using var response = (HttpWebResponse)await wr.GetResponseAsync();
                     if (response.StatusCode == HttpStatusCode.NotModified)
                     {
-                        Logger.Write("Service Updater: Version is current.");
+                        Logger.Write("Pas de mise à jour disponible.");
                         return;
                     }
                 }
                 catch (WebException ex) when ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotModified)
                 {
-                    Logger.Write("Service Updater: Version is current.");
+                    Logger.Write("Pas de mise à jour disponible.");
                     return;
                 }
 
-                Logger.Write("Service Updater: Update found.");
+                Logger.Write("Une mise à jour est disponible.");
 
                 await InstallLatestVersion();
 
@@ -116,7 +116,7 @@ namespace Remotely.Agent.Services
                 var connectionInfo = ConfigService.GetConnectionInfo();
                 var serverUrl = connectionInfo.Host;
 
-                Logger.Write("Service Updater: Downloading install package.");
+                Logger.Write("Téléchargement de la mise à jour.");
 
                 using var wc = new WebClientEx((int)UpdateTimer.Interval);
                 var downloadId = Guid.NewGuid().ToString();
@@ -141,13 +141,13 @@ namespace Remotely.Agent.Services
                     proc.Kill();
                 }
 
-                Logger.Write("Launching installer to perform update.");
+                Logger.Write("Lancement de l'installation.");
 
                 Process.Start(installerPath, $"-install -quiet -path {zipPath} -serverurl {serverUrl} -organizationid {connectionInfo.OrganizationID}");
             }
             catch (WebException ex) when (ex.Status == WebExceptionStatus.Timeout)
             {
-                Logger.Write("Timed out while waiting to download update.", Shared.Enums.EventType.Warning);
+                Logger.Write("Timeout.", Shared.Enums.EventType.Warning);
                 PreviousUpdateFailed = true;
             }
             catch (Exception ex)

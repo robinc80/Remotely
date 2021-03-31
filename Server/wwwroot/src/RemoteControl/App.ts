@@ -31,6 +31,7 @@ export const ViewerApp = {
     Settings: GetSettings(),
 
     Init: () => {
+
         if (ViewerApp.ViewOnlyMode) {
             UI.ViewOnlyButton.classList.add("toggled");
         }

@@ -1,12 +1,13 @@
 ﻿#!/bin/bash
 
-AppRoot=$(cat /etc/systemd/system/remotely.service | grep -i "execstart" | cut -d' ' -f 2 | sed -e 's/\/[^\/]*$/\//')
+AppRoot=$(cat /etc/systemd/system/remotely.service | grep -i "execstart" | cut -d' ' -f 2)
 
 echo "Remotely server upgrade started."
 
 echo "Target path: $AppRoot"
 
 read -p "If this is not correct, press Ctrl + C now to abort!"
+
 
 echo "Ensuring dependencies are installed."
 

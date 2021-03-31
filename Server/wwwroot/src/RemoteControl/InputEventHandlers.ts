@@ -275,7 +275,7 @@ export function ApplyInputHandlers() {
             if (currentPointerDevice == "touch") {
                 return;
             }
-
+            
             e.preventDefault();
 
             if (ViewerApp.ViewOnlyMode) {

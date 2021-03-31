@@ -42,9 +42,9 @@ namespace Remotely.Server.Services
         Task<bool> CreateUser(string userEmail, bool isAdmin, string organizationID);
 
         Task DeleteAlert(Alert alert);
-
-        Task DeleteAllAlerts(string orgID, string userName = null);
-
+		
+		Task DeleteAllAlerts(string orgID, string userName = null);
+ 
         Task DeleteApiToken(string userName, string tokenId);
 
         void DeleteDeviceGroup(string orgID, string deviceGroupID);
@@ -95,8 +95,8 @@ namespace Remotely.Server.Services
 
         string GetDefaultPrompt(string userName);
 
-        Task<string> GetDefaultRelayCode();
-
+		Task<string> GetDefaultRelayCode();
+		
         Device GetDevice(string deviceID);
 
         Device GetDevice(string orgID, string deviceID);
@@ -576,7 +576,7 @@ namespace Remotely.Server.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAllAlerts(string orgID, string userName = null)
+		        public async Task DeleteAllAlerts(string orgID, string userName = null)
         {
             var alerts = _dbContext.Alerts.Where(x => x.OrganizationID == orgID);
 

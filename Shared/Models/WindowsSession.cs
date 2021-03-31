@@ -14,11 +14,11 @@ namespace Remotely.Shared.Models
     {
         [DataMember(Name = "ID")]
         public uint ID { get; set; }
-        [DataMember(Name = "Name")]
+        [DataMember(Name = "Nom")]
         public string Name { get; set; }
         [DataMember(Name = "Type")]
         public SessionType Type { get; set; }
-        [DataMember(Name = "Username")]
+        [DataMember(Name = "Nom utilisateur")]
         public string Username { get; set; }
     }
 }

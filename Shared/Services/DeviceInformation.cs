@@ -44,7 +44,7 @@ namespace Remotely.Shared.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Error getting device info.");
+                Logger.Write(ex, "Impossible d'obtenir les informations.");
             }
 
             return device;
@@ -67,7 +67,7 @@ namespace Remotely.Shared.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Error getting drive info.");
+                Logger.Write(ex, "Impossible d'obtenir les informations.");
                 return null;
             }
         }
@@ -130,7 +130,7 @@ namespace Remotely.Shared.Services
                     var users = EnvironmentHelper.StartProcessWithResults("users", "");
                     return users?.Split()?.FirstOrDefault()?.Trim();
                 }
-                throw new Exception("Unsupported operating system.");
+                throw new Exception("OS non supporté.");
             }
             catch (Exception ex)
             {
@@ -191,7 +191,7 @@ namespace Remotely.Shared.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Error getting system drive info.");
+                Logger.Write(ex, "Impossible d'obtenir les informations.");
             }
 
             return (0, 0);

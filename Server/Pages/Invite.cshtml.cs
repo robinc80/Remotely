@@ -27,7 +27,7 @@ namespace Remotely.Server.Pages
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                ModelState.AddModelError("MissingID", "No invititation ID is specified.");
+                ModelState.AddModelError("MissingID", "No invitation ID is specified.");
             }
 
             Input.InviteID = id;
@@ -38,7 +38,7 @@ namespace Remotely.Server.Pages
             if (string.IsNullOrWhiteSpace(Input?.InviteID))
             {
                 Success = false;
-                ModelState.AddModelError("MissingID", "No invititation ID is specified.");
+                ModelState.AddModelError("MissingID", "No invitation ID is specified.");
                 return Page();
             }
 

@@ -1,4 +1,4 @@
-using Remotely.Agent.Installer.Win.Models;
+﻿using Remotely.Agent.Installer.Win.Models;
 using Remotely.Agent.Installer.Win.Services;
 using Remotely.Agent.Installer.Win.Utilities;
 using Remotely.Shared.Utilities;
@@ -24,7 +24,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
     {
         private BrandingInfo _brandingInfo;
         private bool _createSupportShortcut;
-        private string _headerMessage = "Install the service.";
+        private string _headerMessage = "Installer le service.";
 
         private bool _isReadyState = true;
         private bool _isServiceInstalled;
@@ -33,7 +33,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
 
         private int _progress;
 
-        private string _serverUrl;
+private string _serverUrl = "https://sos.pcenpanne.fr";
 
         private string _statusMessage;
         public MainWindowViewModel()
@@ -74,7 +74,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         }
 
         public BitmapImage Icon { get; set; }
-        public string InstallButtonText => IsServiceMissing ? "Install" : "Reinstall";
+        public string InstallButtonText => IsServiceMissing ? "Installer" : "Réinstaller";
 
         public ICommand InstallCommand => new Executor(async (param) => { await Install(); });
 
@@ -207,11 +207,11 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             IsServiceInstalled = ServiceController.GetServices().Any(x => x.ServiceName == "Remotely_Service");
             if (IsServiceMissing)
             {
-                HeaderMessage = $"Install the {ProductName} service.";
+                HeaderMessage = $"Installer le service.";
             }
             else
             {
-                HeaderMessage = $"Modify the {ProductName} installation.";
+                HeaderMessage = $"Modifier l'installation.";
             }
 
             CommandLineParser.VerifyArguments();
@@ -268,7 +268,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         {
             try
             {
-                ProductName = "Remotely";
+                ProductName = "Le garage à PC";
 
                 if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
                 {
@@ -481,8 +481,8 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                 {
                     IsServiceInstalled = true;
                     Progress = 0;
-                    HeaderMessage = "Installation completed.";
-                    StatusMessage = "Remotely has been installed.  You can now close this window.";
+                    HeaderMessage = "Installation complète.";
+                    StatusMessage = "Remotely est installé, vous pouvez fermer la fenêtre.";
                 }
                 else
                 {

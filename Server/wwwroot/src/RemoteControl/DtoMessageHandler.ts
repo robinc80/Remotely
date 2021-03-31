@@ -74,7 +74,7 @@ export class DtoMessageHandler {
                     captureFrame.Top,
                     captureFrame.Width,
                     captureFrame.Height);
-                window.URL.revokeObjectURL(url);
+			window.URL.revokeObjectURL(url);
             };
             img.src = url;
 

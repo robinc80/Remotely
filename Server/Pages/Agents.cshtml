@@ -1,34 +1,34 @@
 ﻿@page
 @model AgentsModel
 @{
-    ViewData["Title"] = "Client Downloads";
+    ViewData["Title"] = "Téléchargement des clients";
 }
 
 <div class="row mb-3">
-    <h4>Portable Instant Support Clients</h4>
+    <h4>Module de téléassistance</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        Instant desktop sharing.  No account required.
+        Aucun compte n'est requis.
     </div>
     <div class="col-sm-6 mb-3">
-        <h6>Windows (64-Bit)</h6>
+        <h6>Windows (64-Bits)</h6>
         <p>
-            <strong>Download:</strong>
+            <strong>Télécharger :</strong>
             <br />
             <a href="/api/ClientDownloads/Desktop/WindowsDesktop-x64/@Model.OrganizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <h6>Windows (32-Bit)</h6>
+        <h6>Windows (32-Bits)</h6>
         <p>
-            <strong>Download:</strong>
+            <strong>Télécharger :</strong>
             <br />
             <a href="/api/ClientDownloads/Desktop/WindowsDesktop-x86/@Model.OrganizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6 mb-3">
-        <h6>Linux 64-Bit</h6>
+        <h6>Linux 64-Bits</h6>
         <p>
-            <strong>Download:</strong>
+            <strong>Télécharger :</strong>
             <br />
             <a href="/api/ClientDownloads/Desktop/UbuntuDesktop/@Model.OrganizationId">Ubuntu Executable</a>
         </p>

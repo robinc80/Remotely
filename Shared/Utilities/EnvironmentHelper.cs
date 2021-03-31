@@ -37,7 +37,7 @@ namespace Remotely.Shared.Utilities
                 }
                 else
                 {
-                    throw new Exception("Unsupported operating system.");
+                    throw new Exception("OS non supporté.");
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace Remotely.Shared.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Failed to start process.");
+                Logger.Write(ex, "Echec du processus.");
                 return string.Empty;
             }
         }

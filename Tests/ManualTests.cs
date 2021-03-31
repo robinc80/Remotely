@@ -67,8 +67,8 @@ namespace Remotely.Tests
             Assert.IsTrue(fps > 0);
             _viewer.Dispose();
         }
-
-        [TestMethod]
+		
+		[TestMethod]
         [Ignore("Manual test.")]
         public async Task EncodingSizeTests()
         {
@@ -127,7 +127,6 @@ namespace Remotely.Tests
                 }
                 Debug.WriteLine($"Diff Image time: {sw.Elapsed.TotalMilliseconds}");
 
-
                 Debug.WriteLine($"\n");
             }
         }
@@ -184,11 +183,11 @@ namespace Remotely.Tests
             using var mrs = Assembly.GetExecutingAssembly().GetManifestResourceStream($"Remotely.Tests.Resources.{frameFileName}.jpg");
             var resourceImage = (Bitmap)Bitmap.FromStream(mrs);
 
-            if (resourceImage.PixelFormat != PixelFormat.Format32bppArgb)
+                            if (resourceImage.PixelFormat != PixelFormat.Format32bppArgb)
             {
                 return resourceImage.Clone(new Rectangle(0, 0, resourceImage.Width, resourceImage.Height), PixelFormat.Format32bppArgb);
             }
-            return resourceImage;
+			return resourceImage;
         }
 
         private ImageCodecInfo GetEncoder(ImageFormat format)

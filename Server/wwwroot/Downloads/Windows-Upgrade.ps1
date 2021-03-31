@@ -109,7 +109,8 @@ try {
     Invoke-WebRequest -Uri "https://github.com/lucent-sea/Remotely/releases/latest/download/Remotely_Server_Win-x64.zip" -OutFile "$env:TEMP\Remotely_Server_Win-x64.zip"
     $ProgressPreference = "Continue"
     Wrap-Host "Extracting server files..."
-	Expand-Archive -Path "$env:TEMP\Remotely_Server_Win-x64.zip" -DestinationPath $SitePath -Force
+	[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
+	[System.IO.Compression.ZipFile]::ExtractToDirectory("$env:TEMP\Remotely_Server_Win-x64.zip", $SitePath)
 }
 catch {
     Wrap-Host
