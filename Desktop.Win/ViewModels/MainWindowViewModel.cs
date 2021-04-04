@@ -192,7 +192,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
         public async Task Init()
         {
-            SessionID = "Retrieving...";
+            SessionID = "Téléchargement...";
 
             Host = _configService.GetConfig().Host;
 

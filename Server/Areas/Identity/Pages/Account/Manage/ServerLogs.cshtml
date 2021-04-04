@@ -3,7 +3,7 @@
 @inject IDataService  DataService
 @using Remotely.Shared.Enums
 @{
-    ViewData["Title"] = "Server Logs";
+    ViewData["Title"] = "Logs serveur";
 }
 <h4>@ViewData["Title"]</h4>
 
@@ -11,21 +11,21 @@
 {
     <div class="row mb-3">
         <div class="col-sm-4">
-            <div class="mb-1">Delete Logs and Scripting History:</div>
+            <div class="mb-1">Effacer les logs et l'historique :</div>
             <form method="post" asp-page-handler="ClearLogs">
-                <button class="btn btn-primary" type="submit">Delete All</button>
+                <button class="btn btn-primary" type="submit">Effacer tout</button>
             </form>
         </div>
         <div class="col-sm-8 text-right">
             <div style="display:inline-block; text-align: left">
-                <div class="mb-1">Download All:</div>
+                <div class="mb-1">Télécharger tout:</div>
                 <button class="btn btn-primary mr-3"
                         onclick="location.assign('/API/Commands/JSON')">
-                    Scripting History
+                    Historique des scripts
                 </button>
                 <button class="btn btn-primary"
                         onclick="location.assign('/API/ServerLogs/Download')">
-                    Server Logs
+                    Logs du serveur
                 </button>
             </div>
         </div>
@@ -39,12 +39,12 @@
             </select>
         </div>
         <div style="display:inline-block" class="mr-1">
-            <strong>From:</strong>
+            <strong>De :</strong>
             <br />
             <input type="date" asp-for="Input.FromDate" />
         </div>
         <div style="display:inline-block" class="mr-1">
-            <strong>To:</strong>
+            <strong>A :</strong>
             <br />
             <input type="date" asp-for="Input.ToDate" />
         </div>
@@ -53,7 +53,7 @@
             <br />
             <input type="text" asp-for="Input.Message" />
         </div>
-        <button class="btn btn-primary" type="submit">Apply</button>
+        <button class="btn btn-primary" type="submit">Appliquer</button>
     </form>
 
     <table class="table table-hover table-striped">
@@ -82,5 +82,5 @@
 }
 else
 {
-    <h5 class="text-muted">Only organization administrators can view this page.</h5>
+    <h5 class="text-muted">Seuls les administrateurs peuvent voir cette page.</h5>
 }
