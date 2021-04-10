@@ -63,10 +63,10 @@ namespace Remotely.Desktop.Win.Services
                     _notifyIcon = new NotifyIcon(_container)
                     {
                         Icon = icon,
-                        Text = "Téléassistance en cours",
+                        Text = "Remote Control Session",
                         BalloonTipIcon = ToolTipIcon.Info,
-                        BalloonTipText = "Téléassistance en cours",
-                        BalloonTipTitle = "Téléassistance en cours",
+                        BalloonTipText = "A remote control session has started.",
+                        BalloonTipTitle = "Remote Control Started",
                         ContextMenuStrip = _contextMenuStrip
                     };
 

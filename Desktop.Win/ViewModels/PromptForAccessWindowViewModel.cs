@@ -10,8 +10,8 @@ namespace Remotely.Desktop.Win.ViewModels
 {
     public class PromptForAccessWindowViewModel : BrandedViewModelBase
     {
-        private string _organizationName = "Le garage à PC";
-        private string _requesterName = "Robin";
+        private string _organizationName = "your IT provider";
+        private string _requesterName = "a technician";
         public string OrganizationName
         {
             get => _organizationName;

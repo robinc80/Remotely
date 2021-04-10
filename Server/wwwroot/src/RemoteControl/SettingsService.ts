@@ -1,8 +1,6 @@
 ﻿import { Settings } from "./Interfaces/Settings.js";
 
 const defaultSettings = {
-    autoQualityEnabled: true,
-    qualityLevel: 60,
     streamModeEnabled: false
 };
 

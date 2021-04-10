@@ -183,8 +183,8 @@ namespace Remotely.Desktop.Win.Services
             // Prevent multiple dialogs from popping up.
             if (_result is null)
             {
-                _result = MessageBox.Show("Transfert terminé. Ouvrir le dossier?",
-                    "Transfert terminé",
+                _result = MessageBox.Show("File transfer complete.  Show folder?",
+                    "Transfer Complete",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question,
                     MessageBoxResult.Yes,

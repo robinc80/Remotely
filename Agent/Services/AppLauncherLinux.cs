@@ -29,24 +29,28 @@ namespace Remotely.Agent.Services
             {
                 if (!File.Exists(_rcBinaryPath))
                 {
-                    await hubConnection.SendAsync("DisplayMessage", "Chat executable not found on target device.", "Executable not found on device.", requesterID);
+                    await hubConnection.SendAsync("DisplayMessage", 
+                        "Chat executable not found on target device.", 
+                        "Executable not found on device.", 
+                        "bg-danger",
+                        requesterID);
                 }
 
 
                 // Start Desktop app.
-                await hubConnection.SendAsync("DisplayMessage", $"Starting chat service...", "Starting chat service.", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", $"Starting chat service.", "Starting chat service.", "bg-success", requesterID);
                 var args = $"{_rcBinaryPath} " +
                     $"-mode Chat " +
                     $"-requester \"{requesterID}\" " +
                     $"-organization \"{orgName}\" " +
                     $"-host \"{ConnectionInfo.Host}\" " +
-                    $"-orgid \"{ConnectionInfo.OrganizationID}\" & disown";
+                    $"-orgid \"{ConnectionInfo.OrganizationID}\"";
                 return StartLinuxDesktopApp(args);
             }
             catch (Exception ex)
             {
                 Logger.Write(ex);
-                await hubConnection.SendAsync("DisplayMessage", "Chat service failed to start on target device.", "Failed to start chat service.", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", "Chat service failed to start on target device.", "Failed to start chat service.", "bg-danger", requesterID);
             }
             return -1;
         }
@@ -57,26 +61,30 @@ namespace Remotely.Agent.Services
             {
                 if (!File.Exists(_rcBinaryPath))
                 {
-                    await hubConnection.SendAsync("DisplayMessage", "Remote control executable not found on target device.", "Executable not found on device.", requesterID);
+                    await hubConnection.SendAsync("DisplayMessage",
+                        "Remote control executable not found on target device.", 
+                        "Executable not found on device.", 
+                        "bg-danger", 
+                        requesterID);
                     return;
                 }
 
 
                 // Start Desktop app.
-                await hubConnection.SendAsync("DisplayMessage", $"Démarrage téléassistance...", "Démarrage téléassistance", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", "Starting remote control.", "Starting remote control.",  "bg-success", requesterID);
                 var args = $"{_rcBinaryPath} " +
                     $"-mode Unattended " +
                     $"-requester \"{requesterID}\" " +
                     $"-serviceid \"{serviceID}\" " +
                     $"-deviceid {ConnectionInfo.DeviceID} " +
                     $"-host \"{ConnectionInfo.Host}\" " +
-                    $"-orgid \"{ConnectionInfo.OrganizationID}\" & disown";
+                    $"-orgid \"{ConnectionInfo.OrganizationID}\"";
                 StartLinuxDesktopApp(args);
             }
             catch (Exception ex)
             {
                 Logger.Write(ex);
-                await hubConnection.SendAsync("DisplayMessage", "Remote control failed to start on target device.", "Failed to start remote control.", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", "Remote control failed to start on target device.", "Failed to start remote control.", "bg-danger", requesterID);
             }
         }
         public async Task RestartScreenCaster(List<string> viewerIDs, string serviceID, string requesterID, HubConnection hubConnection, int targetSessionID = -1)
@@ -92,7 +100,7 @@ namespace Remotely.Agent.Services
                     $"-host \"{ConnectionInfo.Host}\" " +
                     $"-orgid \"{ConnectionInfo.OrganizationID}\" " +
                     $"-relaunch true " +
-                    $"-viewers {string.Join(",", viewerIDs)} & disown";
+                    $"-viewers {string.Join(",", viewerIDs)}";
                 StartLinuxDesktopApp(args);
             }
             catch (Exception ex)

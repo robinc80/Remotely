@@ -10,7 +10,7 @@
 # changes.  On the GitHub page for your repo, you'll see a message that says,
 # "This branch is ## commits behind lucent-sea:master."
 #
-# Click the "Pull request link next to it."
+# Click the "Pull request" link next to it.
 #
 # On the next page click the "switching the base" link.  Now it's pulling from
 # my repo into yours.  Create and complete the pull request to update your repo.
@@ -123,5 +123,5 @@ jobs:
     
 
     # Remove the pfx
-    #- name: Remove the pfx
-    #  run: Remove-Item -path "$env:GITHUB_WORKSPACE\GitHubActionsWorkflow.pfx"
+    - name: Remove the pfx
+      run: Remove-Item -path "$env:GITHUB_WORKSPACE\GitHubActionsWorkflow.pfx"

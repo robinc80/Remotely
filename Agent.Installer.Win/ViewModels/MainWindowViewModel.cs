@@ -1,4 +1,4 @@
-﻿using Remotely.Agent.Installer.Win.Models;
+using Remotely.Agent.Installer.Win.Models;
 using Remotely.Agent.Installer.Win.Services;
 using Remotely.Agent.Installer.Win.Utilities;
 using Remotely.Shared.Utilities;
@@ -24,7 +24,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
     {
         private BrandingInfo _brandingInfo;
         private bool _createSupportShortcut;
-        private string _headerMessage = "Installer le service.";
+        private string _headerMessage = "Install the service.";
 
         private bool _isReadyState = true;
         private bool _isServiceInstalled;
@@ -33,7 +33,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
 
         private int _progress;
 
-private string _serverUrl = "https://sos.pcenpanne.fr";
+        private string _serverUrl;
 
         private string _statusMessage;
         public MainWindowViewModel()
@@ -74,7 +74,7 @@ private string _serverUrl = "https://sos.pcenpanne.fr";
         }
 
         public BitmapImage Icon { get; set; }
-        public string InstallButtonText => IsServiceMissing ? "Installer" : "Réinstaller";
+        public string InstallButtonText => IsServiceMissing ? "Install" : "Reinstall";
 
         public ICommand InstallCommand => new Executor(async (param) => { await Install(); });
 
@@ -207,11 +207,11 @@ private string _serverUrl = "https://sos.pcenpanne.fr";
             IsServiceInstalled = ServiceController.GetServices().Any(x => x.ServiceName == "Remotely_Service");
             if (IsServiceMissing)
             {
-                HeaderMessage = $"Installer le service.";
+                HeaderMessage = $"Install the {ProductName} service.";
             }
             else
             {
-                HeaderMessage = $"Modifier l'installation.";
+                HeaderMessage = $"Modify the {ProductName} installation.";
             }
 
             CommandLineParser.VerifyArguments();
@@ -268,7 +268,7 @@ private string _serverUrl = "https://sos.pcenpanne.fr";
         {
             try
             {
-                ProductName = "Le garage à PC";
+                ProductName = "Remotely";
 
                 if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
                 {
@@ -334,7 +334,7 @@ private string _serverUrl = "https://sos.pcenpanne.fr";
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
             {
                 Logger.Write("ServerUrl is not valid.");
-                MessageBoxEx.Show("Server URL must be a valid Uri.", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -481,8 +481,8 @@ private string _serverUrl = "https://sos.pcenpanne.fr";
                 {
                     IsServiceInstalled = true;
                     Progress = 0;
-                    HeaderMessage = "Installation complète.";
-                    StatusMessage = "Remotely est installé, vous pouvez fermer la fenêtre.";
+                    HeaderMessage = "Installation completed.";
+                    StatusMessage = "Remotely has been installed.  You can now close this window.";
                 }
                 else
                 {
