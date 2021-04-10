@@ -82,17 +82,17 @@ namespace Remotely.Agent.Services
                     using var response = (HttpWebResponse)await wr.GetResponseAsync();
                     if (response.StatusCode == HttpStatusCode.NotModified)
                     {
-                        Logger.Write("Service Updater: Version is current.");
+                        Logger.Write("Service Updater: pas de mise à jour disponible.");
                         return;
                     }
                 }
                 catch (WebException ex) when ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotModified)
                 {
-                    Logger.Write("Service Updater: Version is current.");
+                    Logger.Write("Service Updater: pas de mise à jour disponible.");
                     return;
                 }
 
-                Logger.Write("Service Updater: Update found.");
+                Logger.Write("Service Updater: mise à jour disponible.");
 
                 await InstallLatestVersion();
 
@@ -116,7 +116,7 @@ namespace Remotely.Agent.Services
                 var connectionInfo = ConfigService.GetConnectionInfo();
                 var serverUrl = connectionInfo.Host;
 
-                Logger.Write("Service Updater: Downloading install package.");
+                Logger.Write("Service Updater: téléchargement de la mise à jour.");
 
                 using var wc = new WebClientEx((int)UpdateTimer.Interval);
                 var downloadId = Guid.NewGuid().ToString();

@@ -9,8 +9,8 @@ namespace Remotely.Desktop.Win.ViewModels
     public class ChatWindowViewModel : BrandedViewModelBase
     {
         private string _inputText;
-        private string _organizationName = "your IT provider";
-        private string _senderName = "a technician";
+        private string _organizationName = "Le garage à PC";
+        private string _senderName = "un technicien";
 
         public ObservableCollection<ChatMessage> ChatMessages { get; } = new ObservableCollection<ChatMessage>();
 
@@ -77,7 +77,7 @@ namespace Remotely.Desktop.Win.ViewModels
             InputText = string.Empty;
             await PipeStreamWriter.WriteLineAsync(JsonSerializer.Serialize(chatMessage));
             await PipeStreamWriter.FlushAsync();
-            chatMessage.SenderName = "You";
+            chatMessage.SenderName = "Vous";
             ChatMessages.Add(chatMessage);
         }
     }
