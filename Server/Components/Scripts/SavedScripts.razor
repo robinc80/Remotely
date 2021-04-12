@@ -28,13 +28,13 @@
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Script Name</label>
+                        <label>Nom du script</label>
                         <InputText class="form-control" DisplayName="Script Name" @bind-Value="_selectedScript.Name" placeholder="Script name" />
                         <ValidationMessage For="() => _selectedScript.Name" />
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Folder Path</label>
+                        <label>Chemin du dossier</label>
                         <InputText class="form-control" DisplayName="Folder Path" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
                         <ValidationMessage For="() => _selectedScript.FolderPath" />
                     </div>
@@ -65,20 +65,20 @@
                         </button>
 
                         <button class="btn btn-success ml-3" type="button" @onclick="CreateNew">
-                            New
+                            Nouveau
                         </button>
                         <button class="btn btn-danger ml-3" type="button"
                                 disabled="@(!CanDeleteScript)"
                                 @onclick="DeleteSelectedScript">
-                            Delete
+                            Effacer
                         </button>
                     </div>
                     <div class="mt-2 col-12">
                         <button type="button" class="btn btn-link mr-3" @onclick="ToggleAlertOptionsShown">
-                            Alert Options
+                            Options d'alerte
                         </button>
                         <button type="button" class="btn btn-link" @onclick="ToggleEnvironmentVarsShown">
-                            Environment Variables
+                            Variables d'environnement
                         </button>
                     </div>
                     <div class="my-2 col-12 collapse @_alertOptionsShowClass">
@@ -90,7 +90,7 @@
                         </h5>
                         <div class="row">
                             <div class="mt-2 col-md-6">
-                                <label>Send Email</label>
+                                <label>Envoyer email</label>
                                 <br />
                                 <InputCheckbox DisplayName="Send Email on Error" @bind-Value="_selectedScript.SendEmailOnError" />
                                 <ValidationMessage For="() => _selectedScript.SendEmailOnError" />
@@ -105,7 +105,7 @@
                                 <ValidationMessage For="() => _selectedScript.SendErrorEmailTo" />
                             </div>
                             <div class="mt-2 col-md-6">
-                                <label>Generate Alert</label>
+                                <label>Générer une alerte</label>
                                 <br />
                                 <InputCheckbox DisplayName="Alert on Error" @bind-Value="_selectedScript.GenerateAlertOnError" />
                                 <ValidationMessage For="() => _selectedScript.GenerateAlertOnError" />

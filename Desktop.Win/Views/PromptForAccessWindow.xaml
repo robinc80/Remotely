@@ -14,7 +14,7 @@
         BorderBrush="DimGray"
         BorderThickness="1"
         Topmost="True"
-        Title="Remote Control Request" 
+        Title="Demande de prise de contrôle" 
         MinHeight="200"
         MinWidth="250"
         Height="275" 
@@ -50,24 +50,24 @@
 
         <StackPanel Grid.Row="1">
             <TextBlock Style="{StaticResource SectionHeader}" FontWeight="Bold" FontSize="18" Foreground="DimGray" Margin="10" TextWrapping="Wrap">
-                A remote control session has been requested.
+                Demande de connexion
             </TextBlock>
 
             <TextBlock Style="{StaticResource SectionHeader}" FontWeight="Bold" FontSize="18" Foreground="DimGray" Margin="10" TextWrapping="Wrap">
-                <Run>Would you like to allow </Run>
+                <Run>Voulez-vous autoriser </Run>
                 <Run Text="{Binding RequesterName}"></Run>
-                <Run> from </Run>
+                <Run> de </Run>
                 <Run Text="{Binding OrganizationName}"></Run>
-                <Run> to control your computer?</Run>
+                <Run> à contrôler votre ordinateur ?</Run>
             </TextBlock>
         </StackPanel>
       
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <Button Width="60" Height="40" Content="Yes" Margin="10"
+            <Button Width="60" Height="40" Content="Oui" Margin="10"
                     Style="{StaticResource NormalButton}"
                     Command="{Binding SetResultYes}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:PromptForAccessWindow}}}"></Button>
-            <Button Width="60" Height="40" Content="No" Margin="10"
+            <Button Width="60" Height="40" Content="Non" Margin="10"
                     Style="{StaticResource NormalButton}"
                     Command="{Binding SetResultNo}"
                     CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:PromptForAccessWindow}}}"></Button>

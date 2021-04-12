@@ -17,7 +17,7 @@
         MinHeight="250"
         MinWidth="200"
         Topmost="True"
-        Title="Chat Session" Height="450" Width="450" 
+        Title="Session de chat" Height="450" Width="450" 
         Icon="{Binding Icon}"
         Loaded="Window_Loaded"
         ContentRendered="Window_ContentRendered">
@@ -52,7 +52,7 @@
         </Border>
 
         <TextBlock Grid.Row="1" FontWeight="Bold" Foreground="DimGray" Margin="10,10,10,0" TextWrapping="Wrap">
-                <Run>Chat session with</Run>
+                <Run>Session de chat avec</Run>
                 <Run Text="{Binding OrganizationName}"></Run>
         </TextBlock>
         
@@ -73,7 +73,7 @@
                                         <Run.Style>
                                             <Style TargetType="Run">
                                                 <Style.Triggers>
-                                                    <Trigger Property="Text" Value="You">
+                                                    <Trigger Property="Text" Value="Vous">
                                                         <Setter Property="Foreground" Value="SteelBlue"></Setter>
                                                     </Trigger>
                                                 </Style.Triggers>

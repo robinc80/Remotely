@@ -97,7 +97,7 @@ export class DtoMessageHandler {
 
     HandleClipboardText(clipboardText: ClipboardTextDto) {
         ViewerApp.ClipboardWatcher.SetClipboardText(clipboardText.ClipboardText);
-        ShowMessage("Clipboard updated.");
+        ShowMessage("Presse-papier mis à jour.");
     }
     HandleCursorChange(cursorChange: CursorChangeDto) {
         UI.UpdateCursor(cursorChange.ImageBytes, cursorChange.HotSpotX, cursorChange.HotSpotY, cursorChange.CssOverride);

@@ -59,7 +59,7 @@ export const ViewerApp = {
         ViewerApp.RequesterName = UI.RequesterNameInput.value;
         ViewerApp.Mode = RemoteControlMode.Normal;
         ViewerApp.ViewerHubConnection.Connect();
-        UI.StatusMessage.innerHTML = "Sending connection request...";
+        UI.StatusMessage.innerHTML = "Envoi de la demande de connexion...";
     }
 }
 

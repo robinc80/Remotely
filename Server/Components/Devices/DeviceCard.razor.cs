@@ -127,7 +127,7 @@ namespace Remotely.Server.Components.Devices
 
         private async Task OnFileInputChanged(InputFileChangeEventArgs args)
         {
-            ToastService.ShowToast("File upload started.");
+            ToastService.ShowToast("Upload débuté.");
 
             var fileId = await DataService.AddSharedFile(args.File, User.OrganizationID, OnFileInputProgress);
 
@@ -137,11 +137,11 @@ namespace Remotely.Server.Components.Devices
 
             if (!result)
             {
-                ToastService.ShowToast("Device not found.", classString: "bg-warning");
+                ToastService.ShowToast("Appareil non trouvé.", classString: "bg-warning");
             }
             else
             {
-                ToastService.ShowToast("File upload completed.");
+                ToastService.ShowToast("Upload terminé.");
             }
         }
 
@@ -167,7 +167,7 @@ namespace Remotely.Server.Components.Devices
                   Device.Notes,
                   Device.WebRtcSetting);
 
-            ToastService.ShowToast("Device settings saved.");
+            ToastService.ShowToast("Réglages enregistrés.");
             return Task.CompletedTask;
         }
 
@@ -241,7 +241,7 @@ namespace Remotely.Server.Components.Devices
 
         private async Task UninstallAgent()
         {
-            var result = await JsInterop.Confirm("Are you sure you want to uninstall this agent?  This is permanent!");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir désinstaller ?");
             if (result)
             {
                 await CircuitConnection.UninstallAgents(new[] { Device.ID });

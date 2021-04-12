@@ -7,10 +7,10 @@
     <div id="deviceControlsWrapper">
         <div>
             <div>
-                <div>Device Group</div>
+                <div>Groupe d'appareils</div>
                 <select class="form-control" style="width: 200px" @bind="_selectedGroupId">
-                    <option value="@_deviceGroupAll">All</option>
-                    <option value="@_deviceGroupNone">None</option>
+                    <option value="@_deviceGroupAll">Tous</option>
+                    <option value="@_deviceGroupNone">Aucun</option>
                     @foreach (var group in _deviceGroups)
                     {
                         <option @key="group.ID" value="@group.ID">@group.Name</option>
@@ -19,7 +19,7 @@
             </div>
 
             <div>
-                <div class="mt-1">Sort</div>
+                <div class="mt-1">Trier</div>
                 <select class="form-control d-inline" style="width: 150px" @bind="_selectedSortProperty">
                     <option value=""></option>
                     @foreach (var prop in _sortableProperties)
@@ -27,24 +27,24 @@
                         <option value="@prop.Name">@GetDisplayName(prop)</option>
                     }
                 </select>
-                <button class="btn btn-sm btn-secondary" title="Sort Direction" style="width: 40px; margin-left: 5px;" @onclick="ToggleSortDirection">
+                <button class="btn btn-sm btn-secondary" title="Sens" style="width: 40px; margin-left: 5px;" @onclick="ToggleSortDirection">
                     <span class="oi @GetSortIcon()"></span>
                 </button>
             </div>
 
             <div class="custom-control custom-checkbox mt-2">
                 <input id="hideOfflineDevicesCheckbox" type="checkbox" class="custom-control-input" @bind="_hideOfflineDevices" />
-                <label class="custom-control-label" for="hideOfflineDevicesCheckbox">Hide offline devices</label>
+                <label class="custom-control-label" for="hideOfflineDevicesCheckbox">Masquer les appareils hors ligne</label>
             </div>
             <div class="mt-2">
-                <button class="btn btn-sm btn-secondary" @onclick="SelectAllCards">Select All</button>
+                <button class="btn btn-sm btn-secondary" @onclick="SelectAllCards">Tout sélectionner</button>
             </div>
         </div>
          
         <div>
             <div class="d-inline-block text-left">
                 <div>
-                    <div>Search</div>
+                    <div>Chercher</div>
                     <input class="form-control d-inline"
                            style="width: 200px"
                            placeholder="Search device properties"
@@ -58,7 +58,7 @@
                     </button>
                     <span class="small">Page</span>
                     <input id="currentPageInput" style="width:75px; text-align: center" pattern="[0-9]" @bind="_currentPage" @bind:event="oninput" />
-                    <span class="small">of</span>
+                    <span class="small">sur</span>
                     <span>@TotalPages</span>
                     <button class="btn btn-sm btn-secondary" @onclick="PageUp">
                         <i class="oi oi-chevron-right"></i>
@@ -72,7 +72,7 @@
                         <option value="200">200</option>
                         <option value="500">500</option>
                     </select>
-                    <span class="ml-1 small">per page</span>
+                    <span class="ml-1 small">par page</span>
                 </div>
             </div>
            

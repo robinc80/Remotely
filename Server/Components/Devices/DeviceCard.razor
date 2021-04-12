@@ -8,7 +8,7 @@
     <div class="card-header">
         <div>
             <i class="oi oi-power-standby @(Device.IsOnline ? "text-success" : "text-danger")"
-               title="@(Device.IsOnline ? "Online" : "Offline")"></i>
+               title="@(Device.IsOnline ? "En ligne" : "Hors ligne")"></i>
         </div>
         <div class="overflow-hidden ml-2">
             <div class="d-inline-block">
@@ -21,12 +21,12 @@
         <div class="text-right">
             @if (IsExpanded)
             {
-                <button class="btn btn-sm mr-2" title="Collapse"
+                <button class="btn btn-sm mr-2" title="Développer"
                         @onclick:stopPropagation="true"
                         @onclick="SetCardStateNormal">
                     <i class="oi oi-fullscreen-exit"></i>
                 </button>
-                <button class="btn btn-sm mr-2" title="Open in New Tab"
+                <button class="btn btn-sm mr-2" title="Ouvrir dans un nouvel onglet"
                         @onclick:stopPropagation="true"
                         @onclick="OpenDeviceDetails">
                     <i class="oi oi-external-link"></i>
@@ -51,7 +51,7 @@
         } 
         <div>
             <div class="font-weight-bold text-info">
-                <label>User</label>
+                <label>Utilisateur</label>
             </div>
             <div>
                 @Device.CurrentUser
@@ -73,8 +73,8 @@
                         </li>
                         <li>
                             <button class="dropdown-item" @onclick="() => StartRemoteControl(false)">
-                                <i class="oi oi-laptop" title="Remote Control"></i>
-                                <span class="ml-2">Remote Control</span>
+                                <i class="oi oi-laptop" title="Contrôle"></i>
+                                <span class="ml-2">Contrôle</span>
                             </button>
                         </li>
                         <li>
@@ -88,14 +88,14 @@
                                              OnChanged="OnFileInputChanged">
                                 <ButtonContent>
                                     <i class="oi oi-data-transfer-upload" title="Upload File"></i>
-                                    <span class="ml-2">Upload File</span>
+                                    <span class="ml-2">Uploader un fichier</span>
                                 </ButtonContent>
                             </FileInputButton>
                         </li>
                         <li>
                             <button class="dropdown-item bg-danger" @onclick="UninstallAgent">
                                 <i class="oi oi-delete" title="Uninstall"></i>
-                                <span class="ml-2">Uninstall</span>
+                                <span class="ml-2">Désinstaller</span>
                             </button>
                         </li>
                     </ChildListItems>
@@ -103,19 +103,19 @@
             </div>
 
             <div class="font-weight-bold text-info">
-                <label>Platform</label>
+                <label>Plateforme</label>
             </div>
             <div>
                 @Device.Platform
             </div>
 
             <div class="font-weight-bold text-info">
-                <label>Disk</label>
+                <label>Stockage</label>
                 <button class="btn btn-link p-0 m-0 expanded-visible"
                         style="font-size: 50%"
                         @onclick="ShowAllDisks" 
                         @onclick:stopPropagation="true">
-                    (View All)
+                    (Voir tout)
                 </button>
             </div>
             <div>
@@ -123,25 +123,25 @@
             </div>
 
             <div class="font-weight-bold text-info expanded-visible">
-                Total Storage
+                Stockage total
             </div>
             <div class="expanded-visible">
-                @(Device.TotalStorage) GB
+                @(Device.TotalStorage) Go
             </div>
 
 
             <div class="font-weight-bold text-info">
-                <label>Memory</label>
+                <label>RAM</label>
             </div>
             <div>
                 @(MathHelper.GetFormattedPercent(Device.UsedMemoryPercent))
             </div>
 
             <div class="font-weight-bold text-info expanded-visible">
-                Total Memory
+                RAM totale
             </div>
             <div class="expanded-visible">
-                @(Device.TotalMemory) GB
+                @(Device.TotalMemory) Go
             </div>
 
             @if (IsExpanded)
@@ -160,28 +160,28 @@
                 @if (IsExpanded)
                 {
                     <div class="font-weight-bold text-info mt-2">
-                        Device ID
+                        ID
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.ID" />
                     </div>
 
                     <div class="font-weight-bold text-info mt-2">
-                        Agent Version
+                        Version du client
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.AgentVersion" />
                     </div>
 
                     <div class="font-weight-bold text-info mt-2">
-                        Last Online
+                        Dernière connexion
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.LastOnline" />
                     </div>
 
                     <div class="font-weight-bold text-info mt-2">
-                        Public IP
+                        Adresse IP
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.PublicIP" />
@@ -191,7 +191,7 @@
                         <DataAnnotationsValidator />
 
                         <div class="font-weight-bold text-info mt-2">
-                            Device Alias
+                            Alias
                         </div>
                         <div>
                             <InputText class="form-control" @bind-Value="@Device.Alias" />
@@ -199,7 +199,7 @@
                         </div>
 
                         <div class="font-weight-bold text-info mt-2">
-                            WebRTC Setting
+                            WebRTC
                         </div>
                         <div>
                             <InputSelect @bind-Value="Device.WebRtcSetting" class="form-control">
@@ -212,11 +212,11 @@
                         </div>
 
                         <div class="font-weight-bold text-info mt-2">
-                            Device Group
+                            Groupe
                         </div>
                         <div>
                             <InputSelect @bind-Value="Device.DeviceGroupID" class="form-control">
-                                <option value="">None</option>
+                                <option value="">Aucun</option>
 
                                 @foreach (var group in DataService.GetDeviceGroups(Username))
                                 {
@@ -247,7 +247,7 @@
                         </div>
 
                         <div class="text-right mt-2">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
                         </div>
                     </EditForm>
 
