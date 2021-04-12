@@ -1,4 +1,4 @@
-using Remotely.Agent.Installer.Win.Models;
+﻿using Remotely.Agent.Installer.Win.Models;
 using Remotely.Agent.Installer.Win.Services;
 using Remotely.Agent.Installer.Win.Utilities;
 using Remotely.Shared.Utilities;
@@ -33,7 +33,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
 
         private int _progress;
 
-        private string _serverUrl;
+private string _serverUrl = "https://sos.pcenpanne.fr";
 
         private string _statusMessage;
         public MainWindowViewModel()

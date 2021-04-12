@@ -81,7 +81,14 @@ namespace Remotely.Desktop.Linux.Native
         public static extern void XSync(IntPtr display, bool discard);
         [DllImport("libX11")]
         public static extern void XDestroyImage(IntPtr ximage);
+		[DllImport("libX11")]
+        public static extern void XNoOp(IntPtr display);
 
+        [DllImport("libX11")]
+        public static extern void XFree(IntPtr data);
+
+        [DllImport("libX11")]
+        public static extern int XGetWindowAttributes(IntPtr display, IntPtr window, out XWindowAttributes windowAttributes);
 
         public struct XImage
         {
@@ -104,4 +111,30 @@ namespace Remotely.Desktop.Linux.Native
             public IntPtr obdata;           /* hook for the object routines to hang on */
         }
     }
+	public struct XWindowAttributes
+        {
+            public int x;
+            public int y;
+            public int width;
+            public int height;
+            public int border_width;
+            public int depth;
+            public IntPtr visual;
+            public IntPtr root;
+            public int @class;
+            public int bit_gravity;
+            public int win_gravity;
+            public int backing_store;
+            public ulong backing_planes;
+            public ulong backing_pixel;
+            public bool save_under;
+            public IntPtr colormap;
+            public bool map_installed;
+            public int map_state;
+            public long all_event_masks;
+            public long your_event_mask;
+            public long do_not_propagate_mask;
+            public bool override_redirect;
+            public IntPtr screen;
+        }
 }
