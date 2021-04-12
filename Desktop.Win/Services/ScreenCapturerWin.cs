@@ -83,6 +83,8 @@ namespace Remotely.Desktop.Win.Services
             {
                 try
                 {
+					 Win32Interop.SwitchToInputDesktop();
+					 
                     if (NeedsInit)
                     {
                         Logger.Write("Init needed in GetNextFrame.");
