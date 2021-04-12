@@ -23,7 +23,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
             var brandingInfo = deviceInit?.BrandingInfo ?? new BrandingInfo();
 
-            ProductName = "Le garage à PC";
+            ProductName = "Remotely";
 
             if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
             {

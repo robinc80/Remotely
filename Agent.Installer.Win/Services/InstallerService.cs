@@ -37,7 +37,7 @@ namespace Remotely.Agent.Installer.Win.Services
         {
             try
             {
-                Logger.Write("Installation démarrée.");
+                Logger.Write("Install started.");
                 if (!CheckIsAdministrator())
                 {
                     return false;
@@ -123,8 +123,8 @@ namespace Remotely.Agent.Installer.Win.Services
         {
             if (Directory.Exists(InstallPath))
             {
-                Logger.Write("Sauvegarde de l'installation actuelle.");
-                ProgressMessageChanged?.Invoke(this, "Sauvegarde de l'installation actuelle.");
+                Logger.Write("Backing up current installation.");
+                ProgressMessageChanged?.Invoke(this, "Backing up current installation.");
                 var backupPath = Path.Combine(Path.GetTempPath(), "Remotely_Backup.zip");
                 if (FileIO.Exists(backupPath))
                 {
@@ -260,7 +260,7 @@ namespace Remotely.Agent.Installer.Win.Services
             }
             else
             {
-                ProgressMessageChanged.Invoke(this, "Téléchargement en cours.");
+                ProgressMessageChanged.Invoke(this, "Downloading Remotely agent.");
                 using (var client = new WebClient())
                 {
                     client.DownloadProgressChanged += (sender, args) =>
@@ -272,7 +272,7 @@ namespace Remotely.Agent.Installer.Win.Services
                 }
             }
 
-            ProgressMessageChanged.Invoke(this, "Extraction des fichiers.");
+            ProgressMessageChanged.Invoke(this, "Extracting Remotely files.");
             ProgressValueChanged?.Invoke(this, 0);
 
             var tempDir = Path.Combine(Path.GetTempPath(), "RemotelyUpdate");
@@ -365,8 +365,8 @@ namespace Remotely.Agent.Installer.Win.Services
 
         private void InstallService()
         {
-            Logger.Write("Installation.");
-            ProgressMessageChanged?.Invoke(this, "Installation en cours.");
+            Logger.Write("Installing service.");
+            ProgressMessageChanged?.Invoke(this, "Installing Remotely service.");
             var serv = ServiceController.GetServices().FirstOrDefault(ser => ser.ServiceName == "Remotely_Service");
             if (serv == null)
             {

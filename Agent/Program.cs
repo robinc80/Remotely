@@ -71,7 +71,7 @@ namespace Remotely.Agent
             }
             else
             {
-                throw new NotSupportedException("OS non supporté.");
+                throw new NotSupportedException("Operating system not supported.");
             }
 
             Services = serviceCollection.BuildServiceProvider();

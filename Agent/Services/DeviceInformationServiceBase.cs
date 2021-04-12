@@ -62,7 +62,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Une erreur s'est produite lors de la récupération des informations.");
+                Logger.Write(ex, "Error getting system drive info.");
             }
 
             return (0, 0);

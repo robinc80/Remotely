@@ -25,12 +25,12 @@
         </Grid.RowDefinitions>
         
         <TextBlock FontWeight="Bold" FontSize="16" Grid.Row="0">
-            <Run>Uploader vers</Run>
+            <Run>Upload files to</Run>
             <Run Text="{Binding ViewerName}"></Run>
         </TextBlock>
 
         <TextBlock Grid.Row="1" Margin="0,10,0,0">
-            A uploader:
+            Current Uploads:
         </TextBlock>
 
         <Border Grid.Row="2" Margin="0,5,0,0" BorderBrush="LightGray" BorderThickness="1">
@@ -62,7 +62,7 @@
         </Border>
 
         <Button Grid.Row="3" Margin="0,10,0,0" Height="60" Style="{StaticResource NormalButton}" Command="{Binding OpenFileUploadDialog}">
-            Cliquez ici.
+            Click here to upload files.
         </Button>
     </Grid>
 </Window>
