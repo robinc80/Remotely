@@ -165,26 +165,28 @@ else
             </TabContent>
             
             <TabContent Name="remote-logs">
-                @if (!Device.IsOnline)
-                {
-                    <h5 class="text-center mt-5">L'appareil doit être en ligne pour pouvoir consulter les logs.</h5>
-                }
-                else
-                {
-                    @if (_logLines.Any())
+                <div class="py-3">
+                    @if (!Device.IsOnline)
                     {
-                        <div style="white-space: pre;">
-                            @foreach (var line in _logLines)
-                            {
-                                @line
-                            }
-                        </div>
+                        <h5 class="text-center mt-5">L'appareil doit être en ligne pour récupérer les logs.</h5>
                     }
                     else
                     {
-                        <h5 class="text-center mt-5">Chargement</h5>
+                        @if (_logLines.Any())
+                        {
+                            <div style="white-space: pre;">
+                                @foreach (var line in _logLines)
+                                {
+                                    @line
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <LoadingSignal />
+                        }
                     }
-                }
+                </div>
 
             </TabContent>
             
