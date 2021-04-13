@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -158,16 +159,20 @@ namespace Remotely.Server.Pages
             }
 
             await DataService.DeleteUser(User.OrganizationID, user.Id);
+			_orgUsers.RemoveAll(x => x.Id == user.Id);
 
             ToastService.ShowToast("User deleted.");
         }
 
         private async Task EditDeviceGroups(RemotelyUser user)
         {
-            void editDeviceGroupsModal(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder)
+			void editDeviceGroupsModal(RenderTreeBuilder builder)
             {
+				var deviceGroups = DataService.GetDeviceGroupsForOrganization(user.OrganizationID);
+				
                 builder.OpenComponent<EditDeviceGroup>(0);
                 builder.AddAttribute(1, EditDeviceGroup.EditUserPropName, user);
+				builder.AddAttribute(2, EditDeviceGroup.DeviceGroupsPropName, deviceGroups);
                 builder.CloseComponent();
             }
             await ModalService.ShowModal("Device Groups", editDeviceGroupsModal);
@@ -296,7 +301,6 @@ namespace Remotely.Server.Pages
                 if (emailResult)
                 {
                     ToastService.ShowToast("Invitation sent.");
-                    _invites.Add(newInvite);
                     _inviteAsAdmin = false;
                     _inviteEmail = string.Empty;
                     _invites.Add(newInvite);
