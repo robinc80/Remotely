@@ -31,6 +31,9 @@ echo "Using $AppRoot as the Remotely website's content directory."
 
 UbuntuVersion=$(lsb_release -r -s)
 
+apt-get -y install curl
+apt-get -y install software-properties-common
+apt-get -y install gnupg
 
 # Install .NET Core Runtime.
 wget -q https://packages.microsoft.com/config/ubuntu/$UbuntuVersion/packages-microsoft-prod.deb
@@ -141,7 +144,7 @@ Description=Remotely Server
 
 [Service]
 WorkingDirectory=$AppRoot
-ExecStart=/usr/bin/dotnet $AppRoot/Remotely_Server.dll
+ExecStart=$AppRoot/Remotely_Server
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10

@@ -31,6 +31,9 @@ chmod +x "$AppRoot/Remotely_Server"
 echo "Using $AppRoot as the Remotely website's content directory."
 
 yum update
+yum -y install curl
+yum -y install software-properties-common
+yum -y install gnupg
 
 # Install .NET Core Runtime.
 sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
@@ -63,7 +66,7 @@ caddyConfig="
     }
 "
 
-echo "$caddyConfig" > /etc/caddy/Caddyfile
+echo "$caddyConfig" >> /etc/caddy/Caddyfile
 
 
 # Create service.
