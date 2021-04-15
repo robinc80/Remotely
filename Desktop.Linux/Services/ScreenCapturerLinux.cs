@@ -34,7 +34,7 @@ namespace Remotely.Desktop.Linux.Services
             LibX11.XCloseDisplay(Display);
             GC.SuppressFinalize(this);
         }
-		public IEnumerable<string> GetDisplayNames() => _x11Screens.Keys.Select(x => x.ToString());
+        public IEnumerable<string> GetDisplayNames() => _x11Screens.Keys.Select(x => x.ToString());
 
         public Bitmap GetNextFrame()
         {
@@ -50,8 +50,8 @@ namespace Remotely.Desktop.Linux.Services
                     Init();
                     return null;
                 }
+            }
         }
-		
         public int GetScreenCount() => _x11Screens.Count;
 
         public int GetSelectedScreenIndex() => int.Parse(SelectedScreen ?? "0");
@@ -77,8 +77,8 @@ namespace Remotely.Desktop.Linux.Services
             {
                 CaptureFullscreen = true;
                 _x11Screens.Clear();
-				
-				                var monitorsPtr = LibXrandr.XRRGetMonitors(Display, LibX11.XDefaultRootWindow(Display), true, out var monitorCount);
+               
+                var monitorsPtr = LibXrandr.XRRGetMonitors(Display, LibX11.XDefaultRootWindow(Display), true, out var monitorCount);
 
                 var monitorInfoSize = Marshal.SizeOf<LibXrandr.XRRMonitorInfo>();
 
@@ -131,7 +131,7 @@ namespace Remotely.Desktop.Linux.Services
                     }
 
                     RefreshCurrentScreenBounds();
-					
+
                 }
                 catch (Exception ex)
                 {
@@ -171,12 +171,13 @@ namespace Remotely.Desktop.Linux.Services
             }
 
             currentFrame.UnlockBits(bd);
-			Marshal.DestroyStructure<LibX11.XImage>(imagePointer);
+            Marshal.DestroyStructure<LibX11.XImage>(imagePointer);
             LibX11.XDestroyImage(imagePointer);
 
             return currentFrame;
         }
-		        private void RefreshCurrentScreenBounds()
+
+        private void RefreshCurrentScreenBounds()
         {
             var screen = _x11Screens[SelectedScreen];
 
