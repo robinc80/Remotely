@@ -127,6 +127,8 @@ namespace Server.Installer
                 $"Server URL: {cliParams.ServerUrl}.  Installation Directory: {cliParams.InstallDirectory}.  " +
                 $"Web Server: {cliParams.WebServer}.  Create New Build: {cliParams.CreateNew}.  " +
                 $"Git Reference: {cliParams.Reference}");
+                $"Web Server: {cliParams.WebServer}.  Create New Build: {cliParams.CreateNew}.  " +
+                $"Git Reference: {cliParams.Reference}");
 
             var serverInstaller = Services.GetRequiredService<IServerInstaller>();
             await serverInstaller.PerformInstall(cliParams);
