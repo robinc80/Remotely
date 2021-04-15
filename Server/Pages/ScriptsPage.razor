@@ -100,22 +100,20 @@
             {
                 var existingParent = root.Find(x => x.Name == paths[i]);
 
-                var newItem = new ScriptTreeNode()
+                if (existingParent is null)
                 {
-                    ItemType = TreeItemType.Folder,
-                    Name = paths[i]
-                };
-
-                if (existingParent is not null)
-                {
-                    existingParent.ChildItems.Add(newItem);
+                    var newItem = new ScriptTreeNode()
+                    {
+                        Name = paths[i],
+                        ItemType = TreeItemType.Folder
+                    };
+                    root.Add(newItem);
+                    root = newItem.ChildItems;
                 }
                 else
                 {
-                    root.Add(newItem);
+					root = existingParent.ChildItems;
                 }
-
-                root = newItem.ChildItems;
             }
         }
 

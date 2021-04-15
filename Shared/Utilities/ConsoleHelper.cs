@@ -35,9 +35,13 @@ namespace Remotely.Shared.Utilities
 
                 var line = new string(message.Skip(i).TakeWhile(x => {
                     i++;
-                    return lineCount++ < 50 || !char.IsWhiteSpace(x);
+                    return lineCount++ < 60 || !char.IsWhiteSpace(x);
                 }).ToArray());
-
+				
+			                if (trimLine)
+                {
+                    line = line.Trim();
+                }
                 Console.WriteLine(line);
             }
             Console.ForegroundColor = ConsoleColor.Gray;

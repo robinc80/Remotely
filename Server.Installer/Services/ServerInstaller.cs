@@ -30,7 +30,7 @@ namespace Server.Installer.Services
         public async Task PerformInstall(CliParams cliParams)
         {
             var latestBuild = await _githubApi.GetLatestBuildArtifact(cliParams);
-            var existingBuildTimestamp = latestBuild?.created_at;
+            var latestBuildId = latestBuild?.id;
 
             if (cliParams.CreateNew == true)
             {
@@ -38,14 +38,15 @@ namespace Server.Installer.Services
 
                 if (!dispatchResult)
                 {
-                    ConsoleHelper.WriteError("GitHub API call to trigger build action failed.  Please check your input parameters.");
+                    ConsoleHelper.WriteError("GitHub API call to trigger build action failed.  Do you have " +
+                        "Actions enabled on your forked Remotely repo on the Actions tab?  If not, enable them and try again. " +
+                        "Otherwise, please check your input parameters.");
                     return;
                 }
 
                 ConsoleHelper.WriteLine("Build action triggered successfully.  Waiting for build completion.");
 
-                while (latestBuild is null ||
-                    latestBuild.created_at <= existingBuildTimestamp.Value)
+                while (latestBuild?.id == latestBuildId)
                 {
                     await Task.Delay(TimeSpan.FromMinutes(1));
                     ConsoleHelper.WriteLine("Waiting for GitHub build completion.");

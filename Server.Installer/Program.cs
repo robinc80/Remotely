@@ -47,7 +47,6 @@ namespace Server.Installer
             {
                 ConsoleHelper.WriteError("The installer process must be elevated.  On Linux, run with sudo.  " +
                     "On Windows, run from a command line that was opened with \"Run as admin\".");
-                ConsoleHelper.ReadLine("Press any key to exit.");
                 return;
             }
 
@@ -60,6 +59,9 @@ namespace Server.Installer
 
             ConsoleHelper.WriteLine("Be sure to retain your GitHub Personal Access Token if you want to re-use it " +
                 "for upgrading in the future.  The installer does not save it locally.");
+
+            ConsoleHelper.WriteLine("If you haven't already, please go to the Actions tab in your Remotely repo " +
+                "and enable them.  If not, this process will fail.");
 
 
             while (string.IsNullOrWhiteSpace(cliParams.GitHubUsername))
@@ -107,7 +109,7 @@ namespace Server.Installer
 
             while (cliParams.WebServer is null)
             {
-                ConsoleHelper.WriteLine("Which reverse proxy will be used?");
+                ConsoleHelper.WriteLine("Which web server will be used?");
                 ConsoleHelper.WriteLine("    [0] - Caddy on Ubuntu");
                 ConsoleHelper.WriteLine("    [1] - Nginx on Ubuntu");
                 ConsoleHelper.WriteLine("    [2] - Caddy on CentOS");
@@ -122,7 +124,9 @@ namespace Server.Installer
             }
 
             ConsoleHelper.WriteLine($"Performing server install.  GitHub User: {cliParams.GitHubUsername}.  " +
-                $"Server URL: {cliParams.ServerUrl}.  Installation Directory: {cliParams.InstallDirectory}");
+                $"Server URL: {cliParams.ServerUrl}.  Installation Directory: {cliParams.InstallDirectory}.  " +
+                $"Web Server: {cliParams.WebServer}.  Create New Build: {cliParams.CreateNew}.  " +
+                $"Git Reference: {cliParams.Reference}");
 
             var serverInstaller = Services.GetRequiredService<IServerInstaller>();
             await serverInstaller.PerformInstall(cliParams);
@@ -182,6 +186,7 @@ namespace Server.Installer
                                     cliParams.ServerUrl = result;
                                     continue;
                                 }
+                                ConsoleHelper.WriteError("--server-url parameter is invalid.  Must be a valid URL (e.g. https://app.remotely.one).");
                                 return false;
                             }
                         case "--install-directory":
@@ -198,7 +203,21 @@ namespace Server.Installer
                                 if (bool.TryParse(value, out var result))
                                 {
                                     cliParams.CreateNew = result;
+                                    continue;
                                 }
+                                ConsoleHelper.WriteError("--create-new parameter is invalid.  Must be true or false.");
+                                return false;
+                            }
+                        case "--web-server":
+                        case "-w":
+                            {
+                                if (int.TryParse(value, out var webServerResult))
+                                {
+                                    cliParams.WebServer = (WebServerType)webServerResult;
+                                    continue;
+                                }
+                                ConsoleHelper.WriteError($"--web-server parameter is invalid.  Must be a " +
+                                    $"number (0 - {Enum.GetValues<WebServerType>().Length}).");
                                 return false;
                             }
                         default:
@@ -242,13 +261,11 @@ namespace Server.Installer
             
             ConsoleHelper.WriteLine("\t--create-new, -c    True/false.  Whether to run a new build.  If false, the latest existing build artifact will be used.", 1);
             
-            ConsoleHelper.WriteLine("\t--reverse-proxy, -r    Number.  The reverse proxy that will be used to forward requests to the Remotely server.  " +
-                "Select the appropriate option for your operating system and web server.  " +
+            ConsoleHelper.WriteLine("\t--web-server, -w    Number.  The web server that will be used as a reverse proxy to forward " +
+                "requests to the Remotely server.  Select the appropriate option for your operating system and web server.  " +
                 "0 = Caddy on Ubuntu.  1 = Nginx on Ubuntu.  2 = Caddy on CentOS.  3 = Nginx on CentOS.  4 = IIS on Windows Server 2016+.", 1);
             
-            ConsoleHelper.WriteLine("Example: sudo ./Remotely_Server_Installer -u lucent-sea -p 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 -s https://app.remotely.one -i /var/www/remotely/ -r master -c true -r 0");
-
-            ConsoleHelper.ReadLine("Press any key to exit");
+            ConsoleHelper.WriteLine("Example: sudo ./Remotely_Server_Installer -u lucent-sea -p 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 -s https://app.remotely.one -i /var/www/remotely/ -r master -c true -w 0");
         }
     }
 }
