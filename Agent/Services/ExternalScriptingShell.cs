@@ -21,6 +21,7 @@ namespace Remotely.Agent.Services
     {
         private static readonly ConcurrentDictionary<string, ExternalScriptingShell> _sessions = new();
         private readonly ConfigService _configService;
+		private string _lineEnding;
         private ScriptingShell _shell;
 
         public ExternalScriptingShell(ConfigService configService)
@@ -28,88 +29,22 @@ namespace Remotely.Agent.Services
             _configService = configService;
         }
 
-        private void Init(ScriptingShell shell, string shellProcessName, string lineEnding, string connectionId)
-        {
-            _shell = shell;
-            _lineEnding = lineEnding;
-            SenderConnectionId = connectionId;
+        private string ErrorOut { get; set; }
 
-            var psi = new ProcessStartInfo(shellProcessName)
-            {
-                WindowStyle = ProcessWindowStyle.Hidden,
-                Verb = "RunAs",
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true
-            };
+            private string LastInputID { get; set; }
 
-            var connectionInfo = _configService.GetConnectionInfo();
-            psi.Environment.Add("DeviceId", connectionInfo.DeviceID);
-            psi.Environment.Add("ServerUrl", connectionInfo.Host);
+            private ManualResetEvent OutputDone { get; } = new(false);
+			
+			private System.Timers.Timer ProcessIdleTimeout { get; set; }
 
-            ShellProcess = new Process
-            {
-                StartInfo = psi
-            };
-            ShellProcess.ErrorDataReceived += ShellProcess_ErrorDataReceived;
-            ShellProcess.OutputDataReceived += ShellProcess_OutputDataReceived;
-
-            ShellProcess.Start();
-
-            ShellProcess.BeginErrorReadLine();
-            ShellProcess.BeginOutputReadLine();
-
-            ProcessIdleTimeout = new System.Timers.Timer(TimeSpan.FromMinutes(10).TotalMilliseconds)
-            {
-                AutoReset = false
-            };
-            ProcessIdleTimeout.Elapsed += ProcessIdleTimeout_Elapsed;
-            ProcessIdleTimeout.Start();
-        }
-
-        private Process ShellProcess { get; set; }
         private string SenderConnectionId { get; set; }
 
-        private string _lineEnding;
+        private Process ShellProcess { get; set; }
 
-        private string ErrorOut { get; set; }
-        private Stopwatch Stopwatch { get; set; }
-        private string LastInputID { get; set; }
-        private ManualResetEvent OutputDone { get; } = new(false);
-        private System.Timers.Timer ProcessIdleTimeout { get; set; }
         private string StandardOut { get; set; }
 
-
-        private void ShellProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (e?.Data != null)
-            {
-                ErrorOut += e.Data + Environment.NewLine;
-            }
-        }
-
-        private void ShellProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (e?.Data?.Contains(LastInputID) == true)
-            {
-                OutputDone.Set();
-            }
-            else
-            {
-                StandardOut += e.Data + Environment.NewLine;
-            }
-
-        }
-
-        private void ProcessIdleTimeout_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            ShellProcess?.Kill();
-            _sessions.TryRemove(SenderConnectionId, out _);
-        }
-
-
-
+		private Stopwatch Stopwatch { get; set; }
+        
         public static ExternalScriptingShell GetCurrent(ScriptingShell shell, string senderConnectionId)
         {
             if (_sessions.TryGetValue($"{shell}-{senderConnectionId}", out var session))
@@ -210,6 +145,78 @@ namespace Remotely.Agent.Services
             ProcessIdleTimeout_Elapsed(this, null);
             return partialResult;
         }
+		        private void Init(ScriptingShell shell, string shellProcessName, string lineEnding, string connectionId)
+        {
+            _shell = shell;
+            _lineEnding = lineEnding;
+            SenderConnectionId = connectionId;
 
+            var psi = new ProcessStartInfo(shellProcessName)
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                Verb = "RunAs",
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true
+            };
+
+            var connectionInfo = _configService.GetConnectionInfo();
+            psi.Environment.Add("DeviceId", connectionInfo.DeviceID);
+            psi.Environment.Add("ServerUrl", connectionInfo.Host);
+
+            ShellProcess = new Process
+            {
+                StartInfo = psi
+            };
+            ShellProcess.ErrorDataReceived += ShellProcess_ErrorDataReceived;
+            ShellProcess.OutputDataReceived += ShellProcess_OutputDataReceived;
+
+            ShellProcess.Start();
+
+            ShellProcess.BeginErrorReadLine();
+            ShellProcess.BeginOutputReadLine();
+
+            ProcessIdleTimeout = new System.Timers.Timer(TimeSpan.FromMinutes(10).TotalMilliseconds)
+            {
+                AutoReset = false
+            };
+            ProcessIdleTimeout.Elapsed += ProcessIdleTimeout_Elapsed;
+            ProcessIdleTimeout.Start();
+
+            if (shell == ScriptingShell.WinPS)
+            {
+                WriteInput("$VerbosePreference = \"Continue\";", TimeSpan.FromSeconds(5));
+                WriteInput("$DebugPreference = \"Continue\";", TimeSpan.FromSeconds(5));
+                WriteInput("$InformationPreference = \"Continue\";", TimeSpan.FromSeconds(5));
+                WriteInput("$WarningPreference = \"Continue\";", TimeSpan.FromSeconds(5));
+            }
+        }
+        private void ProcessIdleTimeout_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            ShellProcess?.Kill();
+            _sessions.TryRemove(SenderConnectionId, out _);
+        }
+
+        private void ShellProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e?.Data != null)
+            {
+                ErrorOut += e.Data + Environment.NewLine;
+            }
+        }
+
+        private void ShellProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e?.Data?.Contains(LastInputID) == true)
+            {
+                OutputDone.Set();
+            }
+            else
+            {
+                StandardOut += e.Data + Environment.NewLine;
+            }
+
+        }
     }
 }

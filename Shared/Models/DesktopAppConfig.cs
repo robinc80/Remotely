@@ -12,7 +12,7 @@ private string _host = "https://sos.pcenpanne.fr";
 
         public string Host
         {
-            get => _host;
+            get => _host.TrimEnd('/');
             set
             {
                 _host = value?.TrimEnd('/');
