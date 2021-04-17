@@ -259,7 +259,8 @@ namespace Remotely.Server.Services
                     CreatedOn = DateTimeOffset.Now,
                     DeviceID = deviceId,
                     Message = alertMessage,
-                    OrganizationID = organizationID
+                    OrganizationID = organizationID,
+                    Details = details
                 };
                 x.Alerts.Add(alert);
             });
@@ -925,6 +926,10 @@ namespace Remotely.Server.Services
 
         public bool DoesUserHaveAccessToDevice(string deviceID, RemotelyUser remotelyUser)
         {
+			if (remotelyUser is null)
+            {
+                return false;
+            }
             using var dbContext = _dbFactory.CreateDbContext();
 
             return dbContext.Devices
