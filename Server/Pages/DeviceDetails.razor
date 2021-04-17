@@ -1,10 +1,35 @@
-﻿@page "/DeviceDetails/{deviceId}"
+﻿@page "/device-details/{deviceId?}"
 
 @attribute [Authorize]
 @inherits AuthComponentBase
 
 
-@if (Device is null)
+@if (string.IsNullOrWhiteSpace(DeviceId))
+{
+    <div class="row mt-5">
+        <div class="col-sm-6 offset-2">
+
+            <h3>Device ID:</h3>
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="Enter a device ID to see its details"
+                       @bind="_inputDeviceId"
+                       @bind:event="oninput"
+                       @onkeydown="EvaluateDeviceIdInputKeyDown">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" @onclick="NavigateToDeviceId">Go</button>
+                </div>
+            </div>
+            <div class="text-muted">
+                You can also go directly to a device's details by:
+                <ul>
+                    <li>Right-clicking a device card on the main page while it's collapsed</li>
+                    <li>Clicking the "Open in New Tab" button in a device card's header while it's expanded</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+else if (Device is null)
 {
     <h3>Appareil non trouvé.</h3>
 }

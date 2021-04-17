@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using Remotely.Server.Components;
 using Remotely.Server.Hubs;
 using Remotely.Server.Services;
@@ -7,9 +8,7 @@ using Remotely.Shared.Models;
 using Remotely.Shared.Utilities;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -21,6 +20,7 @@ namespace Remotely.Server.Pages
         private readonly ConcurrentQueue<ScriptResult> _scriptResults = new();
 
         private string _alertMessage;
+		private string _inputDeviceId;
 
         [Parameter]
         public string DeviceId { get; set; }
@@ -35,9 +35,13 @@ namespace Remotely.Server.Pages
 
         [Inject]
         private IModalService ModalService { get; set; }
-
+		
+		[Inject]
+        private NavigationManager NavManager { get; set; }
+		
         [Inject]
         private IToastService ToastService { get; set; }
+		
         protected override Task OnInitializedAsync()
         {
             if (!string.IsNullOrWhiteSpace(DeviceId))
@@ -64,7 +68,15 @@ namespace Remotely.Server.Pages
         {
             _alertMessage = string.Empty;
         }
-
+		
+		 private void EvaluateDeviceIdInputKeyDown(KeyboardEventArgs args)
+        {
+            if (args.Key.Equals("Enter", StringComparison.OrdinalIgnoreCase))
+            {
+                NavManager.NavigateTo($"/device-details/{_inputDeviceId}");
+            }
+        }
+		
         private void GetRemoteLogs()
         {
             _logLines.Clear();
@@ -117,6 +129,7 @@ namespace Remotely.Server.Pages
 
             return source[0..25] + "...";
         }
+		
         private string GetTrimmedText(string[] source, int stringLength)
         {
             return GetTrimmedText(string.Join("", source), stringLength);
@@ -136,7 +149,12 @@ namespace Remotely.Server.Pages
 
             return Task.CompletedTask;
         }
-
+		
+		private void NavigateToDeviceId()
+        {
+            NavManager.NavigateTo($"/device-details/{_inputDeviceId}");
+        }
+		
         private void ShowAllDisks()
         {
             var disksString = JsonSerializer.Serialize(Device.Drives, JsonSerializerHelper.IndentedOptions);
