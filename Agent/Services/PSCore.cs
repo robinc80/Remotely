@@ -96,16 +96,20 @@ namespace Remotely.Agent.Services
                 .Concat(debugOut)
                 .Concat(verboseOut);
 
-            return new ScriptResult()
+            
+			var errorAndWarningOut = errorOut.Concat(warningOut).ToArray();
+			
+			
+			return new ScriptResult()
             {
                 DeviceID = _configService.GetConnectionInfo().DeviceID,
                 SenderConnectionID = SenderConnectionId,
                 ScriptInput = input,
                 Shell = Shared.Enums.ScriptingShell.PSCore,
                 StandardOutput = standardOut.ToArray(),
-                ErrorOutput = errorOut.ToArray(),
+                ErrorOutput = errorAndWarningOut,
                 RunTime = sw.Elapsed,
-                HadErrors = _powershell.HadErrors
+                HadErrors = _powershell.HadErrors || errorAndWarningOut.Any()
             };
         }
     }
