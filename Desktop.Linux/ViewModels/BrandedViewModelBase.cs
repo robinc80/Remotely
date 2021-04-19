@@ -20,7 +20,7 @@ namespace Remotely.Desktop.Linux.ViewModels
             DeviceInitService = ServiceContainer.Instance?.GetRequiredService<IDeviceInitService>();
 
             ApplyBranding();
-		}
+        }
 
         public Bitmap Icon { get; set; }
         public string ProductName { get; set; }
@@ -29,37 +29,37 @@ namespace Remotely.Desktop.Linux.ViewModels
         public SolidColorBrush TitleForegroundColor { get; set; }
         public WindowIcon WindowIcon { get; set; }
 
-            protected IDeviceInitService DeviceInitService { get; }
+        protected IDeviceInitService DeviceInitService { get; }
 
-            public void ApplyBranding()
+        public void ApplyBranding()
         {
             try
             {
                 var brandingInfo = DeviceInitService?.BrandingInfo ?? new Shared.Models.BrandingInfo();
 
-            ProductName = "Remotely";
+                ProductName = "Le garage à PC";
 
-             if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
+                if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
                 {
                     ProductName = brandingInfo.Product;
                 }
 
-                           TitleBackgroundColor = new SolidColorBrush(Color.FromRgb(
+                TitleBackgroundColor = new SolidColorBrush(Color.FromRgb(
                     brandingInfo?.TitleBackgroundRed ?? 70,
                     brandingInfo?.TitleBackgroundGreen ?? 70,
                     brandingInfo?.TitleBackgroundBlue ?? 70));
 
-                           TitleForegroundColor = new SolidColorBrush(Color.FromRgb(
+                TitleForegroundColor = new SolidColorBrush(Color.FromRgb(
                    brandingInfo?.TitleForegroundRed ?? 29,
                    brandingInfo?.TitleForegroundGreen ?? 144,
                    brandingInfo?.TitleForegroundBlue ?? 241));
 
-                        TitleButtonForegroundColor = new SolidColorBrush(Color.FromRgb(
+                TitleButtonForegroundColor = new SolidColorBrush(Color.FromRgb(
                    brandingInfo?.ButtonForegroundRed ?? 255,
                    brandingInfo?.ButtonForegroundGreen ?? 255,
                    brandingInfo?.ButtonForegroundBlue ?? 255));
 
-                        if (brandingInfo?.Icon?.Any() == true)
+                if (brandingInfo?.Icon?.Any() == true)
                 {
                     using var imageStream = new MemoryStream(brandingInfo.Icon);
                     Icon = new Bitmap(imageStream);
@@ -70,9 +70,9 @@ namespace Remotely.Desktop.Linux.ViewModels
                     Icon = new Bitmap(imageStream);
                 }
 
-        WindowIcon = new WindowIcon(Icon);
+                WindowIcon = new WindowIcon(Icon);
 
-        this.RaisePropertyChanged(nameof(ProductName));
+                this.RaisePropertyChanged(nameof(ProductName));
                 this.RaisePropertyChanged(nameof(TitleBackgroundColor));
                 this.RaisePropertyChanged(nameof(TitleForegroundColor));
                 this.RaisePropertyChanged(nameof(TitleButtonForegroundColor));

@@ -29,7 +29,7 @@ namespace Remotely.Server.Components.Devices
 
         protected override async Task OnInitializedAsync()
         {
-			await base.OnInitializedAsync();
+            await base.OnInitializedAsync();
             AppState.PropertyChanged += AppState_PropertyChanged;
             CircuitConnection.MessageReceived += CircuitConnection_MessageReceived;
         }

@@ -163,7 +163,7 @@ namespace Remotely.Desktop.Core.Utilities
             {
                 throw new Exception("Bitmaps are not of equal dimensions.");
             }
-			
+
             var width = currentFrame.Width;
             var height = currentFrame.Height;
 

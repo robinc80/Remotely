@@ -172,7 +172,7 @@ namespace Remotely.Server.Hubs
         {
             if (_appConfig.UseWebRtc)
             {
-                 return ViewerHubContext.Clients.Client(viewerID).SendAsync("ReceiveIceCandidate", candidate, sdpMlineIndex, sdpMid);
+                return ViewerHubContext.Clients.Client(viewerID).SendAsync("ReceiveIceCandidate", candidate, sdpMlineIndex, sdpMid);
             }
 
             return Task.CompletedTask;

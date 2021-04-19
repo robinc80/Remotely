@@ -32,10 +32,10 @@
 
 
 @code {
-	
-	[Parameter]
+
+    [Parameter]
     public string ActiveTab { get; set; }
-	
+
     public bool ShowOnlyMyScripts { get; set; } = true;
 
     public readonly List<ScriptTreeNode> TreeNodes = new();
@@ -88,7 +88,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-		await RefreshScripts();
+        await RefreshScripts();
     }
 
 
@@ -115,7 +115,7 @@
                 }
                 else
                 {
-					root = existingParent.ChildItems;
+                    root = existingParent.ChildItems;
                 }
             }
         }

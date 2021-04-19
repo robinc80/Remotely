@@ -302,10 +302,10 @@ namespace Remotely.Server.Migrations.Sqlite
                     b.Property<string>("CreatedOn")
                         .IsRequired()
                         .HasColumnType("TEXT");
-						
-					b.Property<string>("Details")
+
+                    b.Property<string>("Details")
                         .HasColumnType("TEXT");
-						
+
                     b.Property<string>("DeviceID")
                         .HasColumnType("TEXT");
 

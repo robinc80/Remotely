@@ -34,14 +34,14 @@ namespace Remotely.Server.Components.Devices
             GC.SuppressFinalize(this);
         }
 
-		protected override void OnAfterRender(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
             JsInterop.ScrollToEnd(_chatMessagesWindow);
             base.OnAfterRender(firstRender);
         }
         protected override async Task OnInitializedAsync()
         {
-			await base.OnInitializedAsync();
+            await base.OnInitializedAsync();
             AppState.PropertyChanged += AppState_PropertyChanged;
             CircuitConnection.MessageReceived += CircuitConnection_MessageReceived;
         }
@@ -91,8 +91,8 @@ namespace Remotely.Server.Components.Devices
                     }
 
                     InvokeAsync(StateHasChanged);
-					
-					JsInterop.ScrollToEnd(_chatMessagesWindow);
+
+                    JsInterop.ScrollToEnd(_chatMessagesWindow);
                 }
             }
         }

@@ -53,7 +53,7 @@ namespace Remotely.Server.Components.Scripts
 
         protected override async Task OnInitializedAsync()
         {
-			await base.OnInitializedAsync();
+            await base.OnInitializedAsync();
             _deviceGroups = DataService.GetDeviceGroups(User.UserName);
             _devices = DataService
                 .GetDevicesForUser(User.UserName)

@@ -12,28 +12,21 @@
 <div class="row mb-3">
     <h4>Client portable d'assistance</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        Aucun compte requis.
     </div>
     <div class="col-sm-6 mb-3">
-        <h6>Windows (64 Bits)</h6>
         <p>
-            <strong>Télécharger :</strong>
             <br />
             <a target="_blank" href="/api/ClientDownloads/Desktop/WindowsDesktop-x64/@_organizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <h6>Windows (32 Bits)</h6>
         <p>
-            <strong>Télécharger :</strong>
             <br />
             <a target="_blank" href="/api/ClientDownloads/Desktop/WindowsDesktop-x86/@_organizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6 mb-3">
-        <h6>Linux 64 Bits</h6>
         <p>
-            <strong>Télécharger :</strong>
             <br />
             <a target="_blank" href="/api/ClientDownloads/Desktop/UbuntuDesktop/@_organizationId">Ubuntu Executable</a>
         </p>
@@ -42,9 +35,7 @@
 
 
 <div class="row mb-3">
-    <h4>Client installable</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        Avec MàJ automatiques.
     </div>
 
     @if (!_isServerUrlEmbedded)
@@ -56,17 +47,20 @@
 
 
     <div class="col-sm-6 mb-3">
-        <h6>Windows (64 Bits)</h6>
         <p>
-            <strong>Télécharger :</strong>
+            <small>Note: Only the default organization's branding will apply to these.</small>
+        </p>
+        <p>
             <br />
             <a target="_blank" href="/Content/Win-x64/ClickOnce/setup.exe">Windows Installer</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <h6>Windows (32 Bits)</h6>
         <p>
-            <strong>Télécharger :</strong>
+            <small>Note: Only the default organization's branding will apply to these.</small>
+        </p>
+        <p>
+            <strong>Download:</strong>
             <br />
             <a target="_blank" href="/Content/Win-x86/ClickOnce/setup.exe">Windows Installer</a>
         </p>
@@ -152,11 +146,11 @@
             <p>
                 <strong>Download:</strong>
                 <br />
-                <a href="/API/ClientDownloads/UbuntuInstaller-x64">Ubuntu x64 Bash Installer</a>
+                <a target="_blank" href="/API/ClientDownloads/UbuntuInstaller-x64">Ubuntu x64 Bash Installer</a>
                 <br />
-                <a href="/API/ClientDownloads/ManjaroInstaller-x64">Manjaro x64 Bash Installer</a>
+                <a target="_blank" href="/API/ClientDownloads/ManjaroInstaller-x64">Manjaro x64 Bash Installer</a>
                 <br />
-                <a href="/Content/Remotely-Linux.zip">Linux x64 Files Only</a>
+                <a target="_blank" href="/Content/Remotely-Linux.zip">Linux x64 Files Only</a>
             </p>
             <p>
                 <strong>Install:</strong>
@@ -210,13 +204,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         var authState = await AuthProvider.GetAuthenticationStateAsync();
         _isAuthenticated = authState.User.Identity.IsAuthenticated;
 
         if (_isAuthenticated)
         {
-		await base.OnInitializedAsync();
-		
             var currentUser = await DataService.GetUserAsync(authState.User.Identity.Name);
             _organizationId = currentUser.OrganizationID;
         }

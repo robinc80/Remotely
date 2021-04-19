@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright © 2000 Compaq Computer Corporation, Inc.
  * Copyright © 2002 Hewlett-Packard Company, Inc.
  * Copyright © 2006 Intel Corporation

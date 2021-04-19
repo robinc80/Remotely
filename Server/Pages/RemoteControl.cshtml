@@ -72,11 +72,9 @@
     </environment>
 </head>
 <body>
-    <div class="remotely-header" title="Le garage à PC">
         <div class="logo-title">
             Remotely
         </div>
-        <div class="logo-subtitle">Portail de téléassistance</div>
     </div>
 
     <button id="keyboardButton" hidden="hidden" title="Invoke the mobile touch keyboard.">
@@ -96,19 +94,15 @@
 
         <div>
             <button id="viewOnlyButton" class="option-button" title="If toggled, prevents sending commnads and input to the remote computer.">
-                Vue uniquement <i class="fas fa-eye"></i>
             </button>
 
             <button id="clipboardTransferButton" class="option-button" title="Type the current clipboard text on the remote computer.">
-                Presse-papier  <i class="fas fa-clipboard"></i>
             </button>
 
             <button id="blockInputButton" class="option-button" title="Prevent remote user from using keyboard and mouse.">
-                Bloquer la saisie <i class="fas fa-mouse"></i>
             </button>
 
             <button id="inviteButton" class="option-button" title="Copy a link that lets another person view the remote screen.">
-                Inviter  <i class="fas fa-user-plus"></i>
             </button>
 
             <button id="audioButton" class="option-button" title="Windows only.  Stream the remote audio to the browser.">
@@ -116,7 +110,6 @@
             </button>
 
             <button id="fileTransferButton" class="option-button" title="Transfer files to the remote computer.">
-                Transfert de fichiers  <i class="fas fa-file-upload"></i>
             </button>
 
             <button id="ctrlAltDelButton" class="option-button" title="Simulate the Ctrl+Alt+Del command on the remote computer.">
@@ -124,25 +117,21 @@
             </button>
 
             <button id="disconnectButton" class="option-button" title="Disconnect from the current session.">
-                Déconnexion <i class="fas fa-window-close"></i>
             </button>
         </div>
 
 
         <div class="menu-options-header">
-            Vue
         </div>
 
         <div>
-		<button id="streamVideoButton" class="option-button" hidden title="Reduce bandwidth and increase FPS, but increase input delay.">
                 Stream Mode <i class="fas fa-video"></i>
             </button>
+
             <button id="changeScreenButton" class="option-button" title="Switch monitors on remote multi-monitor setups.">
-                Ecrans <i class="fas fa-desktop"></i>
             </button>
 
             <button id="fullScreenButton" class="option-button" title="Enter fullscreen mode.">
-                Plein écran <i class="fas fa-window-maximize"></i>
             </button>
 
 
@@ -153,16 +142,13 @@
 
 
         <div class="menu-options-header">
-            Enregistrer
         </div>
 
         <div>
             <button id="recordSessionButton" class="option-button" title="Record session as a WEBM video in the browser.">
-                Démarrer <i class="fas fa-record-vinyl"></i>
             </button>
 
             <button id="downloadRecordingButton" class="option-button" title="Download the recorded session as a WEBM file.">
-                Télécharger <i class="fas fa-download"></i>
             </button>
         </div>
 
@@ -199,27 +185,20 @@
 
     <div id="fileTransferBar" class="horizontal-button-bar">
         <div style="color:white; font-size:12px">
-            Transfer de fichiers
         </div>
         <div style="color:white; font-size:12px;">
-            <button id="fileUploadButton" class="horizontal-bar-button">Upload</button>
-            <button id="fileDownloadButton" class="horizontal-bar-button">Télécharger</button>
         </div>
     </div>
     <div id="connectBox" class="center-connection-box" style="display: none">
-        <h3>Connexion à un client:</h3>
         <div class="form-block">
-            <label>Nom : </label>
             <br />
             <input id="nameInput" type="text" value="@Model.RemotelyUser?.UserOptions?.DisplayName" />
         </div>
         <div class="form-block">
-            <label>ID de session: </label>
             <br />
             <input id="sessionIDInput" type="text" pattern="[0-9 ]+" />
         </div>
         <div class="right-aligned">
-            <button id="connectButton">Connexion</button>
         </div>
         <div id="statusMessage" class="status-message">
 
@@ -227,7 +206,6 @@
     </div>
 
     <div id="disconnectedBox" class="center-connection-box" style="text-align: center; display: none;">
-        <h3>Déconnecté.</h3>
     </div>
 
 

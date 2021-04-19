@@ -90,8 +90,8 @@ namespace Remotely.Desktop.Linux.Services
             try
             {
                 InitDisplay();
-				
-				var screenBounds = viewer.Capturer.CurrentScreenBounds;
+
+                var screenBounds = viewer.Capturer.CurrentScreenBounds;
                 LibXtst.XTestFakeMotionEvent(Display,
                     LibX11.XDefaultScreen(Display),
                     screenBounds.X + (int)(screenBounds.Width * percentX),

@@ -190,8 +190,8 @@ namespace Remotely.Desktop.Linux.ViewModels
                 {
                     await GetSessionID();
                 };
-				
-				await DeviceInitService.GetInitParams();
+
+                await DeviceInitService.GetInitParams();
 
                 ApplyBranding();
 
@@ -219,14 +219,15 @@ namespace Remotely.Desktop.Linux.ViewModels
             await prompt.ShowDialog(MainWindow.Current);
             var result = prompt.ViewModel.Host?.Trim()?.TrimEnd('/');
 
-                        if (!Uri.TryCreate(result, UriKind.Absolute, out var serverUri) ||
+            if (!Uri.TryCreate(result, UriKind.Absolute, out var serverUri) ||
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
             {
                 Logger.Write("Server URL is not valid.");
                 await MessageBox.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxType.OK);
-				return;
+                return;
             }
-			            Host = result;
+
+            Host = result;
             var config = _configService.GetConfig();
             config.Host = Host;
             _configService.Save(config);
@@ -241,7 +242,7 @@ namespace Remotely.Desktop.Linux.ViewModels
                 {
                     FileName = "sudo",
                     Arguments = "bash -c \"apt-get -y install libx11-dev ; " +
-						"apt-get -y install libxrandr-dev ; " +
+                        "apt-get -y install libxrandr-dev ; " +
                         "apt-get -y install libc6-dev ; " +
                         "apt-get -y install libgdiplus ; " +
                         "apt-get -y install libxtst-dev ; " +

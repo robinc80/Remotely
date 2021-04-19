@@ -53,13 +53,13 @@ namespace Remotely.Desktop.Win.Services
 
         public event EventHandler<Rectangle> ScreenChanged;
 
-		private enum GetDirectXFrameResult
+        private enum GetDirectXFrameResult
         {
             Success,
             Failure,
             Timeout,
         }
-		
+
         public bool CaptureFullscreen { get; set; } = true;
         public bool NeedsInit { get; set; } = true;
         public string SelectedScreen { get; private set; } = Screen.PrimaryScreen.DeviceName;
@@ -73,8 +73,8 @@ namespace Remotely.Desktop.Win.Services
             }
             catch { }
         }
-		public Rectangle CurrentScreenBounds { get; private set; } = Screen.PrimaryScreen.Bounds;
-		
+        public Rectangle CurrentScreenBounds { get; private set; } = Screen.PrimaryScreen.Bounds;
+
         public IEnumerable<string> GetDisplayNames() => Screen.AllScreens.Select(x => x.DeviceName);
 
         public Bitmap GetNextFrame()
@@ -83,15 +83,16 @@ namespace Remotely.Desktop.Win.Services
             {
                 try
                 {
-					 Win32Interop.SwitchToInputDesktop();
-					 
+
+                    Win32Interop.SwitchToInputDesktop();
+
                     if (NeedsInit)
                     {
                         Logger.Write("Init needed in GetNextFrame.");
                         Init();
                     }
 
-                                        // Sometimes DX will result in a timeout, even when there are changes
+                    // Sometimes DX will result in a timeout, even when there are changes
                     // on the screen.  I've observed this when a laptop lid is closed, or
                     // on some machines that aren't connected to a monitor.  This will
                     // have it fall back to BitBlt in those cases.
@@ -100,7 +101,7 @@ namespace Remotely.Desktop.Win.Services
                         SystemInformation.ScreenOrientation != ScreenOrientation.Angle270 &&
                         SystemInformation.ScreenOrientation != ScreenOrientation.Angle90)
                     {
-                                                var (result, frame) = GetDirectXFrame();
+                        var (result, frame) = GetDirectXFrame();
 
                         if (result == GetDirectXFrameResult.Success)
                         {
@@ -108,9 +109,9 @@ namespace Remotely.Desktop.Win.Services
                         }
                     }
 
-					return GetBitBltFrame();
-					
-					 }
+                    return GetBitBltFrame();
+
+                }
                 catch (Exception e)
                 {
                     Logger.Write(e);
@@ -118,12 +119,12 @@ namespace Remotely.Desktop.Win.Services
                 }
                 return null;
             }
-            
+
         }
 
         public int GetScreenCount() => Screen.AllScreens.Length;
 
-                public int GetSelectedScreenIndex()
+        public int GetSelectedScreenIndex()
         {
             if (_bitBltScreens.TryGetValue(SelectedScreen, out var index))
             {
@@ -154,7 +155,7 @@ namespace Remotely.Desktop.Win.Services
                     return;
                 }
 
-            if (_bitBltScreens.ContainsKey(displayName))
+                if (_bitBltScreens.ContainsKey(displayName))
                 {
                     SelectedScreen = displayName;
                 }
@@ -199,7 +200,6 @@ namespace Remotely.Desktop.Win.Services
 
             return null;
         }
-
         private (GetDirectXFrameResult result, Bitmap frame) GetDirectXFrame()
         {
             try

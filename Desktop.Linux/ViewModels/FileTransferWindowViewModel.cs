@@ -103,7 +103,7 @@ namespace Remotely.Desktop.Linux.ViewModels
             if (param is FileUpload fileUpload)
             {
                 FileUploads.Remove(fileUpload);
-				fileUpload.CancellationTokenSource.Cancel();
+                fileUpload.CancellationTokenSource.Cancel();
             }
         });
     }

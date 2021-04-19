@@ -276,7 +276,7 @@ namespace Remotely.Server
 
         private static void ConfigureStaticFiles(IApplicationBuilder app, IWebHostEnvironment env)
         {
-			            // TODO: This redirects downloads from the old location to the new one.
+            // TODO: This redirects downloads from the old location to the new one.
             // Remove after a few releases.
             app.Use(async (context, next) =>
             {
@@ -289,7 +289,7 @@ namespace Remotely.Server
                 }
                 await next();
             });
-			
+
             var provider = new FileExtensionContentTypeProvider();
             // Add new mappings
             provider.Mappings[".ps1"] = "application/octet-stream";

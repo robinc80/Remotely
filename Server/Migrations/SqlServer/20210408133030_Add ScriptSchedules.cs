@@ -22,6 +22,7 @@ namespace Remotely.Server.Migrations.SqlServer
                 name: "Token",
                 table: "ApiTokens");
 
+
             migrationBuilder.CreateTable(
                 name: "SavedScripts",
                 columns: table => new

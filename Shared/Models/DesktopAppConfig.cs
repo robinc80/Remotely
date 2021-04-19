@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ namespace Remotely.Shared.Models
 {
     public class DesktopAppConfig
     {
-private string _host = "https://sos.pcenpanne.fr";
+        private string _host = "";
 
         public string Host
         {

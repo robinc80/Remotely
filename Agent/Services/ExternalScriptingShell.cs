@@ -21,7 +21,7 @@ namespace Remotely.Agent.Services
     {
         private static readonly ConcurrentDictionary<string, ExternalScriptingShell> _sessions = new();
         private readonly ConfigService _configService;
-		private string _lineEnding;
+        private string _lineEnding;
         private ScriptingShell _shell;
 
         public ExternalScriptingShell(ConfigService configService)
@@ -31,11 +31,11 @@ namespace Remotely.Agent.Services
 
         private string ErrorOut { get; set; }
 
-            private string LastInputID { get; set; }
+        private string LastInputID { get; set; }
 
-            private ManualResetEvent OutputDone { get; } = new(false);
-			
-			private System.Timers.Timer ProcessIdleTimeout { get; set; }
+        private ManualResetEvent OutputDone { get; } = new(false);
+
+        private System.Timers.Timer ProcessIdleTimeout { get; set; }
 
         private string SenderConnectionId { get; set; }
 
@@ -43,8 +43,8 @@ namespace Remotely.Agent.Services
 
         private string StandardOut { get; set; }
 
-		private Stopwatch Stopwatch { get; set; }
-        
+        private Stopwatch Stopwatch { get; set; }
+
         public static ExternalScriptingShell GetCurrent(ScriptingShell shell, string senderConnectionId)
         {
             if (_sessions.TryGetValue($"{shell}-{senderConnectionId}", out var session))
@@ -89,14 +89,14 @@ namespace Remotely.Agent.Services
                 ShellProcess.StandardInput.Write("echo " + LastInputID + _lineEnding);
 
                 var result = Task.WhenAny(
-                    Task.Run(() => 
+                    Task.Run(() =>
                     {
                         return ShellProcess.WaitForExit((int)timeout.TotalMilliseconds);
                     }),
-                    Task.Run(() => 
+                    Task.Run(() =>
                     {
                         return OutputDone.WaitOne();
-                    
+
                     })).ConfigureAwait(false).GetAwaiter().GetResult();
 
                 if (!result.Result)
@@ -106,7 +106,6 @@ namespace Remotely.Agent.Services
             }
             return GenerateCompletedResult(input);
         }
-
 
         private ScriptResult GenerateCompletedResult(string input)
         {
@@ -119,7 +118,7 @@ namespace Remotely.Agent.Services
                 DeviceID = _configService.GetConnectionInfo().DeviceID,
                 StandardOutput = StandardOut.Split(Environment.NewLine),
                 ErrorOutput = ErrorOut.Split(Environment.NewLine),
-                HadErrors = !string.IsNullOrWhiteSpace(ErrorOut) || 
+                HadErrors = !string.IsNullOrWhiteSpace(ErrorOut) ||
                     (ShellProcess.HasExited && ShellProcess.ExitCode != 0)
             };
         }
@@ -145,7 +144,8 @@ namespace Remotely.Agent.Services
             ProcessIdleTimeout_Elapsed(this, null);
             return partialResult;
         }
-		        private void Init(ScriptingShell shell, string shellProcessName, string lineEnding, string connectionId)
+
+        private void Init(ScriptingShell shell, string shellProcessName, string lineEnding, string connectionId)
         {
             _shell = shell;
             _lineEnding = lineEnding;

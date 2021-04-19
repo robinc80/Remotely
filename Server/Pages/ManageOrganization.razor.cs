@@ -53,8 +53,8 @@ namespace Remotely.Server.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-			
-			await RefreshData();
+
+            await RefreshData();
         }
 
         private void CreateNewDeviceGroup()
@@ -159,25 +159,24 @@ namespace Remotely.Server.Pages
             }
 
             await DataService.DeleteUser(User.OrganizationID, user.Id);
-			_orgUsers.RemoveAll(x => x.Id == user.Id);
-
+            _orgUsers.RemoveAll(x => x.Id == user.Id);
             ToastService.ShowToast("User deleted.");
         }
 
         private async Task EditDeviceGroups(RemotelyUser user)
         {
-			void editDeviceGroupsModal(RenderTreeBuilder builder)
+            void editDeviceGroupsModal(RenderTreeBuilder builder)
             {
-				var deviceGroups = DataService.GetDeviceGroupsForOrganization(user.OrganizationID);
-				
+                var deviceGroups = DataService.GetDeviceGroupsForOrganization(user.OrganizationID);
+
                 builder.OpenComponent<EditDeviceGroup>(0);
                 builder.AddAttribute(1, EditDeviceGroup.EditUserPropName, user);
-				builder.AddAttribute(2, EditDeviceGroup.DeviceGroupsPropName, deviceGroups);
+                builder.AddAttribute(2, EditDeviceGroup.DeviceGroupsPropName, deviceGroups);
                 builder.CloseComponent();
             }
             await ModalService.ShowModal("Device Groups", editDeviceGroupsModal);
         }
-        
+
         private async Task EvaluateInviteInputKeypress(KeyboardEventArgs args)
         {
             if (args.Key.Equals("Enter", StringComparison.OrdinalIgnoreCase))
@@ -301,6 +300,7 @@ namespace Remotely.Server.Pages
                 if (emailResult)
                 {
                     ToastService.ShowToast("Invitation sent.");
+                    
                     _inviteAsAdmin = false;
                     _inviteEmail = string.Empty;
                     _invites.Add(newInvite);

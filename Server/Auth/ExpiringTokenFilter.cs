@@ -14,15 +14,15 @@ namespace Remotely.Server.Auth
 {
     public class ExpiringTokenFilter : ActionFilterAttribute, IAuthorizationFilter
     {
-		private readonly IDataService _dataService;
+        private readonly IDataService _dataService;
         private readonly IExpiringTokenService _expiringTokenService;
         private readonly ILogger<ExpiringTokenFilter> _logger;
 
         public ExpiringTokenFilter(IExpiringTokenService expiringTokenService,
-		IDataService dataService,
+            IDataService dataService,
             ILogger<ExpiringTokenFilter> logger)
         {
-			_dataService = dataService;
+            _dataService = dataService;
             _expiringTokenService = expiringTokenService;
             _logger = logger;
         }
@@ -34,7 +34,7 @@ namespace Remotely.Server.Auth
                 return;
             }
 
-             if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var authorization))
+            if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var authorization))
             {
                 context.Result = new UnauthorizedResult();
                 return;

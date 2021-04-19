@@ -36,7 +36,6 @@ else {
 
 Push-Location "$Root"
 
-
 Replace-LineInFile -FilePath "$Root\appsettings.json" -MatchPattern '"DBProvider":' -ReplaceLineWith '    "DBProvider": "SQLite",' -MaxCount 1
 
 dotnet ef migrations add $MigrationName --context "SqliteDbContext"

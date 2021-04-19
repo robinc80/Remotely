@@ -25,6 +25,6 @@ namespace Remotely.Shared.Models
         [JsonIgnore]
         public RemotelyUser User { get; set; }
         public string UserID { get; set; }
-		public string Details { get; set; }
+        public string Details { get; set; }
     }
 }

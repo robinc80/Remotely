@@ -19,9 +19,9 @@ namespace Remotely.Desktop.Core.Services
             RtcMessageHandler = rtcMessageHandler;
         }
 
-		public event EventHandler<IceCandidate> IceCandidateReady;
-		
-		public event EventHandler<SdpMessage> LocalSdpReady;
+        public event EventHandler<IceCandidate> IceCandidateReady;
+
+        public event EventHandler<SdpMessage> LocalSdpReady;
 
         public ulong CurrentBuffer { get; private set; }
         public bool IsDataChannelOpen => CaptureChannel?.State == DataChannel.ChannelState.Open;
@@ -45,7 +45,7 @@ namespace Remotely.Desktop.Core.Services
         {
             PeerSession.AddIceCandidate(new IceCandidate()
             {
-                                Content = candidate,
+                Content = candidate,
                 SdpMid = sdpMid,
                 SdpMlineIndex = sdpMlineIndex
             });
@@ -60,7 +60,7 @@ namespace Remotely.Desktop.Core.Services
                 PeerSession?.RemoveDataChannel(CaptureChannel);
             }
             catch { }
-			PeerSession.Transceivers.RemoveAll(x => true);
+            PeerSession.Transceivers.RemoveAll(x => true);
             Disposer.TryDisposeAll(new IDisposable[]
             {
                 Transceiver?.LocalVideoTrack,
@@ -80,12 +80,12 @@ namespace Remotely.Desktop.Core.Services
 
             var iceList = IceServers.Select(x => new IceServer()
             {
-                                Urls = { x.Url },
+                Urls = { x.Url },
                 TurnPassword = x.TurnPassword ?? string.Empty,
                 TurnUserName = x.TurnUsername ?? string.Empty
             }).ToList();
 
-                var config = new PeerConnectionConfiguration()
+            var config = new PeerConnectionConfiguration()
             {
                 IceServers = iceList
             };
@@ -129,13 +129,13 @@ namespace Remotely.Desktop.Core.Services
                 Type = sdpMessageType
             });
 
-			if (sdpMessageType == SdpMessageType.Offer)
+            if (sdpMessageType == SdpMessageType.Offer)
             {
                 PeerSession.CreateAnswer();
             }
         }
-		
-            public void ToggleWebRtcVideo(bool toggleOn)
+
+        public void ToggleWebRtcVideo(bool toggleOn)
         {
             if (Transceiver?.LocalVideoTrack != null)
             {
@@ -174,7 +174,7 @@ namespace Remotely.Desktop.Core.Services
 
         private void GetCaptureFrame(in FrameRequest request)
         {
-                        try
+            try
             {
                 if (!IsVideoTrackConnected)
                 {
@@ -212,10 +212,10 @@ namespace Remotely.Desktop.Core.Services
             {
                 Logger.Write(ex);
             }
-			
+
         }
 
-                private void PeerConnection_Connected()
+        private void PeerConnection_Connected()
         {
             Logger.Write("PeerConnection connected.");
         }
@@ -232,7 +232,7 @@ namespace Remotely.Desktop.Core.Services
             Logger.Write("Ice candidate ready to send.");
             IceCandidateReady?.Invoke(this, candidate);
         }
-		        private void PeerSession_LocalSdpReadytoSend(SdpMessage message)
+        private void PeerSession_LocalSdpReadytoSend(SdpMessage message)
         {
             Logger.Write($"Local SDP ready.");
             LocalSdpReady?.Invoke(this, message);

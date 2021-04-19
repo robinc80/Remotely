@@ -47,7 +47,7 @@ namespace Remotely.Shared.Utilities
 
                 return await File.ReadAllBytesAsync(LogPath);
             }
-                        catch (Exception ex)
+            catch (Exception ex)
             {
                 Write(ex);
                 return Array.Empty<byte>();

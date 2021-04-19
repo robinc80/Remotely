@@ -20,8 +20,8 @@ namespace Remotely.Server.Services
         void AddTerminalHistory(string content);
 
         void AddTerminalLine(string content, string className = "", string title = "");
-		
-		Task<Theme> GetEffectiveTheme();
+
+        Task<Theme> GetEffectiveTheme();
         string GetTerminalHistory(bool forward);
     }
 
@@ -83,8 +83,8 @@ namespace Remotely.Server.Services
                 Title = title
             });
         }
-		
-		public async Task<Theme> GetEffectiveTheme()
+
+        public async Task<Theme> GetEffectiveTheme()
         {
             if (await _authService.IsAuthenticated())
             {
@@ -93,6 +93,7 @@ namespace Remotely.Server.Services
             }
             return _appConfig.Theme;
         }
+
         public string GetTerminalHistory(bool forward)
         {
             if (!_terminalHistory.Any())

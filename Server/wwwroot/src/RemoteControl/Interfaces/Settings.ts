@@ -1,4 +1,4 @@
 ﻿export interface Settings {
-	displayName: string;
-	streamModeEnabled: boolean;
+    displayName: string;
+    streamModeEnabled: boolean;
 }

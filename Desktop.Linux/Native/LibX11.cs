@@ -81,7 +81,8 @@ namespace Remotely.Desktop.Linux.Native
         public static extern void XSync(IntPtr display, bool discard);
         [DllImport("libX11")]
         public static extern void XDestroyImage(IntPtr ximage);
-		[DllImport("libX11")]
+
+        [DllImport("libX11")]
         public static extern void XNoOp(IntPtr display);
 
         [DllImport("libX11")]
@@ -110,8 +111,8 @@ namespace Remotely.Desktop.Linux.Native
             public ulong blue_mask;
             public IntPtr obdata;           /* hook for the object routines to hang on */
         }
-    }
-	public struct XWindowAttributes
+
+        public struct XWindowAttributes
         {
             public int x;
             public int y;
@@ -137,4 +138,5 @@ namespace Remotely.Desktop.Linux.Native
             public bool override_redirect;
             public IntPtr screen;
         }
+    }
 }

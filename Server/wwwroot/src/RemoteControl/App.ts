@@ -36,7 +36,7 @@ export const ViewerApp = {
         }
 
         ApplyInputHandlers();
-		
+
         if (UI.RequesterNameInput.value) {
             ViewerApp.RequesterName = UI.RequesterNameInput.value;
         }
@@ -44,7 +44,7 @@ export const ViewerApp = {
             UI.RequesterNameInput.value = ViewerApp.Settings.displayName;
             ViewerApp.RequesterName = ViewerApp.Settings.displayName;
         }
-		
+
         if (ViewerApp.CasterID) {
             ViewerApp.Mode = RemoteControlMode.Unattended;
             ViewerApp.ViewerHubConnection.Connect();
@@ -67,8 +67,8 @@ export const ViewerApp = {
         ViewerApp.RequesterName = UI.RequesterNameInput.value;
         ViewerApp.Mode = RemoteControlMode.Normal;
         ViewerApp.ViewerHubConnection.Connect();
-        UI.StatusMessage.innerHTML = "Envoi de la demande de connexion...";
-		ViewerApp.Settings.displayName = ViewerApp.RequesterName;
+
+        ViewerApp.Settings.displayName = ViewerApp.RequesterName;
         SetSettings(ViewerApp.Settings);
     }
 }

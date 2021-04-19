@@ -59,15 +59,15 @@ namespace Remotely.Desktop.Core.Services
                 return RtcSession?.IsPeerConnected == true && RtcSession?.IsDataChannelOpen == true;
             }
         }
-		
-		        public bool IsUsingWebRtcVideo
+
+        public bool IsUsingWebRtcVideo
         {
             get
             {
                 return RtcSession?.IsPeerConnected == true && RtcSession?.IsVideoTrackConnected == true;
             }
         }
-		
+
         public string Name { get; set; }
 
         public double AverageBytesPerSecond { get; set; }
@@ -306,12 +306,12 @@ namespace Remotely.Desktop.Core.Services
                 !PendingSentFrames.TryPeek(out var result) || DateTimeOffset.Now - result.Timestamp < TimeSpan.FromSeconds(1),
                 TimeSpan.FromSeconds(10));
         }
-		
-		public void ToggleWebRtcVideo(bool toggleOn)
+
+        public void ToggleWebRtcVideo(bool toggleOn)
         {
             RtcSession.ToggleWebRtcVideo(toggleOn);
         }
-		
+
         private async void AudioCapturer_AudioSampleReady(object sender, byte[] sample)
         {
             await SendAudioSample(sample);

@@ -308,10 +308,10 @@ namespace Remotely.Server.Migrations.SqlServer
 
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
-					
-					b.Property<string>("Details")
+
+                    b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
-						
+
                     b.Property<string>("DeviceID")
                         .HasColumnType("nvarchar(450)");
 

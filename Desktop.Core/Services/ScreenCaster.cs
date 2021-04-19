@@ -118,7 +118,7 @@ namespace Remotely.Desktop.Core.Services
                 {
                     try
                     {
-						if (viewer.IsUsingWebRtcVideo)
+                        if (viewer.IsUsingWebRtcVideo)
                         {
                             Thread.Sleep(100);
                             continue;
@@ -126,7 +126,7 @@ namespace Remotely.Desktop.Core.Services
                         if (viewer.IsStalled)
                         {
                             // Viewer isn't responding.  Abort sending.
-							Logger.Write("Viewer stalled.  Ending send loop.");
+                            Logger.Write("Viewer stalled.  Ending send loop.");
                             break;
                         }
 
@@ -209,6 +209,7 @@ namespace Remotely.Desktop.Core.Services
                     $"Viewer WS Connected: {viewer.IsConnected}.  " +
                     $"Viewer Stalled: {viewer.IsStalled}.  " +
                     $"Viewer Disconnected Requested: {viewer.DisconnectRequested}");
+
                 _conductor.Viewers.TryRemove(viewer.ViewerConnectionID, out _);
                 viewer.Dispose();
             }

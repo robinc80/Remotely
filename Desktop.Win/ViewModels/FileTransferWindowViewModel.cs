@@ -45,7 +45,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
             var ofd = new OpenFileDialog()
             {
-                Title = "Upload de fichier",
+                Title = "Upload File via Remotely",
                 Multiselect = true,
                 CheckFileExists = true,
                 InitialDirectory = Directory.Exists(userDir) ? userDir : rootDir
@@ -122,7 +122,7 @@ namespace Remotely.Desktop.Win.ViewModels
             if (param is FileUpload fileUpload)
             {
                 FileUploads.Remove(fileUpload);
-				fileUpload.CancellationTokenSource.Cancel();
+                fileUpload.CancellationTokenSource.Cancel();
             }
         });
     }

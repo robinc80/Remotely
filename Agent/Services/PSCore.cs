@@ -75,8 +75,9 @@ namespace Remotely.Agent.Services
         {
             var sw = Stopwatch.StartNew();
 
-			_powershell.Streams.ClearStreams();
+            _powershell.Streams.ClearStreams();
             _powershell.Commands.Clear();
+
             _powershell.AddScript(input);
             var results = _powershell.Invoke();
 
@@ -96,11 +97,10 @@ namespace Remotely.Agent.Services
                 .Concat(debugOut)
                 .Concat(verboseOut);
 
-            
-			var errorAndWarningOut = errorOut.Concat(warningOut).ToArray();
-			
-			
-			return new ScriptResult()
+            var errorAndWarningOut = errorOut.Concat(warningOut).ToArray();
+
+
+            return new ScriptResult()
             {
                 DeviceID = _configService.GetConnectionInfo().DeviceID,
                 SenderConnectionID = SenderConnectionId,

@@ -142,6 +142,7 @@ namespace Remotely.Server.Components.Scripts
                 "'Write-Error' or 'Write-Warning' anywhere in your PowerShell Core script. ",
 
                 "For Windows PowerShell, you can manually trigger an alert by using 'Write-Error'.",
+
                 "For Bash and CMD, you can exit with any non-zero number."
             });
         }

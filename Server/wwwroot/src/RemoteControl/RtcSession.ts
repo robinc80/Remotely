@@ -8,9 +8,9 @@ export class RtcSession {
     DataChannel: RTCDataChannel;
     MessagePack: any = window['MessagePack'];
     Init(iceServers: IceServerModel[]) {
-
+       
         this.PeerConnection = new RTCPeerConnection({
-                        iceServers: iceServers.map(x => {
+            iceServers: iceServers.map(x => {
                 return {
                     urls: x.Url,
                     username: x.TurnUsername,
@@ -28,8 +28,8 @@ export class RtcSession {
                 console.log("Data channel closed.");
                 UI.ConnectionP2PIcon.style.display = "none";
                 UI.ConnectionRelayedIcon.style.display = "unset";
-				
-				UI.StreamVideoButton.setAttribute("hidden", "hidden");
+
+                UI.StreamVideoButton.setAttribute("hidden", "hidden");
                 UI.ScreenViewer.removeAttribute("hidden");
                 UI.VideoScreenViewer.setAttribute("hidden", "hidden");
             };
@@ -38,7 +38,7 @@ export class RtcSession {
                 UI.ConnectionP2PIcon.style.display = "none";
                 UI.ConnectionRelayedIcon.style.display = "unset";
 
-				UI.StreamVideoButton.setAttribute("hidden", "hidden");
+                UI.StreamVideoButton.setAttribute("hidden", "hidden");
                 UI.ScreenViewer.removeAttribute("hidden");
                 UI.VideoScreenViewer.setAttribute("hidden", "hidden");
             };
@@ -51,8 +51,8 @@ export class RtcSession {
                 console.log("Data channel opened.");
                 UI.ConnectionP2PIcon.style.display = "unset";
                 UI.ConnectionRelayedIcon.style.display = "none";
-				
-				 UI.StreamVideoButton.removeAttribute("hidden");
+
+                UI.StreamVideoButton.removeAttribute("hidden");
 
                 if (ViewerApp.Settings.streamModeEnabled) {
                     UI.UpdateStreamingToggled(true);

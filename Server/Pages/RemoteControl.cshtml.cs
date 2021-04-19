@@ -9,7 +9,7 @@ namespace Remotely.Server.Pages
     [ServiceFilter(typeof(RemoteControlFilterAttribute))]
     public class RemoteControlModel : PageModel
     {
-		private readonly IDataService _dataService;
+        private readonly IDataService _dataService;
         public RemoteControlModel(IDataService dataService)
         {
             _dataService = dataService;
@@ -18,7 +18,7 @@ namespace Remotely.Server.Pages
         public RemotelyUser RemotelyUser { get; private set; }
         public void OnGet()
         {
-			            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 RemotelyUser = _dataService.GetUserByNameWithOrg(base.User.Identity.Name);
             }

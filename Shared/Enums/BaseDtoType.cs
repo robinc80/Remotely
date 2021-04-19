@@ -53,7 +53,7 @@ namespace Remotely.Shared.Enums
         SetKeyStatesUp = 24,
         [EnumMember(Value = "FrameReceived")]
         FrameReceived = 25,
-		[EnumMember(Value = "ToggleWebRtcVideo")]
+        [EnumMember(Value = "ToggleWebRtcVideo")]
         ToggleWebRtcVideo = 26,
         [EnumMember(Value = "OpenFileTransferWindow")]
         OpenFileTransferWindow = 27

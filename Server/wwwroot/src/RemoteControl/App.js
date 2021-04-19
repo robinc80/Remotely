@@ -31,7 +31,7 @@ export const ViewerApp = {
             UI.ViewOnlyButton.classList.add("toggled");
         }
         ApplyInputHandlers();
-		 if (UI.RequesterNameInput.value) {
+        if (UI.RequesterNameInput.value) {
             ViewerApp.RequesterName = UI.RequesterNameInput.value;
         }
         else if (ViewerApp.Settings.displayName) {
@@ -59,8 +59,8 @@ export const ViewerApp = {
         ViewerApp.RequesterName = UI.RequesterNameInput.value;
         ViewerApp.Mode = RemoteControlMode.Normal;
         ViewerApp.ViewerHubConnection.Connect();
-        UI.StatusMessage.innerHTML = "Envoi de la demande de connexion...";
-		ViewerApp.Settings.displayName = ViewerApp.RequesterName;
+        UI.StatusMessage.innerHTML = "Sending connection request...";
+        ViewerApp.Settings.displayName = ViewerApp.RequesterName;
         SetSettings(ViewerApp.Settings);
     }
 };

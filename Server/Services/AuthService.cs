@@ -39,7 +39,7 @@ namespace Remotely.Server.Services
         {
             var principal = await _authProvider.GetAuthenticationStateAsync();
 
-                    if (principal?.User?.Identity?.IsAuthenticated == true)
+            if (principal?.User?.Identity?.IsAuthenticated == true)
             {
                 return await _dataService.GetUserAsync(principal.User.Identity.Name);
             }

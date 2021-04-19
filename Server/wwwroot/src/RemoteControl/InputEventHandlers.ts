@@ -24,11 +24,11 @@
     RecordSessionButton,
     DownloadRecordingButton,
     VideoScreenViewer,
-	StreamVideoButton,
+    StreamVideoButton,
     FileTransferBar,
     FileUploadButtton,
     FileDownloadButton,
-	UpdateStreamingToggled,
+    UpdateStreamingToggled,
     ViewOnlyButton,
     FullScreenButton
 } from "./UI.js";
@@ -84,13 +84,11 @@ export function ApplyInputHandlers() {
         }
 
         if (ViewerApp.ViewOnlyMode) {
-            alert("Vue uniquement.");
             return;
         }
 
         navigator.clipboard.readText().then(text => {
             ViewerApp.MessageSender.SendClipboardTransfer(text, true);
-            ShowMessage("Presse-papier envoyé!");
         }, reason => {
             alert("Unable to read clipboard.  Please check your permissions.");
             console.log("Unable to read clipboard.  Reason: " + reason);
@@ -185,7 +183,6 @@ export function ApplyInputHandlers() {
             url = `${location.origin}${location.pathname}?clientID=${ViewerApp.CasterID}&serviceID=${ViewerApp.ServiceID}`;
         }
         ViewerApp.ClipboardWatcher.SetClipboardText(url);
-        ShowMessage("Lien copié.");
     });
     KeyboardButton.addEventListener("click", (ev) => {
         closeAllHorizontalBars(null);
@@ -215,7 +212,7 @@ export function ApplyInputHandlers() {
         ev.stopPropagation();
         MenuButton.style.top = `${ev.touches[0].clientY}px`;
     });
-	    StreamVideoButton.addEventListener("click", (ev) => {
+    StreamVideoButton.addEventListener("click", (ev) => {
         var toggleOn = !StreamVideoButton.classList.contains("toggled");
 
         ViewerApp.Settings.streamModeEnabled = toggleOn;

@@ -1,7 +1,7 @@
 ﻿@inherits AuthComponentBase
 @attribute [Authorize]
-@inject IDataService DataService
-@inject IModalService ModalService
+@inject IDataService DataService 
+@inject IModalService ModalService 
 
 <button id="alertsButton" class="btn btn-info" @onclick="ToggleOpen">
     <span class="oi oi-bell"></span>
@@ -13,7 +13,7 @@
 <div id="alertsFrame" class="bg-secondary @FrameClass">
     <div class="text-right">
         <button id="clearAllAlertsButton" class="btn btn-secondary mt-2 mr-2 align-top" @onclick="ClearAllAlerts">
-            Effacer tout
+            Clear All
         </button>
         <button id="closeAlertsFrameButton" class="btn btn-secondary btn-sm mt-2 mr-2 align-top" @onclick="ToggleOpen">
             <span class="oi oi-x pointer"></span>
@@ -38,13 +38,13 @@
                             </button>
                         </div>
                     }
-					
+
                     <div class="text-right">
                         <button alert="@alert.ID"
                                 class="btn btn-sm btn-secondary alert-dismiss-button"
                                 type="button"
                                 @onclick="()=> { _ = ClearAlert(alert); }">
-                            Enlever
+                            Dismiss
                         </button>
                     </div>
                 </div>
@@ -61,8 +61,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-		await base.OnInitializedAsync();
-		
+        await base.OnInitializedAsync();
+
         if (IsAuthenticated)
         {
             GetAlerts();
@@ -91,11 +91,11 @@
         }
     }
 
-	private void ShowAlertDetails(Alert alert)
+    private void ShowAlertDetails(Alert alert)
     {
         ModalService.ShowModal($"Alert Details for {alert.Device?.DeviceName}", alert.Details.Split('\n'));
     }
-	
+
     private void ToggleOpen()
     {
         _isOpen = !_isOpen;

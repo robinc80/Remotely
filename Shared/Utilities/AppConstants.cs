@@ -13,8 +13,8 @@ namespace Remotely.Shared.Utilities
         public const long MaxUploadFileSize = 100_000_000;
         public const int RelayCodeLength = 4;
         public const double ScriptRunExpirationMinutes = 30;
-		
-		public const string RemotelyAscii = @"
+
+        public const string RemotelyAscii = @"
   _____                      _       _       
  |  __ \                    | |     | |      
  | |__) |___ _ __ ___   ___ | |_ ___| |_   _ 

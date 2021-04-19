@@ -59,14 +59,14 @@ namespace Remotely.Server.Components.Scripts
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-			
-			_deviceGroups = DataService.GetDeviceGroups(User.UserName);
+
+            _deviceGroups = DataService.GetDeviceGroups(User.UserName);
             _devices = DataService
                 .GetDevicesForUser(User.UserName)
                 .OrderBy(x => x.DeviceName)
                 .ToArray();
         }
-		
+
         private void DeviceGroupSelectedChanged(ChangeEventArgs args, DeviceGroup deviceGroup)
         {
             var isSelected = (bool)args.Value;

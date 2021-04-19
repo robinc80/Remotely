@@ -1,4 +1,4 @@
-using Remotely.Shared.Enums;
+﻿using Remotely.Shared.Enums;
 using System.Runtime.Serialization;
 
 namespace Remotely.Shared.Models.RemoteControlDtos

@@ -20,14 +20,14 @@ namespace Remotely.Server.Pages
         private readonly ConcurrentQueue<ScriptResult> _scriptResults = new();
 
         private string _alertMessage;
-		private string _inputDeviceId;
+        private string _inputDeviceId;
 
         [Parameter]
         public string DeviceId { get; set; }
-		
-		[Parameter]
+
+        [Parameter]
         public string ActiveTab { get; set; }
-		
+
         [Inject]
         private ICircuitConnection CircuitConnection { get; set; }
 
@@ -38,17 +38,17 @@ namespace Remotely.Server.Pages
 
         [Inject]
         private IModalService ModalService { get; set; }
-		
-		[Inject]
+
+        [Inject]
         private NavigationManager NavManager { get; set; }
-		
+
         [Inject]
         private IToastService ToastService { get; set; }
-		
+
         protected override async Task OnInitializedAsync()
         {
-			await base.OnInitializedAsync();
-			
+            await base.OnInitializedAsync();
+
             if (!string.IsNullOrWhiteSpace(DeviceId))
             {
                 Device = DataService.GetDevice(DeviceId);
@@ -71,15 +71,15 @@ namespace Remotely.Server.Pages
         {
             _alertMessage = string.Empty;
         }
-		
-		 private void EvaluateDeviceIdInputKeyDown(KeyboardEventArgs args)
+
+        private void EvaluateDeviceIdInputKeyDown(KeyboardEventArgs args)
         {
             if (args.Key.Equals("Enter", StringComparison.OrdinalIgnoreCase))
             {
                 NavManager.NavigateTo($"/device-details/{_inputDeviceId}");
             }
         }
-		
+
         private void GetRemoteLogs()
         {
             _logLines.Clear();
@@ -99,7 +99,7 @@ namespace Remotely.Server.Pages
                 var results = DataService
                     .GetAllScriptResults(User.OrganizationID, Device.ID)
                     .OrderByDescending(x => x.TimeStamp);
-                
+
                 foreach (var result in results)
                 {
                     _scriptResults.Enqueue(result);
@@ -132,7 +132,7 @@ namespace Remotely.Server.Pages
 
             return source[0..25] + "...";
         }
-		
+
         private string GetTrimmedText(string[] source, int stringLength)
         {
             return GetTrimmedText(string.Join("", source), stringLength);
@@ -152,12 +152,12 @@ namespace Remotely.Server.Pages
 
             return Task.CompletedTask;
         }
-		
-		private void NavigateToDeviceId()
+
+        private void NavigateToDeviceId()
         {
             NavManager.NavigateTo($"/device-details/{_inputDeviceId}");
         }
-		
+
         private void ShowAllDisks()
         {
             var disksString = JsonSerializer.Serialize(Device.Drives, JsonSerializerHelper.IndentedOptions);

@@ -131,12 +131,12 @@ namespace Remotely.Server.Pages
 
         private bool _showMyOrgAdminsOnly = true;
         private bool _showAdminsOnly;
-		
+
         private string _trustedCorsOriginSelected;
         private string _trustedCorsOriginToAdd;
 
-		private readonly List<RemotelyUser> _userList = new();
-		
+        private readonly List<RemotelyUser> _userList = new();
+
 
         [Inject]
         private IHubContext<AgentHub> AgentHubContext { get; set; }
@@ -165,7 +165,7 @@ namespace Remotely.Server.Pages
         [Inject]
         private IToastService ToastService { get; set; }
         private int TotalDevices => DataService.GetTotalDevices();
-                private IEnumerable<RemotelyUser> UserList
+        private IEnumerable<RemotelyUser> UserList
         {
             get
             {
@@ -175,10 +175,10 @@ namespace Remotely.Server.Pages
             }
         }
 
-		protected override async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-			await base.OnInitializedAsync();
-			
+            await base.OnInitializedAsync();
+
             if (!User.IsServerAdmin)
             {
                 return;

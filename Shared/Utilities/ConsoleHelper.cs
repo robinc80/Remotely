@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -31,17 +31,18 @@ namespace Remotely.Shared.Utilities
             for (var i = 0; i < message.Length;)
             {
                 var lineCount = 0;
-				var trimLine = i > 0;
+                var trimLine = i > 0;
 
                 var line = new string(message.Skip(i).TakeWhile(x => {
                     i++;
                     return lineCount++ < 60 || !char.IsWhiteSpace(x);
                 }).ToArray());
-				
-			                if (trimLine)
+
+                if (trimLine)
                 {
                     line = line.Trim();
                 }
+
                 Console.WriteLine(line);
             }
             Console.ForegroundColor = ConsoleColor.Gray;

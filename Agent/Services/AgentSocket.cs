@@ -315,7 +315,7 @@ namespace Remotely.Agent.Services
             {
                 var logBytes = await Logger.ReadAllLogs();
 
-				if (!logBytes.Any())
+                if (!logBytes.Any())
                 {
                     var message = "There are no log entries written.";
 

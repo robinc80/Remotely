@@ -94,7 +94,7 @@ export class MessageSender {
         var dto = new ToggleBlockInputDto(toggleOn);
         this.SendToAgent(() => ViewerApp.RtcSession.SendDto(dto), () => ViewerApp.ViewerHubConnection.SendDtoToClient(dto));
     }
-	SendToggleWebRtcVideo(toggleOn) {
+    SendToggleWebRtcVideo(toggleOn) {
         var dto = new ToggleWebRtcVideoDto(toggleOn);
         this.SendToAgent(() => ViewerApp.RtcSession.SendDto(dto), () => ViewerApp.ViewerHubConnection.SendDtoToClient(dto));
     }

@@ -168,9 +168,9 @@ namespace Remotely.Server.Services
         SharedFile GetSharedFiled(string fileID);
 
         int GetTotalDevices();
-		
-		Task<RemotelyUser> GetUserAsync(string username);
-		
+
+        Task<RemotelyUser> GetUserAsync(string username);
+
         RemotelyUser GetUserByID(string userID);
 
         RemotelyUser GetUserByNameWithOrg(string userName);
@@ -233,8 +233,8 @@ namespace Remotely.Server.Services
             _appConfig = appConfig;
             _hostEnvironment = hostEnvironment;
         }
-        
-		public async Task AddAlert(string deviceId, string organizationID, string alertMessage, string details = null)
+
+        public async Task AddAlert(string deviceId, string organizationID, string alertMessage, string details = null)
         {
             using var dbContext = _dbFactory.CreateDbContext();
 
@@ -852,7 +852,7 @@ namespace Remotely.Server.Services
                 .ThenInclude(x => x.Devices)
                 .Include(x => x.Organization)
                 .Include(x => x.Alerts)
-				.Include(x => x.SavedScripts)
+                .Include(x => x.SavedScripts)
                 .Include(x => x.ScriptSchedules)
                 .FirstOrDefault(x =>
                     x.Id == targetUserID &&
@@ -926,10 +926,11 @@ namespace Remotely.Server.Services
 
         public bool DoesUserHaveAccessToDevice(string deviceID, RemotelyUser remotelyUser)
         {
-			if (remotelyUser is null)
+            if (remotelyUser is null)
             {
                 return false;
             }
+
             using var dbContext = _dbFactory.CreateDbContext();
 
             return dbContext.Devices
@@ -1253,19 +1254,19 @@ namespace Remotely.Server.Services
         public Device[] GetDevicesForUser(string userName)
         {
             using var dbContext = _dbFactory.CreateDbContext();
-			
-			if (string.IsNullOrWhiteSpace(userName))
+
+            if (string.IsNullOrWhiteSpace(userName))
             {
                 return Array.Empty<Device>();
             }
-			
+
             var user = dbContext.Users.FirstOrDefault(x => x.UserName == userName);
 
-			if (user is null)
+            if (user is null)
             {
                 return Array.Empty<Device>();
             }
-			
+
             return dbContext.Devices
                 .Include(x => x.DeviceGroup)
                 .ThenInclude(x => x.Users)
@@ -1518,8 +1519,8 @@ namespace Remotely.Server.Services
 
             return dbContext.Devices.Count();
         }
-		
-		 public async Task<RemotelyUser> GetUserAsync(string username)
+
+        public async Task<RemotelyUser> GetUserAsync(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -1529,7 +1530,7 @@ namespace Remotely.Server.Services
 
             return await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
-		
+
         public RemotelyUser GetUserByID(string userID)
         {
             if (string.IsNullOrWhiteSpace(userID))
@@ -1617,7 +1618,7 @@ namespace Remotely.Server.Services
             using var dbContext = _dbFactory.CreateDbContext();
 
             var devices = dbContext.Devices
-			.Include(x => x.ScriptResults)
+                .Include(x => x.ScriptResults)
                 .Include(x => x.ScriptRuns)
                 .Include(x => x.ScriptSchedules)
                 .Include(x => x.ScriptRunsCompleted)

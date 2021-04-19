@@ -5,9 +5,9 @@ export class RtcSession {
         this.MessagePack = window['MessagePack'];
     }
     Init(iceServers) {
-            this.PeerConnection = new RTCPeerConnection({
-                        iceServers: iceServers.map(x => {
-            return {
+        this.PeerConnection = new RTCPeerConnection({
+            iceServers: iceServers.map(x => {
+                return {
                     urls: x.Url,
                     username: x.TurnUsername,
                     credential: x.TurnPassword,
@@ -23,15 +23,15 @@ export class RtcSession {
                 console.log("Data channel closed.");
                 UI.ConnectionP2PIcon.style.display = "none";
                 UI.ConnectionRelayedIcon.style.display = "unset";
+                UI.StreamVideoButton.setAttribute("hidden", "hidden");
                 UI.ScreenViewer.removeAttribute("hidden");
-				UI.StreamVideoButton.setAttribute("hidden", "hidden");
                 UI.VideoScreenViewer.setAttribute("hidden", "hidden");
             };
             this.DataChannel.onerror = (ev) => {
                 console.log("Data channel error.", ev.error);
                 UI.ConnectionP2PIcon.style.display = "none";
                 UI.ConnectionRelayedIcon.style.display = "unset";
-				UI.StreamVideoButton.setAttribute("hidden", "hidden");
+                UI.StreamVideoButton.setAttribute("hidden", "hidden");
                 UI.ScreenViewer.removeAttribute("hidden");
                 UI.VideoScreenViewer.setAttribute("hidden", "hidden");
             };
@@ -43,7 +43,7 @@ export class RtcSession {
                 console.log("Data channel opened.");
                 UI.ConnectionP2PIcon.style.display = "unset";
                 UI.ConnectionRelayedIcon.style.display = "none";
-				UI.StreamVideoButton.removeAttribute("hidden");
+                UI.StreamVideoButton.removeAttribute("hidden");
                 if (ViewerApp.Settings.streamModeEnabled) {
                     UI.UpdateStreamingToggled(true);
                     ViewerApp.MessageSender.SendToggleWebRtcVideo(true);
@@ -78,7 +78,7 @@ export class RtcSession {
         await ViewerApp.ViewerHubConnection.SendRtcAnswer(this.PeerConnection.localDescription);
         console.log("Set RTC offer.");
     }
-        async ReceiveCandidate(candidate) {
+    async ReceiveCandidate(candidate) {
         await this.PeerConnection.addIceCandidate(candidate);
         console.log("Set ICE candidate.");
     }

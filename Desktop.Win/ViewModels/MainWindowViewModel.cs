@@ -235,10 +235,10 @@ namespace Remotely.Desktop.Win.ViewModels
                 {
                     await GetSessionID();
                 };
-				
-				await DeviceInitService.GetInitParams();
+
+                await DeviceInitService.GetInitParams();
                 ApplyBranding();
-				
+
                 await GetSessionID();
             }
             catch (Exception ex)
@@ -260,7 +260,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
             prompt.Owner = App.Current?.MainWindow;
             prompt.ShowDialog();
-                        var result = prompt.ViewModel.Host?.Trim()?.TrimEnd('/');
+            var result = prompt.ViewModel.Host?.Trim()?.TrimEnd('/');
 
             if (!Uri.TryCreate(result, UriKind.Absolute, out var serverUri) ||
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
@@ -269,7 +269,8 @@ namespace Remotely.Desktop.Win.ViewModels
                 MessageBox.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-			Host = result;
+
+            Host = result;
             var config = _configService.GetConfig();
             config.Host = Host;
             _configService.Save(config);
@@ -304,7 +305,7 @@ namespace Remotely.Desktop.Win.ViewModels
             App.Current.Dispatcher.Invoke(() =>
             {
                 App.Current.MainWindow.Activate();
-                var result = MessageBox.Show(Application.Current.MainWindow, $"Vous avez recu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Demande de connexion", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(Application.Current.MainWindow, $"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     Task.Run(() =>
