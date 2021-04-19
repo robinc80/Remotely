@@ -8,17 +8,17 @@ export class RtcSession {
     DataChannel: RTCDataChannel;
     MessagePack: any = window['MessagePack'];
     Init(iceServers: IceServerModel[]) {
-		
-		    var servers = iceServers.map(x => {
+
+        var servers = iceServers.map(x => {
             return {
                 urls: x.Urls,
                 username: x.Username,
                 credential: x.Credential,
                 credentialType: "password"
-
+                
             } as RTCIceServer
         });
-       
+
         this.PeerConnection = new RTCPeerConnection({
             iceServers: servers
         });
@@ -52,7 +52,6 @@ export class RtcSession {
                 console.log("Data channel opened.");
                 UI.ConnectionP2PIcon.style.display = "unset";
                 UI.ConnectionRelayedIcon.style.display = "none";
-
             };
         };
         this.PeerConnection.onconnectionstatechange = function (ev) {
@@ -63,6 +62,7 @@ export class RtcSession {
             console.log("ICE connection state changed to " + this.iceConnectionState);
         }
         this.PeerConnection.onicecandidate = async (ev) => {
+            console.log("ICE candidate ready: ", ev.candidate);
             await ViewerApp.ViewerHubConnection.SendIceCandidate(ev.candidate);
         };
 
@@ -85,21 +85,13 @@ export class RtcSession {
         await ViewerApp.ViewerHubConnection.SendRtcAnswer(this.PeerConnection.localDescription);
         console.log("Set RTC offer.");
     }
-    async ReceiveCandidate(candidate: string, sdpMid: string, sdpMLineIndex: number, usernameFragment: string) {
+    async ReceiveCandidate(candidateJson: string) {
         When(() => !!this.PeerConnection).then(async () => {
-            if (!candidate.startsWith("candidate:")) {
-                candidate = `candidate:${candidate}`;
-            }
 
-            var rtcCandidate = {
-                candidate: candidate,
-                sdpMid: sdpMid,
-                sdpMLineIndex: sdpMLineIndex,
-                usernameFragment: usernameFragment
-            } as RTCIceCandidateInit;
+            var rtcCandidate = JSON.parse(candidateJson) as RTCIceCandidate;
 
             await this.PeerConnection.addIceCandidate(rtcCandidate);
-            console.log("Set ICE candidate.", candidate);
+            console.log("Set ICE candidate.", rtcCandidate);
         });
     }
 
