@@ -15,7 +15,8 @@ import {
     ClipboardTransferDto,
     FileDto,
     WindowsSessionsDto,
-    GenericDto
+    GenericDto,
+    ToggleWebRtcVideoDto
 } from "./Interfaces/Dtos.js";
 import { CreateGUID, When } from "./Utilities.js";
 import { FileTransferProgress } from "./UI.js";
