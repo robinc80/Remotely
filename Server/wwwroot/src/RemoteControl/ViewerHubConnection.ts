@@ -55,10 +55,10 @@ export class ViewerHubConnection {
 
     SendIceCandidate(candidate: RTCIceCandidate) {
         if (candidate) {
-            this.Connection.invoke("SendIceCandidateToAgent", candidate.candidate, candidate.sdpMLineIndex, candidate.sdpMid);
+                        this.Connection.invoke("SendIceCandidateToAgent", candidate.candidate, candidate.sdpMid, candidate.sdpMLineIndex, candidate.usernameFragment);
         }
         else {
-            this.Connection.invoke("SendIceCandidateToAgent", "", 0, "");
+            this.Connection.invoke("SendIceCandidateToAgent", "{}");
         }
     }
     SendRtcAnswer(sessionDescription: RTCSessionDescription) {

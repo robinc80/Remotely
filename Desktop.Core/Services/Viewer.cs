@@ -11,16 +11,15 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Threading;
+using System.Text.Json;
 
 namespace Remotely.Desktop.Core.Services
 {
     public class Viewer : IDisposable
     {
-		private long _bytesSent;
+        private long _bytesSent;
         private TimeSpan _timeSpentSending = TimeSpan.Zero;
-		
+
         public Viewer(ICasterSocket casterSocket,
             IScreenCapturer screenCapturer,
             IClipboardService clipboardService,
@@ -56,14 +55,6 @@ namespace Remotely.Desktop.Core.Services
             get
             {
                 return RtcSession?.IsPeerConnected == true && RtcSession?.IsDataChannelOpen == true;
-            }
-        }
-
-        public bool IsUsingWebRtcVideo
-        {
-            get
-            {
-                return RtcSession?.IsPeerConnected == true && RtcSession?.IsVideoTrackConnected == true;
             }
         }
 
@@ -109,11 +100,15 @@ namespace Remotely.Desktop.Core.Services
 
                 RtcSession.LocalSdpReady += async (sender, sdp) =>
                 {
-                    await CasterSocket.SendRtcOfferToBrowser(sdp.Content, ViewerConnectionID, iceServers);
+                    await CasterSocket.SendRtcOfferToBrowser(sdp.sdp, ViewerConnectionID, iceServers);
                 };
                 RtcSession.IceCandidateReady += async (sender, candidate) =>
                 {
-                    await CasterSocket.SendIceCandidateToBrowser(candidate.Content, candidate.SdpMlineIndex, candidate.SdpMid, ViewerConnectionID);
+                    await CasterSocket.SendIceCandidateToBrowser(candidate.candidate, 
+                        candidate.sdpMid, 
+                        candidate.sdpMLineIndex,
+                        candidate.usernameFragment,
+                        ViewerConnectionID);
                 };
 
                 await RtcSession.Init(iceServers);
@@ -175,11 +170,11 @@ namespace Remotely.Desktop.Core.Services
                 using var br = new BinaryReader(fs);
                 while (fs.Position < fs.Length)
                 {
-					if (cancelToken.IsCancellationRequested)
+                    if (cancelToken.IsCancellationRequested)
                     {
                         return;
                     }
-					
+
                     fileDto = new FileDto()
                     {
                         Buffer = br.ReadBytes(50_000),
@@ -203,7 +198,7 @@ namespace Remotely.Desktop.Core.Services
                 };
 
                 await SendToViewer(async () => await RtcSession.SendDto(fileDto),
-                async () => await CasterSocket.SendDtoToViewer(fileDto, ViewerConnectionID));
+                    async () => await CasterSocket.SendDtoToViewer(fileDto, ViewerConnectionID));
 
                 progressUpdateCallback(1);
             }
@@ -229,7 +224,7 @@ namespace Remotely.Desktop.Core.Services
             var width = screenFrame.Width;
             var height = screenFrame.Height;
 
-			var sw = Stopwatch.StartNew();
+            var sw = Stopwatch.StartNew();
 
             for (var i = 0; i < screenFrame.EncodedImageBytes.Length; i += 50_000)
             {
@@ -256,7 +251,7 @@ namespace Remotely.Desktop.Core.Services
                 EndOfFrame = true
             };
 
-                        await SendToViewer(
+            await SendToViewer(
                 async () => await RtcSession.SendDto(endOfFrameDto),
                 async () => await CasterSocket.SendDtoToViewer(endOfFrameDto, ViewerConnectionID));
 
@@ -304,11 +299,6 @@ namespace Remotely.Desktop.Core.Services
             TaskHelper.DelayUntil(() =>
                 !PendingSentFrames.TryPeek(out var result) || DateTimeOffset.Now - result.Timestamp < TimeSpan.FromSeconds(1),
                 TimeSpan.FromSeconds(10));
-        }
-
-        public void ToggleWebRtcVideo(bool toggleOn)
-        {
-            RtcSession.ToggleWebRtcVideo(toggleOn);
         }
 
         private async void AudioCapturer_AudioSampleReady(object sender, byte[] sample)

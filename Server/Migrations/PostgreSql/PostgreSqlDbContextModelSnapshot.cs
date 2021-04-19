@@ -307,6 +307,8 @@ namespace Remotely.Server.Migrations.PostgreSql
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
+					b.Property<string>("Details")
+                        .HasColumnType("text");
                     b.Property<string>("DeviceID")
                         .HasColumnType("text");
 

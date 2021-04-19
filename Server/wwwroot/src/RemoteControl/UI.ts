@@ -22,7 +22,6 @@ export var ScreenSelectBar = document.getElementById("screenSelectBar") as HTMLD
 export var ActionsBar = document.getElementById("actionsBar") as HTMLDivElement;
 export var ViewBar = document.getElementById("viewBar") as HTMLDivElement;
 export var ChangeScreenButton = document.getElementById("changeScreenButton") as HTMLButtonElement;
-export var StreamVideoButton = document.getElementById("streamVideoButton") as HTMLButtonElement;
 export var FitToScreenButton = document.getElementById("fitToScreenButton") as HTMLButtonElement;
 export var BlockInputButton = document.getElementById("blockInputButton") as HTMLButtonElement;
 export var DisconnectButton = document.getElementById("disconnectButton") as HTMLButtonElement;
@@ -124,7 +123,7 @@ export function ToggleConnectUI(shown: boolean) {
         else {
             DisconnectedBox.style.removeProperty("display");
         }
-        StreamVideoButton.classList.remove("toggled");
+		ConnectBox.style.removeProperty("display");
         BlockInputButton.classList.remove("toggled");
         AudioButton.classList.remove("toggled");
     }

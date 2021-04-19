@@ -53,8 +53,8 @@ namespace Remotely.Desktop.Core.Services
                 var viewer = ServiceContainer.Instance.GetRequiredService<Viewer>();
                 viewer.Name = screenCastRequest.RequesterName;
                 viewer.ViewerConnectionID = screenCastRequest.ViewerID;
-				
-				var screenBounds = viewer.Capturer.CurrentScreenBounds;
+
+                var screenBounds = viewer.Capturer.CurrentScreenBounds;
 
                 Logger.Write($"Starting screen cast.  Requester: {viewer.Name}. " +
                     $"Viewer ID: {viewer.ViewerConnectionID}.  App Mode: {_conductor.Mode}");
@@ -106,7 +106,7 @@ namespace Remotely.Desktop.Core.Services
                 }
 
 
-                if (EnvironmentHelper.IsWindows && screenCastRequest.UseWebRtc)
+                if (screenCastRequest.UseWebRtc)
                 {
                     await viewer.InitializeWebRtc();
                 }
@@ -118,11 +118,6 @@ namespace Remotely.Desktop.Core.Services
                 {
                     try
                     {
-                        if (viewer.IsUsingWebRtcVideo)
-                        {
-                            Thread.Sleep(100);
-                            continue;
-                        }
                         if (viewer.IsStalled)
                         {
                             // Viewer isn't responding.  Abort sending.
@@ -184,7 +179,7 @@ namespace Remotely.Desktop.Core.Services
                                 currentQuality = Math.Max(_minQuality, Math.Min(_maxQuality, (int)(.1 / timeToSend * _maxQuality)));
                                 if (currentQuality < _maxQuality - 10)
                                 {
-									refreshNeeded = true;
+                                    refreshNeeded = true;
                                     Debug.WriteLine($"Quality Reduced: {currentQuality}");
                                 }
                             }
