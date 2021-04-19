@@ -51,6 +51,7 @@ jobs:
       with:
         #repository: lucent-sea/Remotely
         fetch-depth: 0
+        submodules: recursive
 
     # Test the Server URL to make sure it's valid
     - name: Check Server URL Format
