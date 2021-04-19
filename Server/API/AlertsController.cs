@@ -29,7 +29,7 @@ namespace Remotely.Server.API
         {
             Request.Headers.TryGetValue("OrganizationID", out var orgID);
 
-            DataService.WriteEvent("Alert created.  Alert Options: " + JsonSerializer.Serialize(alertOptions), orgID);
+            DataService.WriteEvent("Alerte créée.  Options: " + JsonSerializer.Serialize(alertOptions), orgID);
 
             if (alertOptions.ShouldAlert)
             {

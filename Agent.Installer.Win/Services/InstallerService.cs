@@ -141,7 +141,7 @@ namespace Remotely.Agent.Installer.Win.Services
             var result = principal.IsInRole(WindowsBuiltInRole.Administrator);
             if (!result)
             {
-                MessageBoxEx.Show("Elevated privileges are required.  Please restart the installer using 'Run as administrator'.", "Elevation Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBoxEx.Show("Privilèges d'administrateur nécessaires.  Veuillez recommencer en sélectionnant 'Exécuter en tant qu'administrateur'.", "Elevation Required", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             return result;
         }
@@ -220,7 +220,7 @@ namespace Remotely.Agent.Installer.Win.Services
             var shell = new WshShell();
             var shortcutLocation = Path.Combine(InstallPath, "Get Support.lnk");
             var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
-            shortcut.Description = "Get IT support";
+            shortcut.Description = "Demande d'assistance";
             shortcut.IconLocation = Path.Combine(InstallPath, "Remotely_Agent.exe");
             shortcut.TargetPath = serverUrl.TrimEnd('/') + $"/GetSupport?deviceID={deviceUuid}";
             shortcut.Save();
@@ -239,7 +239,7 @@ namespace Remotely.Agent.Installer.Win.Services
 
             var remotelyKey = baseKey.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Remotely", true);
             remotelyKey.SetValue("DisplayIcon", Path.Combine(InstallPath, "Remotely_Agent.exe"));
-            remotelyKey.SetValue("DisplayName", "Remotely");
+            remotelyKey.SetValue("DisplayName", "Le garage à PC");
             remotelyKey.SetValue("DisplayVersion", version.FileVersion);
             remotelyKey.SetValue("InstallDate", DateTime.Now.ToShortDateString());
             remotelyKey.SetValue("Publisher", "Translucency Software");
@@ -260,7 +260,7 @@ namespace Remotely.Agent.Installer.Win.Services
             }
             else
             {
-                ProgressMessageChanged.Invoke(this, "Downloading Remotely agent.");
+                ProgressMessageChanged.Invoke(this, "Téléchargement de l'agent.");
                 using (var client = new WebClient())
                 {
                     client.DownloadProgressChanged += (sender, args) =>
@@ -272,7 +272,7 @@ namespace Remotely.Agent.Installer.Win.Services
                 }
             }
 
-            ProgressMessageChanged.Invoke(this, "Extracting Remotely files.");
+            ProgressMessageChanged.Invoke(this, "Extraction des fichiers.");
             ProgressValueChanged?.Invoke(this, 0);
 
             var tempDir = Path.Combine(Path.GetTempPath(), "RemotelyUpdate");
@@ -366,7 +366,7 @@ namespace Remotely.Agent.Installer.Win.Services
         private void InstallService()
         {
             Logger.Write("Installing service.");
-            ProgressMessageChanged?.Invoke(this, "Installing Remotely service.");
+            ProgressMessageChanged?.Invoke(this, "Installation du service.");
             var serv = ServiceController.GetServices().FirstOrDefault(ser => ser.ServiceName == "Remotely_Service");
             if (serv == null)
             {
@@ -422,7 +422,7 @@ namespace Remotely.Agent.Installer.Win.Services
 
         private async Task StopProcesses()
         {
-            ProgressMessageChanged?.Invoke(this, "Stopping Remotely processes.");
+            ProgressMessageChanged?.Invoke(this, "Arrêt des processus Remotely.");
             var procs = Process.GetProcessesByName("Remotely_Agent").Concat(Process.GetProcessesByName("Remotely_Desktop"));
 
             foreach (var proc in procs)

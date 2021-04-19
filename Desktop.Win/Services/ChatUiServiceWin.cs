@@ -25,7 +25,7 @@ namespace Remotely.Desktop.Win.Services
             {
                 if (chatMessage.Disconnected)
                 {
-                    MessageBox.Show("Your partner has disconnected.", "Partner Disconnected", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Partenaire déconnecté.", "Partner Disconnected", MessageBoxButton.OK, MessageBoxImage.Information);
                     App.Current.Shutdown();
                     return;
                 }

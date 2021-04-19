@@ -9,9 +9,9 @@
     <div class="row mt-5">
         <div class="col-sm-6 offset-2">
 
-            <h3>Device ID:</h3>
+            <h3>ID:</h3>
             <div class="input-group mb-2">
-                <input type="text" class="form-control" placeholder="Enter a device ID to see its details"
+                <input type="text" class="form-control" placeholder="Entrez l'ID d'un appareil"
                        @bind="_inputDeviceId"
                        @bind:event="oninput"
                        @onkeydown="EvaluateDeviceIdInputKeyDown">
@@ -31,24 +31,24 @@
 }
 else if (Device is null)
 {
-    <h3>Device not found.</h3>
+    <h3>Appareil non trouvé.</h3>
 }
 else if (!DataService.DoesUserHaveAccessToDevice(Device.ID, User))
 {
-    <h3>Unauthorized.</h3>
+    <h3>Accès interdit.</h3>
 }
 else
 {
     <TabControl InitialActiveTab="@(ActiveTab ?? "device")">
         <TabHeaders>
             <TabHeader Name="device" NavigationUri="@($"/device-details/{DeviceId}/device")">
-                Details
+                Détails
             </TabHeader>
             <TabHeader Name="remote-logs" OnActivated="GetRemoteLogs" NavigationUri="@($"/device-details/{DeviceId}/remote-logs")">
-                Remote Logs
+                Logs
             </TabHeader>
             <TabHeader Name="script-history" OnActivated="GetScriptHistory" NavigationUri="@($"/device-details/{DeviceId}/script-history")">
-                Script History
+                Historique des scripts
             </TabHeader>
         </TabHeaders>
 
@@ -56,7 +56,7 @@ else
             <TabContent Name="device">
                 <div class="col-sm-8 mb-2">
                     <h3 class="mb-3 mt-3">
-                        Device Details
+                        Détails
                     </h3>
 
                     <EditForm Model="Device" OnValidSubmit="HandleValidSubmit" @onkeydown="EditFormKeyDown">
@@ -70,40 +70,40 @@ else
 
 
                         <div class="form-group row">
-                            <label for="device-name" class="col-sm-2 col-form-label">Device:</label>
+                            <label for="device-name" class="col-sm-2 col-form-label">Appareil :</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="device-name" readonly value="@Device.DeviceName" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="device-id" class="col-sm-2 col-form-label">Device ID:</label>
+                            <label for="device-id" class="col-sm-2 col-form-label">ID :</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="device-id" readonly value="@Device.ID" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="agent-version" class="col-sm-2 col-form-label">Agent Version:</label>
+                            <label for="agent-version" class="col-sm-2 col-form-label">Version de l'agent :</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="agent-version" readonly value="@Device.AgentVersion" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="agent-platform" class="col-sm-2 col-form-label">Platform:</label>
+                            <label for="agent-platform" class="col-sm-2 col-form-label">Plateforme :</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="agent-platform" readonly value="@Device.Platform" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="agent-os-description" class="col-sm-2 col-form-label">Platform:</label>
+                            <label for="agent-os-description" class="col-sm-2 col-form-label">OS :</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="agent-os-description" readonly value="@Device.OSDescription" />
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="agent-storage-percent" class="col-sm-2 col-form-label">
-                                Disk:
+                                Stockage:
                                 <button type="button" class="btn btn-link p-0 m-0" @onclick="ShowAllDisks" style="font-size: 50%">
-                                    (View All)
+                                    Tout voir
                                 </button>
                             </label>
                             <div class="col-sm-10">
@@ -112,7 +112,7 @@ else
                         </div>
                         <div class="form-group row">
                             <label for="agent-storage-total" class="col-sm-2 col-form-label">
-                                Total Storage:
+                                Stockage total :
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="agent-storage-total" readonly value="@(Device.TotalStorage)" />
@@ -120,7 +120,7 @@ else
                         </div>
                         <div class="form-group row">
                             <label for="agent-memory-percent" class="col-sm-2 col-form-label">
-                                Memory:
+                                RAM :
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="agent-memory-percent" readonly value="@(MathHelper.GetFormattedPercent(Device.UsedMemoryPercent))" />
@@ -128,21 +128,21 @@ else
                         </div>
                         <div class="form-group row">
                             <label for="agent-memory-total" class="col-sm-2 col-form-label">
-                                Total Memory:
+                                RAM totale:
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="agent-memory-total" readonly value="@(Device.TotalMemory)" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="device-alias" class="col-sm-2 col-form-label">Device Alias:</label>
+                            <label for="device-alias" class="col-sm-2 col-form-label">Alias :</label>
                             <div class="col-sm-10">
                                 <InputText class="form-control" @bind-Value="@Device.Alias" />
                                 <ValidationMessage For="() => Device.Alias" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="webrtc-setting" class="col-sm-2 col-form-label">WebRTC Setting:</label>
+                            <label for="webrtc-setting" class="col-sm-2 col-form-label">WebRTC :</label>
                             <div class="col-sm-10">
                                 <InputSelect @bind-Value="Device.WebRtcSetting" class="form-control">
                                     @foreach (var setting in Enum.GetValues(typeof(WebRtcSetting)))
@@ -155,10 +155,10 @@ else
 
                         </div>
                         <div class="form-group row">
-                            <label for="device-groups" class="col-sm-2 col-form-label">Device Group:</label>
+                            <label for="device-groups" class="col-sm-2 col-form-label">Groupe:</label>
                             <div class="col-sm-10">
                                 <InputSelect @bind-Value="Device.DeviceGroupID" class="form-control">
-                                    <option value="">None</option>
+                                    <option value="">Aucun</option>
 
                                     @foreach (var group in DataService.GetDeviceGroups(Username))
                                         {
@@ -183,7 +183,7 @@ else
                             </div>
                         </div>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
                         </div>
                     </EditForm>
                 </div>

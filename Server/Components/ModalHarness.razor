@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">@ModalService.Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseModal">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" @onclick="CloseModal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -31,7 +31,7 @@
                 {
                     <button @key="button" type="button" class="@button.Class" @onclick="() => ExecuteButtonAction(button.OnClick)">@button.Text</button>
                 }
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Fermer</button>
             </div>
         </div>
     </div>

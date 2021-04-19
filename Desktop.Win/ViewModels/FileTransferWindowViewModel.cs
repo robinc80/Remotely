@@ -45,7 +45,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
             var ofd = new OpenFileDialog()
             {
-                Title = "Upload File via Remotely",
+                Title = "Upload de fichiers",
                 Multiselect = true,
                 CheckFileExists = true,
                 InitialDirectory = Directory.Exists(userDir) ? userDir : rootDir

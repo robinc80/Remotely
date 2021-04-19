@@ -57,7 +57,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
-                        <TextBlock FontSize="14">Server URL:</TextBlock>
+                        <TextBlock FontSize="14">URL du serveur :</TextBlock>
                         
                         <Button Grid.Column="1" Grid.Row="0" 
                                 Background="White"
@@ -78,7 +78,7 @@
                     <TextBox Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Text="{Binding ServerUrl}" FontSize="14" />
 
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
-                        <TextBlock FontSize="14">Organization ID</TextBlock>
+                        <TextBlock FontSize="14">ID</TextBlock>
 
                         <Button Grid.Column="1" Grid.Row="0" 
                                 Background="White"
@@ -97,7 +97,7 @@
                     <TextBox  Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="{Binding OrganizationID}" FontSize="14" />
 
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4">
-                        <TextBlock FontSize="14">Support Shortcut</TextBlock>
+                        <TextBlock FontSize="14">Raccourci</TextBlock>
 
                         <Button Grid.Column="1" Grid.Row="0" 
                                 Background="White"
@@ -136,7 +136,7 @@
                     Style="{StaticResource NormalButton}" 
                     Margin="5,0,0,0"
                     Click="CloseButton_Click">
-                Close
+                Fermer
             </Button>
             <Button DockPanel.Dock="Right" 
                     HorizontalAlignment="Right"
@@ -145,7 +145,7 @@
                     IsEnabled="{Binding IsReadyState}"
                     Visibility="{Binding IsServiceInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding UninstallCommand}">
-                Uninstall
+                Désinstaller
             </Button>
             <Button DockPanel.Dock="Right" 
                     HorizontalAlignment="Right" 

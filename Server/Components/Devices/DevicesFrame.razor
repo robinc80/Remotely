@@ -1,7 +1,7 @@
 ﻿@attribute [Authorize]
 @inherits AuthComponentBase
 
-<h3>Devices</h3>
+<h3>Appareils</h3>
 
 <div @onclick="ClearSelectedCard">
     <div id="deviceControlsWrapper">
@@ -47,7 +47,7 @@
                     <div>Chercher</div>
                     <input class="form-control d-inline"
                            style="width: 200px"
-                           placeholder="Search device properties"
+                           placeholder="Chercher selon propriétés"
                            @bind="_filter"
                            @bind:event="oninput" />
                 </div>

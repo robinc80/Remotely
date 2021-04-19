@@ -29,13 +29,13 @@
 
                     <div class="mt-2 col-md-6 col-lg-4">
                         <label>Nom du script</label>
-                        <InputText class="form-control" DisplayName="Script Name" @bind-Value="_selectedScript.Name" placeholder="Script name" />
+                        <InputText class="form-control" DisplayName="Nom du script" @bind-Value="_selectedScript.Name" placeholder="Script name" />
                         <ValidationMessage For="() => _selectedScript.Name" />
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
                         <label>Chemin du dossier</label>
-                        <InputText class="form-control" DisplayName="Folder Path" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
+                        <InputText class="form-control" DisplayName="Chemin d'accès" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
                         <ValidationMessage For="() => _selectedScript.FolderPath" />
                     </div>
 
@@ -49,7 +49,7 @@
                     <div class="mt-2 col-md-6 col-lg-4">
                         <label>Quick Script?</label>
                         <br />
-                        <InputCheckbox DisplayName="Quick Script?" @bind-Value="_selectedScript.IsQuickScript" />
+                        <InputCheckbox DisplayName="Script rapide ?" @bind-Value="_selectedScript.IsQuickScript" />
                         <ValidationMessage For="() => _selectedScript.IsQuickScript" />
                     </div>
                     <div class="mt-2 col-md-6 col-lg-4">
@@ -61,7 +61,7 @@
                         <button class="btn btn-primary"
                                 type="submit"
                                 disabled="@(!CanModifyScript)">
-                            Save
+                            Enregistrer
                         </button>
 
                         <button class="btn btn-success ml-3" type="button" @onclick="CreateNew">
@@ -146,7 +146,7 @@
             <h5>Saved Scripts</h5>
             <div>
                 <input type="checkbox" @bind="ParentPage.ShowOnlyMyScripts" />
-                <span class="align-top">Show only mine</span>
+                <span class="align-top">Montrer les miens uniquement</span>
             </div>
         </div>
         <TreeView DataSource="ParentPage.TreeNodes"

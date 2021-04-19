@@ -25,12 +25,12 @@
         <Button Classes="NormalButton" HorizontalAlignment="Right" IsVisible="{Binding AreYesNoButtonsVisible}" Margin="5,0,5,0"
                 Command="{Binding YesCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                Content="Yes">
+                Content="Oui">
         </Button>
         <Button Classes="NormalButton" HorizontalAlignment="Right" IsVisible="{Binding AreYesNoButtonsVisible}" Margin="5,0,5,0"
                 Command="{Binding NoCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                Content="No">
+                Content="Non">
         </Button>
       </StackPanel>
       

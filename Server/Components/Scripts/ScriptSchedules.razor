@@ -2,7 +2,7 @@
 @attribute [Authorize]
 
 
-<h4 class="mt-3">Add or Edit Schedule</h4>
+<h4 class="mt-3">Ajouter ou modifier une programmation</h4>
 
 <EditForm Model="_selectedSchedule" OnValidSubmit="OnValidSubmit">
     <div class="row">
@@ -19,33 +19,33 @@
         <div class="mt-2 col-12">
             <div>
                 <button type="submit" class="btn btn-primary align-middle mr-3" disabled="@(!CanModifyScript)">
-                    Save
+                    Enregistrer
                 </button>
 
                 <button type="button" class="btn btn-success mr-3" @onclick="CreateNew">
-                    New
+                    Nouveau
                 </button>
                 <button class="btn btn-danger mr-4" type="button"
                         disabled="@(!CanDeleteScript)"
                         @onclick="DeleteSelectedSchedule">
-                    Delete
+                    Effacer
                 </button>
 
                 <InputCheckbox class="mr-2 align-middle" @bind-Value="_selectedSchedule.RunOnNextConnect" />
-                <span class="align-middle">If devices are offline, run immediately when next connected</span>
+                <span class="align-middle">Si déconnecté, lancer dès la connexion</span>
             </div>
         </div>
 
         <div class="mt-2 col-md-6 col-lg-4">
             <div>
-                <label>Schedule Name</label>
+                <label>Nom de la programmation</label>
                 <InputText class="form-control" @bind-Value="_selectedSchedule.Name" />
             </div>
         </div>
 
         <div class="mt-2 col-md-6 col-lg-4">
             <div>
-                <label>Start At</label>
+                <label>Démarrer à</label>
                 <input type="datetime-local" step="1" class="form-control" @bind="_selectedSchedule.StartAt" />
             </div>
         </div>
@@ -53,7 +53,7 @@
 
         <div class="mt-2 col-md-6 col-lg-4">
             <div>
-                <label>Repeat Interval</label>
+                <label>Répéter</label>
                 <InputSelect @bind-Value="_selectedSchedule.Interval" class="form-control">
                     @foreach (var interval in Enum.GetValues<RepeatInterval>())
                     {
@@ -66,10 +66,10 @@
 
     <div class="row">
         <div class="mt-2 col-md-6 col-lg-4">
-            <label>Saved Scripts</label>
+            <label>Scripts enregistrés</label>
             <div class="small">
                 <input type="checkbox" @bind="ParentPage.ShowOnlyMyScripts" />
-                <span class="align-top">Show only mine</span>
+                <span class="align-top">Montrer les miens uniquement</span>
             </div>
             <TreeView DataSource="ParentPage.TreeNodes"
                       ItemTypeSelector="x => x.ItemType"
@@ -83,7 +83,7 @@
         </div>
 
         <div class="mt-2 col-md-6 col-lg-4">
-            <label>Device Groups</label>
+            <label>Groupes</label>
             <div class="item-list-border">
                 @foreach (var deviceGroup in _deviceGroups)
                 {
@@ -99,7 +99,7 @@
         </div>
 
         <div class="mt-2 col-md-6 col-lg-4">
-            <label>Devices</label>
+            <label>Appareils</label>
             <div class="item-list-border">
                 @foreach (var device in _devices)
                 {
