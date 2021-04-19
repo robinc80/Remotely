@@ -139,6 +139,11 @@ export class MessageSender {
         this.SendToAgent(() => ViewerApp.RtcSession.SendDto(dto),
             () => ViewerApp.ViewerHubConnection.SendDtoToClient(dto));
     }
+	SendToggleWebRtcVideo(toggleOn: boolean) {
+        var dto = new ToggleWebRtcVideoDto(toggleOn);
+        this.SendToAgent(() => ViewerApp.RtcSession.SendDto(dto),
+            () => ViewerApp.ViewerHubConnection.SendDtoToClient(dto));
+    }
     SendClipboardTransfer(text: string, typeText: boolean) {
         var dto = new ClipboardTransferDto(text, typeText);
         this.SendToAgent(() => ViewerApp.RtcSession.SendDto(dto),
