@@ -84,11 +84,13 @@ export function ApplyInputHandlers() {
         }
 
         if (ViewerApp.ViewOnlyMode) {
+            alert("View-only mode is enabled.");
             return;
         }
 
         navigator.clipboard.readText().then(text => {
             ViewerApp.MessageSender.SendClipboardTransfer(text, true);
+            ShowMessage("Clipboard sent!");
         }, reason => {
             alert("Unable to read clipboard.  Please check your permissions.");
             console.log("Unable to read clipboard.  Reason: " + reason);
@@ -183,6 +185,7 @@ export function ApplyInputHandlers() {
             url = `${location.origin}${location.pathname}?clientID=${ViewerApp.CasterID}&serviceID=${ViewerApp.ServiceID}`;
         }
         ViewerApp.ClipboardWatcher.SetClipboardText(url);
+        ShowMessage("Link copied to clipboard.");
     });
     KeyboardButton.addEventListener("click", (ev) => {
         closeAllHorizontalBars(null);
