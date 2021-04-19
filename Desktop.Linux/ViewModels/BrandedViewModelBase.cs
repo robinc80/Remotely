@@ -20,6 +20,7 @@ namespace Remotely.Desktop.Linux.ViewModels
             DeviceInitService = ServiceContainer.Instance?.GetRequiredService<IDeviceInitService>();
 
             ApplyBranding();
+		}
 
         public Bitmap Icon { get; set; }
         public string ProductName { get; set; }
