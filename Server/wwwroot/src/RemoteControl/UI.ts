@@ -171,19 +171,6 @@ export function UpdateDisplays(selectedDisplay: string, displayNames: string[]) 
     }
 }
 
-export function UpdateStreamingToggled(toggleOn: boolean) {
-    if (toggleOn) {
-        StreamVideoButton.classList.add("toggled");
-        VideoScreenViewer.removeAttribute("hidden");
-        ScreenViewer.setAttribute("hidden", "hidden");
-    }
-    else {
-        StreamVideoButton.classList.remove("toggled");
-        ScreenViewer.removeAttribute("hidden");
-        VideoScreenViewer.setAttribute("hidden", "hidden");
-    }
-}
-
 export function UpdateWindowsSessions(windowsSessions: Array<WindowsSession>) {
     while (WindowsSessionSelect.options.length > 0) {
         WindowsSessionSelect.options.remove(0);
