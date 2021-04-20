@@ -259,7 +259,7 @@ namespace Remotely.Desktop.Core.Services
 
             await SendToViewer(
                 () => RtcSession.SendDto(endOfFrameDto),
-                () => CasterSocket.SendDtoToViewer(endOfFrameDto, ViewerConnectionID));async () => await RtcSession.SendDto(endOfFrameDto),
+                () => CasterSocket.SendDtoToViewer(endOfFrameDto, ViewerConnectionID));
 
             sw.Stop();
 
