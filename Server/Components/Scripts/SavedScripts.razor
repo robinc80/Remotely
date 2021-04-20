@@ -28,14 +28,14 @@
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Nom du script</label>
-                        <InputText class="form-control" DisplayName="Nom du script" @bind-Value="_selectedScript.Name" placeholder="Script name" />
+                        <label>Script Name</label>
+                        <InputText class="form-control" DisplayName="Script Name" @bind-Value="_selectedScript.Name" placeholder="Script name" />
                         <ValidationMessage For="() => _selectedScript.Name" />
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Chemin du dossier</label>
-                        <InputText class="form-control" DisplayName="Chemin d'accès" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
+                        <label>Folder Path</label>
+                        <InputText class="form-control" DisplayName="Folder Path" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
                         <ValidationMessage For="() => _selectedScript.FolderPath" />
                     </div>
 
@@ -49,7 +49,7 @@
                     <div class="mt-2 col-md-6 col-lg-4">
                         <label>Quick Script?</label>
                         <br />
-                        <InputCheckbox DisplayName="Script rapide ?" @bind-Value="_selectedScript.IsQuickScript" />
+                        <InputCheckbox DisplayName="Quick Script?" @bind-Value="_selectedScript.IsQuickScript" />
                         <ValidationMessage For="() => _selectedScript.IsQuickScript" />
                     </div>
                     <div class="mt-2 col-md-6 col-lg-4">
@@ -61,24 +61,24 @@
                         <button class="btn btn-primary"
                                 type="submit"
                                 disabled="@(!CanModifyScript)">
-                            Enregistrer
+                            Save
                         </button>
 
                         <button class="btn btn-success ml-3" type="button" @onclick="CreateNew">
-                            Nouveau
+                            New
                         </button>
                         <button class="btn btn-danger ml-3" type="button"
                                 disabled="@(!CanDeleteScript)"
                                 @onclick="DeleteSelectedScript">
-                            Effacer
+                            Delete
                         </button>
                     </div>
                     <div class="mt-2 col-12">
                         <button type="button" class="btn btn-link mr-3" @onclick="ToggleAlertOptionsShown">
-                            Options d'alerte
+                            Alert Options
                         </button>
                         <button type="button" class="btn btn-link" @onclick="ToggleEnvironmentVarsShown">
-                            Variables d'environnement
+                            Environment Variables
                         </button>
                     </div>
                     <div class="my-2 col-12 collapse @_alertOptionsShowClass">
@@ -90,7 +90,7 @@
                         </h5>
                         <div class="row">
                             <div class="mt-2 col-md-6">
-                                <label>Envoyer email</label>
+                                <label>Send Email</label>
                                 <br />
                                 <InputCheckbox DisplayName="Send Email on Error" @bind-Value="_selectedScript.SendEmailOnError" />
                                 <ValidationMessage For="() => _selectedScript.SendEmailOnError" />
@@ -105,7 +105,7 @@
                                 <ValidationMessage For="() => _selectedScript.SendErrorEmailTo" />
                             </div>
                             <div class="mt-2 col-md-6">
-                                <label>Générer une alerte</label>
+                                <label>Generate Alert</label>
                                 <br />
                                 <InputCheckbox DisplayName="Alert on Error" @bind-Value="_selectedScript.GenerateAlertOnError" />
                                 <ValidationMessage For="() => _selectedScript.GenerateAlertOnError" />
@@ -146,7 +146,7 @@
             <h5>Saved Scripts</h5>
             <div>
                 <input type="checkbox" @bind="ParentPage.ShowOnlyMyScripts" />
-                <span class="align-top">Montrer les miens uniquement</span>
+                <span class="align-top">Show only mine</span>
             </div>
         </div>
         <TreeView DataSource="ParentPage.TreeNodes"

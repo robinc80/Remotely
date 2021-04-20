@@ -101,8 +101,8 @@ namespace Remotely.Agent.Services
 
                 // Start Desktop app.
                 await hubConnection.SendAsync("DisplayMessage", 
-                    "Lancement de la téléassistance.",
-                    "Lancement de la téléassistance.",
+                    "Starting remote control.",
+                    "Starting remote control.",
                     "bg-success",
                     requesterID);
                 if (WindowsIdentity.GetCurrent().IsSystem)

@@ -69,7 +69,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Impossible de se connecter au serveur. Vérifiez la connexion Internet.", EventType.Warning);
+                Logger.Write(ex, "Failed to connect to server.  Internet connection may be unavailable.", EventType.Warning);
                 return;
             }
 

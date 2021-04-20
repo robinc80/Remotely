@@ -71,7 +71,7 @@ namespace Remotely.Agent
             }
             else
             {
-                throw new NotSupportedException("OS non supporté.");
+                throw new NotSupportedException("Operating system not supported.");
             }
 
             Services = serviceCollection.BuildServiceProvider();
@@ -102,7 +102,7 @@ namespace Remotely.Agent
                         }
                         catch (Exception ex)
                         {
-                            Logger.Write(ex, "Impossible de lancer le service.", EventType.Warning);
+                            Logger.Write(ex, "Failed to start service.", EventType.Warning);
                         }
                     });
                 }

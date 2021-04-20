@@ -1,4 +1,7 @@
 export const Sound = new class {
+    constructor() {
+        this.SourceNodes = new Array();
+    }
     Init() {
         if (this.Context) {
             // Already initialized.
@@ -13,6 +16,9 @@ export const Sound = new class {
         else {
             return;
         }
+        this.BackgroundAudio = new Audio();
+        this.BackgroundNode = this.Context.createMediaElementSource(this.BackgroundAudio);
+        this.BackgroundNode.connect(this.Context.destination);
     }
     Play(buffer) {
         if (!this.Context) {

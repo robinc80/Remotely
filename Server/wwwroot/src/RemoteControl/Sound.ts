@@ -1,5 +1,9 @@
 ﻿export const Sound = new class {
     Context: AudioContext;
+    SourceNodes: Array<MediaElementAudioSourceNode> = new Array<MediaElementAudioSourceNode>();
+
+    BackgroundAudio: HTMLAudioElement;
+    BackgroundNode: MediaElementAudioSourceNode;
 
     Init() {
         if (this.Context) {
@@ -16,6 +20,9 @@
         else {
             return;
         }
+        this.BackgroundAudio = new Audio();
+        this.BackgroundNode = this.Context.createMediaElementSource(this.BackgroundAudio);
+        this.BackgroundNode.connect(this.Context.destination);
     }
 
     Play(buffer: Uint8Array) {
