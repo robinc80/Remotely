@@ -81,11 +81,10 @@ namespace Remotely.Server.Pages
 
         [Display(Name = "SMTP Host")]
         public string SmtpHost { get; set; }
-		
-		[Display(Name = "SMTP Local Domain")]
-        public string SmtpLocalDomain { get; set;
-		
-		[Display(Name = "SMTP Check Certificate Revocation")]
+        [Display(Name = "SMTP Local Domain")]
+        public string SmtpLocalDomain { get; set; }
+
+        [Display(Name = "SMTP Check Certificate Revocation")]
         public bool SmtpCheckCertificateRevocation { get; set; }
 
         [Display(Name = "SMTP Password")]
