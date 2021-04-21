@@ -83,7 +83,10 @@ namespace Remotely.Server.Pages
         public string SmtpHost { get; set; }
 		
 		[Display(Name = "SMTP Local Domain")]
-        public string SmtpLocalDomain { get; set; }
+        public string SmtpLocalDomain { get; set;
+		
+		[Display(Name = "SMTP Check Certificate Revocation")]
+        public bool SmtpCheckCertificateRevocation { get; set; }
 
         [Display(Name = "SMTP Password")]
         public string SmtpPassword { get; set; }
@@ -321,7 +324,7 @@ namespace Remotely.Server.Pages
             }
             else
             {
-                ToastService.ShowToast("Error sending email.  Check the server logs for details.");
+                ToastService.ShowToast("Error sending email.  Check the server logs for details.", classString: "bg-error");
                 _alertMessage = "Error sending email.  Check the server logs for details.";
             }
         }

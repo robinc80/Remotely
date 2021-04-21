@@ -250,6 +250,16 @@
                     <br />
                     <ValidationMessage For="() => Input.SmtpPort" />
                 </div>
+				<div class="form-group">
+                    <label class="control-label">SMTP Check Certificate Revocation</label>
+                    <div class="small text-muted">
+                        This sometimes needs to be disabled for Let's Encrypt certificates.
+                    </div>
+                    <br />
+                    <InputCheckbox @bind-Value="Input.SmtpCheckCertificateRevocation" autocomplete="off" />
+                    <br />
+                    <ValidationMessage For="() => Input.SmtpCheckCertificateRevocation" />
+                </div>
                 <div class="form-group">
                     <label class="control-label">Domaine SMTP</label>
                     <br />
