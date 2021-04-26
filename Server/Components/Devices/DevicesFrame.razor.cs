@@ -42,6 +42,8 @@ namespace Remotely.Server.Components.Devices
         private string _selectedSortProperty = "DeviceName";
         private ListSortDirection _sortDirection;
 
+		public Version HighestVersion { get; private set; }
+
         [Inject]
         private IClientAppState AppState { get; set; }
 
