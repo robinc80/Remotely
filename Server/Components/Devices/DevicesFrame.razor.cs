@@ -224,6 +224,8 @@ private void LoadDevices()
 
             _allDevices.AddRange(devices);
 
+			HighestVersion = _allDevices.Max(x => Version.TryParse(x.AgentVersion, out var result) ? result : default);
+			
             FilterDevices();
         }
 
