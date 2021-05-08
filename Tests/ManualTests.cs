@@ -96,10 +96,10 @@ namespace Remotely.Tests
                 var diffSize = 0;
                 using (var tempImage = (Bitmap)frame1.Clone(new Rectangle(diff.X, diff.Y, diff.Width, diff.Height), PixelFormat.Format32bppArgb))
                 {
-					var resizeW = diff.Width * 60 / 100;
+                    var resizeW = diff.Width * 60 / 100;
                     var resizeH = diff.Height * 60 / 100;
                     using var resized = new Bitmap(tempImage, new Size(resizeW, resizeH));
-					
+
                     using var ms = new MemoryStream();
                     resized.Save(ms, jpegEncoder, encoderParams);
                     diffSize = ms.ToArray().Length;

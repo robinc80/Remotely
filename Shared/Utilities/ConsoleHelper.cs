@@ -37,7 +37,7 @@ namespace Remotely.Shared.Utilities
             Console.WriteLine($"{prompt.Trim()}");
             Console.ForegroundColor = ConsoleColor.Gray;
 
-			if (!string.IsNullOrWhiteSpace(subprompt))
+            if (!string.IsNullOrWhiteSpace(subprompt))
             {
                 Console.WriteLine(subprompt);
             }
@@ -53,7 +53,7 @@ namespace Remotely.Shared.Utilities
             return response;
         }
 
-		public static bool TryParseBoolLike(string value, out bool result)
+        public static bool TryParseBoolLike(string value, out bool result)
         {
             result = false;
 
@@ -85,7 +85,7 @@ namespace Remotely.Shared.Utilities
         {
             WriteLine(message, extraEmptyLines, ConsoleColor.Red, callerName);
         }
-		
+
         public static void WriteLine(string message, int extraEmptyLines = 0, ConsoleColor foreground = ConsoleColor.Gray, string callerName = "")
         {
             if (!string.IsNullOrWhiteSpace(callerName))

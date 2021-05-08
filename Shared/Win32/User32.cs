@@ -1054,7 +1054,7 @@ namespace Remotely.Shared.Win32
             MAPVK_VK_TO_VSC_EX = 4
         }
 
-[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
         public struct DEVMODE
         {
             public const int CCHDEVICENAME = 32;
@@ -1126,7 +1126,7 @@ namespace Remotely.Shared.Win32
             [FieldOffset(120)]
             public Int32 dmDisplayFrequency;
         }
-		
+
         #endregion
 
         #region Structs
@@ -1259,9 +1259,9 @@ namespace Remotely.Shared.Win32
         [DllImport("user32.dll")]
         public static extern bool EnumDesktopsA(IntPtr hwinsta, EnumDesktopsDelegate lpEnumFunc, IntPtr lParam);
 
-		[DllImport("user32.dll")]
+        [DllImport("user32.dll")]
         public static extern bool EnumDisplaySettingsEx(string lpszDeviceName, uint iModeNum, out DEVMODE lpDevMode, uint dwFlags);
-		
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr OpenInputDesktop(uint dwFlags, bool fInherit, ACCESS_MASK dwDesiredAccess);
 

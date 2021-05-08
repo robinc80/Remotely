@@ -92,7 +92,7 @@ namespace Remotely.Desktop.Win.Services
                         Logger.Write("Init needed in GetNextFrame.");
                         Init();
                     }
-
+                    
                     // Sometimes DX will result in a timeout, even when there are changes
                     // on the screen.  I've observed this when a laptop lid is closed, or
                     // on some machines that aren't connected to a monitor.  This will

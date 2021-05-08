@@ -17,13 +17,13 @@ namespace Remotely.Desktop.Win.Models
             Device = device;
             OutputDuplication = outputDuplication;
             Texture2D = texture2D;
-			Rotation = rotation;
+            Rotation = rotation;
         }
 
         public Adapter1 Adapter { get; }
         public SharpDX.Direct3D11.Device Device { get; }
         public OutputDuplication OutputDuplication { get; }
-		public DisplayModeRotation Rotation { get; }
+        public DisplayModeRotation Rotation { get; }
         public Texture2D Texture2D { get; }
 
         public void Dispose()

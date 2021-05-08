@@ -40,11 +40,11 @@ namespace Remotely.Desktop.Win.Services
         {
             try
             {
-				if (args.Buffer.All(x => x == 0))
+                if (args.Buffer.All(x => x == 0))
                 {
                     return;
                 }
-				
+
                 if (args.BytesRecorded > 0)
                 {
                     lock (_tempBuffer)

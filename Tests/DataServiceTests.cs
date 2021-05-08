@@ -16,7 +16,7 @@ namespace Remotely.Tests
     {
         private IDataService _dataService;
         private IDeviceInformationService _deviceInfo;
-		private TestData _testData;
+        private TestData _testData;
 
         [TestMethod]
         public async Task AddAlert()
@@ -96,7 +96,7 @@ namespace Remotely.Tests
             Assert.AreEqual(1, _dataService.FilterDeviceIDsByUserPermission(allDevices, _testData.User2).Length);
         }
 
-[TestMethod]
+        [TestMethod]
         public async Task GetPendingScriptRuns_GivenMultipleRunsQueued_ReturnsOnlyLatest()
         {
             var now = Time.Now;
@@ -158,8 +158,8 @@ namespace Remotely.Tests
 
             Assert.AreEqual(0, pendingRuns.Count);
         }
-		
-		
+
+
         [TestCleanup]
         public void TestCleanup()
         {

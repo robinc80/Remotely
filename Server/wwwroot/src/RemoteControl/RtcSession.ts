@@ -72,7 +72,7 @@ export class RtcSession {
         };
 
         UI.VideoScreenViewer.onloadedmetadata = (ev) => {
-			UI.UpdateStreamingToggled(true);
+            UI.UpdateStreamingToggled(true);
             UI.VideoScreenViewer.play();
         }
         this.PeerConnection.ontrack = (event) => {

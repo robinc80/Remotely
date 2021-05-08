@@ -41,14 +41,14 @@ namespace Remotely.Server.Services
                 };
 
                 using var client = new SmtpClient();
-				
-				if (!string.IsNullOrWhiteSpace(AppConfig.SmtpLocalDomain))
+                
+                if (!string.IsNullOrWhiteSpace(AppConfig.SmtpLocalDomain))
                 {
                     client.LocalDomain = AppConfig.SmtpLocalDomain;
                 }
-				
-				client.CheckCertificateRevocation = AppConfig.SmtpCheckCertificateRevocation;
-				
+
+                client.CheckCertificateRevocation = AppConfig.SmtpCheckCertificateRevocation;
+
                 await client.ConnectAsync(AppConfig.SmtpHost, AppConfig.SmtpPort);
 
                 await client.AuthenticateAsync(AppConfig.SmtpUserName, AppConfig.SmtpPassword);

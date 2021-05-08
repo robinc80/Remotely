@@ -41,14 +41,14 @@ namespace Remotely.Server.Data
         public DbSet<ScriptResult> ScriptResults { get; set; }
         public DbSet<SharedFile> SharedFiles { get; set; }
         public new DbSet<RemotelyUser> Users { get; set; }
-		
-		
-		protected override void OnConfiguring(DbContextOptionsBuilder options)
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.ConfigureWarnings(x => x.Ignore(RelationalEventId.MultipleCollectionIncludeWarning));
             options.LogTo((message) => System.Diagnostics.Debug.Write(message));
         }
-		
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 

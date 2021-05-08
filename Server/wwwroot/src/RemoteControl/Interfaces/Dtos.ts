@@ -8,7 +8,7 @@ export interface AudioSampleDto extends BaseDto {
 }
 
 export interface CaptureFrameDto extends BaseDto {
-	Id: string;
+    Id: string;
     EndOfFrame: boolean;
     Left: number;
     Top: number;
@@ -191,6 +191,15 @@ export class ToggleAudioDto implements BaseDto {
 
     ToggleOn: boolean;
     DtoType: BaseDtoType = BaseDtoType.ToggleAudio;
+}
+
+export class ToggleAutoQualityDto implements BaseDto {
+    constructor(toggleOn: boolean) {
+        this.ToggleOn = toggleOn;
+    }
+
+    ToggleOn: boolean;
+    DtoType: BaseDtoType = BaseDtoType.ToggleAutoQuality;
 }
 
 export class ToggleBlockInputDto implements BaseDto {

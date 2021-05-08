@@ -16,9 +16,9 @@ namespace Remotely.Shared.Models.RemoteControlDtos
         [DataMember(Name = "Height")]
         public int Height { get; set; }
 
-		[DataMember(Name = "Id")]
+        [DataMember(Name = "Id")]
         public Guid Id { get; set; }
-		
+
         [DataMember(Name = "ImageBytes")]
         public byte[] ImageBytes { get; set; }
 
