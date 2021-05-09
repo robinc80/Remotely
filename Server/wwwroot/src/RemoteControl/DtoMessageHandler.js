@@ -76,7 +76,7 @@ export class DtoMessageHandler {
     }
     HandleClipboardText(clipboardText) {
         ViewerApp.ClipboardWatcher.SetClipboardText(clipboardText.ClipboardText);
-        ShowMessage("Presse-papier mis à jour.");
+        ShowMessage("Clipboard updated.");
     }
     HandleCursorChange(cursorChange) {
         UI.UpdateCursor(cursorChange.ImageBytes, cursorChange.HotSpotX, cursorChange.HotSpotY, cursorChange.CssOverride);
@@ -89,6 +89,7 @@ export class DtoMessageHandler {
     }
     HandleScreenData(screenDataDto) {
         UI.UpdateDisplays(screenDataDto.SelectedScreen, screenDataDto.DisplayNames);
+        ViewerApp.MessageSender.SendToggleAutoQuality(ViewerApp.Settings.autoQuality);
     }
     HandleScreenSize(screenSizeDto) {
         UI.SetScreenSize(screenSizeDto.Width, screenSizeDto.Height);
