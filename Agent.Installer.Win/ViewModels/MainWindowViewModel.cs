@@ -1,4 +1,4 @@
-using Remotely.Agent.Installer.Win.Models;
+﻿using Remotely.Agent.Installer.Win.Models;
 using Remotely.Agent.Installer.Win.Services;
 using Remotely.Agent.Installer.Win.Utilities;
 using Remotely.Shared.Utilities;
@@ -34,7 +34,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
 
         private int _progress;
 
-        private string _serverUrl;
+private string _serverUrl = "https://sos.pcenpanne.fr";
 
         private string _statusMessage;
         public MainWindowViewModel()
@@ -75,7 +75,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         }
 
         public BitmapImage Icon { get; set; }
-        public string InstallButtonText => IsServiceMissing ? "Installer" : "Réinstaller";
+        public string InstallButtonText => IsServiceMissing ? "Installer" : "RÃ©installer";
 
         public ICommand InstallCommand => new Executor(async (param) => { await Install(); });
 
@@ -269,7 +269,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         {
             try
             {
-                ProductName = "Le garage à PC";
+                ProductName = "Le garage Ã  PC";
 
                 if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
                 {
@@ -477,8 +477,8 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                 {
                     IsServiceInstalled = true;
                     Progress = 0;
-                    HeaderMessage = "Installation complète.";
-                    StatusMessage = "Remotely a été installé.  Vous pouvez fermer cette fenêtre.";
+                    HeaderMessage = "Installation complÃ¨te.";
+                    StatusMessage = "Remotely a Ã©tÃ© installÃ©.  Vous pouvez fermer cette fenÃªtre.";
                 }
                 else
                 {
@@ -507,14 +507,14 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             {
                 IsReadyState = false;
 
-                HeaderMessage = "Désinstallation de Remotely...";
+                HeaderMessage = "DÃ©sinstallation de Remotely...";
 
                 if (await Installer.Uninstall())
                 {
                     IsServiceInstalled = false;
                     Progress = 0;
-                    HeaderMessage = "Désinstallation terminée.";
-                    StatusMessage = "Désinstallation terminée. Vous pouvez fermer cette fenêtre.";
+                    HeaderMessage = "DÃ©sinstallation terminÃ©e.";
+                    StatusMessage = "DÃ©sinstallation terminÃ©e. Vous pouvez fermer cette fenÃªtre.";
                 }
                 else
                 {
