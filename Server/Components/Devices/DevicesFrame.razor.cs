@@ -37,7 +37,7 @@ namespace Remotely.Server.Components.Devices
         private readonly ConcurrentDictionary<string, RemoteControlTarget> _remoteControlTargetLookup = new();
         private readonly List<PropertyInfo> _sortableProperties = new();
         private int _currentPage = 1;
-        private int _devicesPerPage = 50;
+        private int _devicesPerPage = 25;
         private string _filter;
         private bool _hideOfflineDevices = true;
         private string _selectedGroupId;
@@ -243,11 +243,44 @@ namespace Remotely.Server.Components.Devices
                     .Take(_devicesPerPage);
 
                 _devicesForPage.Clear();
-                _devicesForPage.AddRange(devicesForPage);
+                _devicesForPage.AddRange(appendDevices.Concat(devicesForPage));
             }
 			
         }
+		        private string GetDisplayName(PropertyInfo propInfo)
+        {
+            return propInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? propInfo.Name;
+        }
 
+        private string GetSortIcon()
+        {
+            return $"oi-sort-{_sortDirection.ToString().ToLower()}";
+        }
+
+        private void HandleRefreshClicked()
+        {
+            Refresh();
+            ToastService.ShowToast("Devices refreshed.");
+        }
+
+        private void LoadDevices()
+        {
+            lock (_devicesLock)
+            {
+                _allDevices.Clear();
+
+                var devices = DataService.GetDevicesForUser(Username)
+                    .OrderByDescending(x => x.IsOnline)
+                    .ToList();
+
+                _allDevices.AddRange(devices);
+
+                HighestVersion = _allDevices.Max(x => Version.TryParse(x.AgentVersion, out var result) ? result : default);
+            }
+
+            FilterDevices();
+        }
+		
         private void PageDown()
         {
             if (_currentPage > 1)
