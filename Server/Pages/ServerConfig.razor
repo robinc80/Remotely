@@ -18,8 +18,11 @@
                     <br />
                     <span class="badge badge-primary p-2">@AgentHub.ServiceConnections.Count</span>
                 </div>
+				
                 <div class="d-inline-block text-center mr-2">
                     <label>Appareils à mettre à jour</label>
+					<br />
+					
                     <button class="btn btn-sm btn-secondary" @onclick="ShowOutdatedDevices">
                         <i class="oi oi-question-mark"></i>
                     </button>
@@ -28,11 +31,17 @@
                     <button class="btn btn-secondary btn-sm ml-1" type="button" title="Update All" @onclick="UpdateAllDevices">
                         <span class="oi oi-reload"></span>
                     </button>
+					
                 </div>
                 <div class="d-inline-block text-center mr-2">
                     <label>Total appareils</label>
                     <br />
                     <span class="badge badge-primary p-2">@TotalDevices</span>
+					<div class="d-inline-block text-center mr-2">
+                    <label>Utilisateurs actifs</label>
+                    <br />
+                    <span class="badge badge-primary p-2">@CircuitManager.Connections.Count</span>
+                </div>
                 </div>
             </div>
         </div>
