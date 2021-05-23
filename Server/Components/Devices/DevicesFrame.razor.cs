@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Remotely.Server.Data;
 using Remotely.Server.Enums;
 using Remotely.Server.Hubs;
 using Remotely.Server.Models;
@@ -19,7 +16,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Remotely.Server.Components.Devices
@@ -31,9 +27,9 @@ namespace Remotely.Server.Components.Devices
         private readonly string _deviceGroupAll = Guid.NewGuid().ToString();
         private readonly string _deviceGroupNone = Guid.NewGuid().ToString();
         private readonly List<DeviceGroup> _deviceGroups = new();
-        private readonly List<Device> _filteredDevices = new();
-		private readonly List<Device> _devicesForPage = new();
+        private readonly List<Device> _devicesForPage = new();
         private readonly object _devicesLock = new();
+        private readonly List<Device> _filteredDevices = new();
         private readonly ConcurrentDictionary<string, RemoteControlTarget> _remoteControlTargetLookup = new();
         private readonly List<PropertyInfo> _sortableProperties = new();
         private int _currentPage = 1;
@@ -141,6 +137,28 @@ namespace Remotely.Server.Components.Devices
         {
             switch (args.EventName)
             {
+                case CircuitEventName.DeviceUpdate:
+                case CircuitEventName.DeviceWentOffline:
+                    {
+                        if (args.Params?.FirstOrDefault() is Device device)
+                        {
+                            lock (_devicesLock)
+                            {
+                                var index = _allDevices.FindIndex(x => x.ID == device.ID);
+                                if (index > -1)
+                                {
+                                    _allDevices[index] = device;
+                                }
+
+                                index = _devicesForPage.FindIndex(x => x.ID == device.ID);
+                                if (index > -1)
+                                {
+                                    _devicesForPage[index] = device;
+                                }
+                            }
+                        }
+                        break;
+                    }
                 case CircuitEventName.DisplayMessage:
                     {
                         var terminalMessage = (string)args.Params[0];
@@ -189,34 +207,46 @@ namespace Remotely.Server.Components.Devices
             lock (_devicesLock)
             {
                 _filteredDevices.Clear();
-                _filteredDevices.AddRange(_allDevices);
+                var appendDevices = new List<Device>();
 
-                if (_hideOfflineDevices)
+                foreach (var device in _allDevices)
                 {
-                    _filteredDevices.RemoveAll(x => !x.IsOnline);
+                    if (AppState.DevicesFrameSelectedDevices.Contains(device.ID))
+                    {
+                        appendDevices.Add(device);
+                    }
+
+                    if (!device.IsOnline && _hideOfflineDevices)
+                    {
+                        continue;
+                    }
+
+                    if (_selectedGroupId == _deviceGroupNone && 
+                        !string.IsNullOrWhiteSpace(device.DeviceGroupID))
+                    {
+                        continue;
+                    }
+                    else if (_selectedGroupId != _deviceGroupAll &&
+                        _selectedGroupId != device.DeviceGroupID)
+                    {
+                        continue;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(_filter) &&
+                        device.Alias?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
+                        device.CurrentUser?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
+                        device.DeviceName?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
+                        device.Notes?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
+                        device.Platform?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
+                        device.Tags?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true)
+                    {
+                        continue;
+                    }
+
+                    _filteredDevices.Add(device);
                 }
 
-                if (_selectedGroupId == _deviceGroupNone)
-                {
-                    _filteredDevices.RemoveAll(x => !string.IsNullOrWhiteSpace(x.DeviceGroupID));
-                }
-                else if (_selectedGroupId != _deviceGroupAll)
-                {
-                    _filteredDevices.RemoveAll(x => x.DeviceGroupID != _selectedGroupId);
-                }
-
-                if (!string.IsNullOrWhiteSpace(_filter))
-                {
-                    _filteredDevices.RemoveAll(x =>
-                        x.Alias?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
-                        x.CurrentUser?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
-                        x.DeviceName?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
-                        x.Notes?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
-                        x.Platform?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
-                        x.Tags?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true);
-                }
-				
-				 if (!string.IsNullOrWhiteSpace(_selectedSortProperty))
+                if (!string.IsNullOrWhiteSpace(_selectedSortProperty))
                 {
                     var direction = _sortDirection == ListSortDirection.Ascending ? 1 : -1;
                     _filteredDevices.Sort((a, b) =>
@@ -234,8 +264,7 @@ namespace Remotely.Server.Components.Devices
                         return Comparer.Default.Compare(valueA, valueB) * direction;
                     });
                 }
-				
-				                var appendDevices = _filteredDevices.Where(x => AppState.DevicesFrameSelectedDevices.Contains(x.ID));
+
                 var skipCount = (_currentPage - 1) * _devicesPerPage;
                 var devicesForPage = _filteredDevices
                     .Except(appendDevices)
@@ -245,9 +274,10 @@ namespace Remotely.Server.Components.Devices
                 _devicesForPage.Clear();
                 _devicesForPage.AddRange(appendDevices.Concat(devicesForPage));
             }
-			
+
         }
-		        private string GetDisplayName(PropertyInfo propInfo)
+
+        private string GetDisplayName(PropertyInfo propInfo)
         {
             return propInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? propInfo.Name;
         }
@@ -280,7 +310,6 @@ namespace Remotely.Server.Components.Devices
 
             FilterDevices();
         }
-		
         private void PageDown()
         {
             if (_currentPage > 1)
