@@ -389,7 +389,7 @@ private string _serverUrl = "https://sos.pcenpanne.fr";
                     if (Guid.TryParse(guid, out _))
                     {
                         OrganizationID = guid;
-                        return;
+                        break;
                     }
 
 
