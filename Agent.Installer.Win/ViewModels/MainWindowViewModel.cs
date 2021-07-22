@@ -1,246 +1,261 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Remotely.Desktop.Core;
-using Remotely.Desktop.Core.Interfaces;
-using Remotely.Desktop.Core.Services;
-using Remotely.Desktop.Win.Services;
-using Remotely.Desktop.Win.Views;
-using Remotely.Shared.Models;
+﻿using Remotely.Agent.Installer.Win.Models;
+using Remotely.Agent.Installer.Win.Services;
+using Remotely.Agent.Installer.Win.Utilities;
 using Remotely.Shared.Utilities;
-using Remotely.Shared.Win32;
+using Remotely.Shared.Models;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
 using System.Security.Principal;
+using System.ServiceProcess;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Net;
 
-namespace Remotely.Desktop.Win.ViewModels
+namespace Remotely.Agent.Installer.Win.ViewModels
 {
-    public class MainWindowViewModel : BrandedViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
-        private readonly ICasterSocket _casterSocket;
-        private readonly Conductor _conductor;
-        private readonly IConfigService _configService;
-        private readonly ICursorIconWatcher _cursorIconWatcher;
-        private string _host;
-        private string _sessionID;
+        private BrandingInfo _brandingInfo;
+        private bool _createSupportShortcut;
+        private string _headerMessage = "Install the service.";
 
+        private bool _isReadyState = true;
+        private bool _isServiceInstalled;
+
+        private string _organizationID;
+
+        private int _progress;
+
+        private string _serverUrl;
+
+        private string _statusMessage;
         public MainWindowViewModel()
         {
-            Current = this;
+            Installer = new InstallerService();
 
-            if (Services is null)
-            {
-                return;
-            }
+            CopyCommandLineArgs();
 
-            Application.Current.Exit += Application_Exit;
+            ExtractDeviceInitInfo().Wait();
 
-            _configService = Services.GetRequiredService<IConfigService>();
-            _cursorIconWatcher = Services.GetRequiredService<ICursorIconWatcher>();
-            _cursorIconWatcher.OnChange += CursorIconWatcher_OnChange;
-            _conductor = Services.GetRequiredService<Conductor>();
-            _casterSocket = Services.GetRequiredService<ICasterSocket>();
-
-            Services.GetRequiredService<IClipboardService>().BeginWatching();
-            Services.GetRequiredService<IKeyboardMouseInput>().Init();
-            _conductor.SessionIDChanged += SessionIDChanged;
-            _conductor.ViewerRemoved += ViewerRemoved;
-            _conductor.ViewerAdded += ViewerAdded;
-            _conductor.ScreenCastRequested += ScreenCastRequested;
+            AddExistingConnectionInfo();
         }
 
-        public static MainWindowViewModel Current { get; private set; }
-
-        public static IServiceProvider Services => ServiceContainer.Instance;
-
-        public ICommand ChangeServerCommand
+        public bool CreateSupportShortcut
         {
             get
             {
-                return new Executor(async (param) =>
-                {
-                    PromptForHostName();
-                    await Init();
-                });
+                return _createSupportShortcut;
             }
-        }
-
-        public ICommand ElevateToAdminCommand
-        {
-            get
-            {
-                return new Executor((param) =>
-                {
-                    try
-                    {
-                        //var filePath = Process.GetCurrentProcess().MainModule.FileName;
-                        var commandLine = Win32Interop.GetCommandLine().Replace(" -elevate", "");
-                        var sections = commandLine.Split('"', StringSplitOptions.RemoveEmptyEntries);
-                        var filePath = sections.First();
-                        var arguments = string.Join('"', sections.Skip(1));
-                        var psi = new ProcessStartInfo(filePath, arguments)
-                        {
-                            Verb = "RunAs",
-                            UseShellExecute = true,
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        };
-                        Process.Start(psi);
-                        Environment.Exit(0);
-                    }
-                    // Exception can be thrown if UAC is dialog is cancelled.
-                    catch { }
-                }, (param) =>
-                {
-                    return !IsAdministrator;
-                });
-            }
-        }
-
-        public ICommand ElevateToServiceCommand
-        {
-            get
-            {
-                return new Executor((param) =>
-                {
-                    try
-                    {
-                        var psi = new ProcessStartInfo("cmd.exe")
-                        {
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            CreateNoWindow = true
-                        };
-                        //var filePath = Process.GetCurrentProcess().MainModule.FileName;
-                        var commandLine = Win32Interop.GetCommandLine().Replace(" -elevate", "");
-                        var sections = commandLine.Split('"', StringSplitOptions.RemoveEmptyEntries);
-                        var filePath = sections.First();
-                        var arguments = string.Join('"', sections.Skip(1));
-                        Logger.Write($"Creating temporary service with file path {filePath} and arguments {arguments}.");
-                        psi.Arguments = $"/c sc create Remotely_Temp binPath=\"{filePath} {arguments} -elevate\"";
-                        Process.Start(psi).WaitForExit();
-                        psi.Arguments = "/c sc start Remotely_Temp";
-                        Process.Start(psi).WaitForExit();
-                        psi.Arguments = "/c sc delete Remotely_Temp";
-                        Process.Start(psi).WaitForExit();
-                        App.Current.Shutdown();
-                    }
-                    catch { }
-                }, (param) =>
-                {
-                    return IsAdministrator && !WindowsIdentity.GetCurrent().IsSystem;
-                });
-            }
-        }
-
-        public string Host
-        {
-            get => _host;
             set
             {
-                _host = value;
+                _createSupportShortcut = value;
                 FirePropertyChanged();
             }
         }
 
-        public bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-
-        public ICommand RemoveViewersCommand
+        public string HeaderMessage
         {
             get
             {
-                return new Executor(async (param) =>
-                {
-                    foreach (Viewer viewer in (param as IList<object>).ToArray())
-                    {
-                        ViewerRemoved(this, viewer.ViewerConnectionID);
-                        await _casterSocket.DisconnectViewer(viewer, true);
-                    }
-                },
-                (param) =>
-                {
-                    return (param as IList<object>)?.Count > 0;
-                });
+                return _headerMessage;
             }
-
-        }
-
-        public string SessionID
-        {
-            get => _sessionID;
             set
             {
-                _sessionID = value;
+                _headerMessage = value;
                 FirePropertyChanged();
             }
         }
 
-        public ObservableCollection<Viewer> Viewers { get; } = new ObservableCollection<Viewer>();
+        public BitmapImage Icon { get; set; }
+        public string InstallButtonText => IsServiceMissing ? "Install" : "Reinstall";
 
-        public void CopyLink()
+        public ICommand InstallCommand => new Executor(async (param) => { await Install(); });
+
+        public bool IsProgressVisible => Progress > 0;
+
+        public bool IsReadyState
         {
-            Clipboard.SetText($"{Host}/RemoteControl?sessionID={SessionID?.Replace(" ", "")}");
+            get
+            {
+                return _isReadyState;
+            }
+            set
+            {
+                _isReadyState = value;
+                FirePropertyChanged();
+            }
         }
 
-        public async Task GetSessionID()
+        public bool IsServiceInstalled
         {
-            await _casterSocket.SendDeviceInfo(_conductor.ServiceID, Environment.MachineName, _conductor.DeviceID);
-            await _casterSocket.GetSessionID();
+            get
+            {
+                return _isServiceInstalled;
+            }
+            set
+            {
+                _isServiceInstalled = value;
+                FirePropertyChanged();
+                FirePropertyChanged(nameof(IsServiceMissing));
+                FirePropertyChanged(nameof(InstallButtonText));
+            }
         }
 
+        public bool IsServiceMissing => !_isServiceInstalled;
+
+        public ICommand OpenLogsCommand
+        {
+            get
+            {
+                return new Executor(param =>
+                {
+                    var logPath = Path.Combine(Path.GetTempPath(), "Remotely_Installer.log");
+                    if (File.Exists(logPath))
+                    {
+                        Process.Start(logPath);
+                    }
+                    else
+                    {
+                        MessageBoxEx.Show("Log file doesn't exist.", "No Logs", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                });
+            }
+        }
+
+        public string OrganizationID
+        {
+            get
+            {
+                return _organizationID;
+            }
+            set
+            {
+                _organizationID = value;
+                FirePropertyChanged();
+            }
+        }
+
+        public string ProductName { get; set; }
+
+        public int Progress
+        {
+            get
+            {
+                return _progress;
+            }
+            set
+            {
+                _progress = value;
+                FirePropertyChanged();
+                FirePropertyChanged(nameof(IsProgressVisible));
+            }
+        }
+
+        public string ServerUrl
+        {
+            get
+            {
+                return _serverUrl;
+            }
+            set
+            {
+                _serverUrl = value?.TrimEnd('/');
+                FirePropertyChanged();
+            }
+        }
+
+        public string StatusMessage
+        {
+            get
+            {
+                return _statusMessage;
+            }
+            set
+            {
+                _statusMessage = value;
+                FirePropertyChanged();
+            }
+        }
+
+        public SolidColorBrush TitleBackgroundColor { get; set; }
+        public SolidColorBrush TitleButtonForegroundColor { get; set; }
+        public SolidColorBrush TitleForegroundColor { get; set; }
+        public ICommand UninstallCommand => new Executor(async (param) => { await Uninstall(); });
+        private string DeviceAlias { get; set; }
+        private string DeviceGroup { get; set; }
+        private string DeviceUuid { get; set; }
+        private InstallerService Installer { get; }
         public async Task Init()
         {
-            SessionID = "Retrieving...";
-
-            Host = _configService.GetConfig().Host;
-
-            while (string.IsNullOrWhiteSpace(Host))
+            Installer.ProgressMessageChanged += (sender, arg) =>
             {
-                Host = "https://";
-                PromptForHostName();
+                StatusMessage = arg;
+            };
+
+            Installer.ProgressValueChanged += (sender, arg) =>
+            {
+                Progress = arg;
+            };
+
+            IsServiceInstalled = ServiceController.GetServices().Any(x => x.ServiceName == "Remotely_Service");
+            if (IsServiceMissing)
+            {
+                HeaderMessage = $"Install the {ProductName} service.";
+            }
+            else
+            {
+                HeaderMessage = $"Modify the {ProductName} installation.";
             }
 
-            _conductor.ProcessArgs(new string[] { "-mode", "Normal", "-host", Host });
+            CommandLineParser.VerifyArguments();
 
+            if (CommandLineParser.CommandLineArgs.ContainsKey("install"))
+            {
+                await Install();
+            }
+            else if (CommandLineParser.CommandLineArgs.ContainsKey("uninstall"))
+            {
+                await Uninstall();
+            }
+
+            if (CommandLineParser.CommandLineArgs.ContainsKey("quiet"))
+            {
+                App.Current.Shutdown();
+            }
+        }
+
+        private void AddExistingConnectionInfo()
+        {
             try
             {
-                var result = await _casterSocket.Connect(_conductor.Host);
+                var connectionInfoPath = Path.Combine(
+               Path.GetPathRoot(Environment.SystemDirectory),
+                   "Program Files",
+                   "Remotely",
+                   "ConnectionInfo.json");
 
-                if (result)
+                if (File.Exists(connectionInfoPath))
                 {
-                    _casterSocket.Connection.Closed += (ex) =>
+                    var serializer = new JavaScriptSerializer();
+                    var connectionInfo = serializer.Deserialize<ConnectionInfo>(File.ReadAllText(connectionInfoPath));
+
+                    if (string.IsNullOrWhiteSpace(OrganizationID))
                     {
-                        App.Current?.Dispatcher?.Invoke(() =>
-                        {
-                            Viewers.Clear();
-                            SessionID = "Disconnected";
-                        });
-                        return Task.CompletedTask;
-                    };
+                        OrganizationID = connectionInfo.OrganizationID;
+                    }
 
-                    _casterSocket.Connection.Reconnecting += (ex) =>
+                    if (string.IsNullOrWhiteSpace(ServerUrl))
                     {
-                        App.Current?.Dispatcher?.Invoke(() =>
-                        {
-                            Viewers.Clear();
-                            SessionID = "Reconnecting";
-                        });
-                        return Task.CompletedTask;
-                    };
-
-                    _casterSocket.Connection.Reconnected += async (arg) =>
-                    {
-                        await GetSessionID();
-                    };
-
-                    await DeviceInitService.GetInitParams();
-                    ApplyBranding();
-
-                    await GetSessionID();
-
-                    return;
+                        ServerUrl = connectionInfo.Host;
+                    }
                 }
             }
             catch (Exception ex)
@@ -248,112 +263,274 @@ namespace Remotely.Desktop.Win.ViewModels
                 Logger.Write(ex);
             }
 
-            // If we got here, something went wrong.
-            SessionID = "Failed";
-            MessageBox.Show(Application.Current.MainWindow, "Failed to connect to server.", "Connection Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
-        public void PromptForHostName()
+        private void ApplyBranding(BrandingInfo brandingInfo)
         {
-            var prompt = new HostNamePrompt();
-            if (!string.IsNullOrWhiteSpace(Host))
+            try
             {
-                prompt.ViewModel.Host = Host;
+                ProductName = "Remotely";
+
+                if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
+                {
+                    ProductName = brandingInfo.Product;
+                }
+
+                TitleBackgroundColor = new SolidColorBrush(Color.FromRgb(
+                    brandingInfo?.TitleBackgroundRed ?? 70,
+                    brandingInfo?.TitleBackgroundGreen ?? 70,
+                    brandingInfo?.TitleBackgroundBlue ?? 70));
+
+                TitleForegroundColor = new SolidColorBrush(Color.FromRgb(
+                   brandingInfo?.TitleForegroundRed ?? 29,
+                   brandingInfo?.TitleForegroundGreen ?? 144,
+                   brandingInfo?.TitleForegroundBlue ?? 241));
+
+                TitleButtonForegroundColor = new SolidColorBrush(Color.FromRgb(
+                   brandingInfo?.ButtonForegroundRed ?? 255,
+                   brandingInfo?.ButtonForegroundGreen ?? 255,
+                   brandingInfo?.ButtonForegroundBlue ?? 255));
+
+                TitleBackgroundColor.Freeze();
+                TitleForegroundColor.Freeze();
+                TitleButtonForegroundColor.Freeze();
+
+                Icon = GetBitmapImageIcon(brandingInfo);
+            }
+            catch (Exception ex)
+            {
+                Logger.Write(ex);
+            }
+        }
+
+        private bool CheckIsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            var result = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!result)
+            {
+                MessageBoxEx.Show("Elevated privileges are required.  Please restart the installer using 'Run as administrator'.", "Elevation Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return result;
+        }
+
+        private bool CheckParams()
+        {
+            if (string.IsNullOrWhiteSpace(OrganizationID) || string.IsNullOrWhiteSpace(ServerUrl))
+            {
+                Logger.Write("ServerUrl or OrganizationID param is missing.  Unable to install.");
+                MessageBoxEx.Show("Required settings are missing.  Please enter a server URL and organization ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
 
-            prompt.Owner = App.Current?.MainWindow;
-            prompt.ShowDialog();
-            var result = prompt.ViewModel.Host?.Trim()?.TrimEnd('/');
+            if (!Guid.TryParse(OrganizationID, out _))
+            {
+                Logger.Write("OrganizationID is not a valid GUID.");
+                MessageBoxEx.Show("Organization ID must be a valid GUID.", "Invalid Organization ID", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
 
-            if (!Uri.TryCreate(result, UriKind.Absolute, out var serverUri) ||
+            if (!Uri.TryCreate(ServerUrl, UriKind.Absolute, out var serverUri) ||
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
             {
-                Logger.Write("Server URL is not valid.");
-                MessageBox.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                Logger.Write("ServerUrl is not valid.");
+                MessageBoxEx.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
 
-            Host = result;
-            var config = _configService.GetConfig();
-            config.Host = Host;
-            _configService.Save(config);
+            return true;
         }
 
-        public void ShutdownApp()
+        private void CopyCommandLineArgs()
         {
-            Services.GetRequiredService<IShutdownService>().Shutdown();
-        }
-
-        private void Application_Exit(object sender, ExitEventArgs e)
-        {
-            App.Current.Dispatcher.Invoke(() =>
+            if (CommandLineParser.CommandLineArgs.TryGetValue("organizationid", out var orgID))
             {
-                Viewers.Clear();
-            });
+                OrganizationID = orgID;
+            }
+
+            if (CommandLineParser.CommandLineArgs.TryGetValue("serverurl", out var serverUrl))
+            {
+                ServerUrl = serverUrl;
+            }
+
+            if (CommandLineParser.CommandLineArgs.TryGetValue("devicegroup", out var deviceGroup))
+            {
+                DeviceGroup = deviceGroup;
+            }
+
+            if (CommandLineParser.CommandLineArgs.TryGetValue("devicealias", out var deviceAlias))
+            {
+                DeviceAlias = deviceAlias;
+            }
+
+            if (CommandLineParser.CommandLineArgs.TryGetValue("deviceuuid", out var deviceUuid))
+            {
+                DeviceUuid = deviceUuid;
+            }
+
+            if (CommandLineParser.CommandLineArgs.ContainsKey("supportshortcut"))
+            {
+                CreateSupportShortcut = true;
+            }
         }
 
-        private async void CursorIconWatcher_OnChange(object sender, CursorInfo cursor)
+        private async Task ExtractDeviceInitInfo()
         {
-            if (_conductor?.Viewers?.Count > 0)
+
+            try
             {
-                foreach (var viewer in _conductor.Viewers.Values)
+                var fileName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
+                var codeLength = AppConstants.RelayCodeLength + 2;
+
+                for (var i = 0; i < fileName.Length; i++)
                 {
-                    await viewer.SendCursorChange(cursor);
+                    var guid = string.Join("", fileName.Skip(i).Take(36));
+                    if (Guid.TryParse(guid, out _))
+                    {
+                        OrganizationID = guid;
+                        return;
+                    }
+
+
+                    var codeSection = string.Join("", fileName.Skip(i).Take(codeLength));
+
+                    if (codeSection.StartsWith("[") &&
+                        codeSection.EndsWith("]") && 
+                        !string.IsNullOrWhiteSpace(ServerUrl))
+                    {
+                        var relayCode = codeSection.Substring(1, 4);
+                        using (var httpClient = new HttpClient())
+                        {
+                            var response = await httpClient.GetAsync($"{ServerUrl.TrimEnd('/')}/api/relay/{relayCode}").ConfigureAwait(false);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                var organizationId = await response.Content.ReadAsStringAsync();
+                                OrganizationID = organizationId;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(OrganizationID) &&
+                    !string.IsNullOrWhiteSpace(ServerUrl))
+                {
+                    using (var httpClient = new HttpClient())
+                    {
+                        var serializer = new JavaScriptSerializer();
+                        var brandingUrl = $"{ServerUrl.TrimEnd('/')}/api/branding/{OrganizationID}";
+                        using (var response = await httpClient.GetAsync(brandingUrl).ConfigureAwait(false))
+                        {
+                            var responseString = await response.Content.ReadAsStringAsync();
+                            _brandingInfo = serializer.Deserialize<BrandingInfo>(responseString);
+                            
+                        }
+                    }
                 }
             }
-        }
-
-        private void ScreenCastRequested(object sender, ScreenCastRequest screenCastRequest)
-        {
-            App.Current.Dispatcher.Invoke(() =>
+            catch (Exception ex)
             {
-                App.Current.MainWindow.Activate();
-                var result = MessageBox.Show(Application.Current.MainWindow, $"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
+                Logger.Write(ex);
+            }
+            finally
+            {
+                ApplyBranding(_brandingInfo);
+            }
+        }
+        private BitmapImage GetBitmapImageIcon(BrandingInfo bi)
+        {
+            Stream imageStream;
+            if (!string.IsNullOrWhiteSpace(bi?.Icon))
+            {
+                imageStream = new MemoryStream(Convert.FromBase64String(bi.Icon));
+            }
+            else
+            {
+                imageStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Remotely.Agent.Installer.Win.Assets.Remotely_Icon.png");
+            }
+
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = imageStream;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            imageStream.Close();
+
+            return bitmap;
+        }
+        private async Task Install()
+        {
+            try
+            {
+                IsReadyState = false;
+                if (!CheckParams())
                 {
-                    Task.Run(() =>
-                    {
-                        Services.GetRequiredService<IScreenCaster>().BeginScreenCasting(screenCastRequest);
-                    });
+                    return;
+                }
+
+                HeaderMessage = "Installing Remotely...";
+
+                if (await Installer.Install(ServerUrl, OrganizationID, DeviceGroup, DeviceAlias, DeviceUuid, CreateSupportShortcut))
+                {
+                    IsServiceInstalled = true;
+                    Progress = 0;
+                    HeaderMessage = "Installation completed.";
+                    StatusMessage = "Remotely has been installed.  You can now close this window.";
                 }
                 else
                 {
-                    // Run on another thread so it doesn't tie up the UI thread.
-                    Task.Run(async () =>
-                    {
-                        await _casterSocket.SendConnectionRequestDenied(screenCastRequest.ViewerID);
-                    });
+                    Progress = 0;
+                    HeaderMessage = "An error occurred during installation.";
+                    StatusMessage = "There was an error during installation.  Check the logs for details.";
                 }
-            });
-        }
-        private void SessionIDChanged(object sender, string sessionID)
-        {
-            var formattedSessionID = "";
-            for (var i = 0; i < sessionID.Length; i += 3)
-            {
-                formattedSessionID += sessionID.Substring(i, 3) + " ";
-            }
-            SessionID = formattedSessionID.Trim();
-        }
-
-        private void ViewerAdded(object sender, Viewer viewer)
-        {
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                Viewers.Add(viewer);
-            });
-        }
-
-        private void ViewerRemoved(object sender, string viewerID)
-        {
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                var viewer = Viewers.FirstOrDefault(x => x.ViewerConnectionID == viewerID);
-                if (viewer != null)
+                if (!CheckIsAdministrator())
                 {
-                    Viewers.Remove(viewer);
+                    return;
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                Logger.Write(ex);
+            }
+            finally
+            {
+                IsReadyState = true;
+            }
+        }
+
+        private async Task Uninstall()
+        {
+            try
+            {
+                IsReadyState = false;
+
+                HeaderMessage = "Uninstalling Remotely...";
+
+                if (await Installer.Uninstall())
+                {
+                    IsServiceInstalled = false;
+                    Progress = 0;
+                    HeaderMessage = "Uninstall completed.";
+                    StatusMessage = "Remotely has been uninstalled.  You can now close this window.";
+                }
+                else
+                {
+                    Progress = 0;
+                    HeaderMessage = "An error occurred during uninstall.";
+                    StatusMessage = "There was an error during uninstall.  Check the logs for details.";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Write(ex);
+            }
+            finally
+            {
+                IsReadyState = true;
+            }
         }
     }
 }
