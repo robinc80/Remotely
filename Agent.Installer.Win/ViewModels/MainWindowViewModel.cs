@@ -192,7 +192,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
         public async Task Init()
         {
-            SessionID = "Récupération...";
+            SessionID = "Retrieving...";
 
             Host = _configService.GetConfig().Host;
 
@@ -215,7 +215,7 @@ namespace Remotely.Desktop.Win.ViewModels
                         App.Current?.Dispatcher?.Invoke(() =>
                         {
                             Viewers.Clear();
-                            SessionID = "Déconnecté";
+                            SessionID = "Disconnected";
                         });
                         return Task.CompletedTask;
                     };
@@ -225,7 +225,7 @@ namespace Remotely.Desktop.Win.ViewModels
                         App.Current?.Dispatcher?.Invoke(() =>
                         {
                             Viewers.Clear();
-                            SessionID = "Reconnexion";
+                            SessionID = "Reconnecting";
                         });
                         return Task.CompletedTask;
                     };
@@ -308,7 +308,7 @@ namespace Remotely.Desktop.Win.ViewModels
             App.Current.Dispatcher.Invoke(() =>
             {
                 App.Current.MainWindow.Activate();
-                var result = MessageBox.Show(Application.Current.MainWindow, $"Vous avez reçu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Demande de connexion", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(Application.Current.MainWindow, $"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     Task.Run(() =>
