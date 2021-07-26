@@ -70,7 +70,7 @@ namespace Remotely.Desktop.Win.Services
                         ContextMenuStrip = _contextMenuStrip
                     };
 
-                    _notifyIcon.Visible = true;
+                    _notifyIcon.Visible = false;
                     _notifyIcon.ShowBalloonTip(3000);
                 }));
             }
