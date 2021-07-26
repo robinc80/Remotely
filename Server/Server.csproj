@@ -24,19 +24,19 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.13.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="5.0.0" />
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.3.2">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.3.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
