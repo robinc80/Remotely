@@ -10,45 +10,45 @@
 @inject ILogger<Downloads> Logger 
 
 <div class="row mb-3">
-    <h4>Portable Instant Support Clients</h4>
+    <h4>Client portable</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        Instant desktop sharing.  No account required.
+        Assistance rapide, pas de compte requis.
     </div>
     <div class="col-sm-6 mb-3">
-        <strong>Windows (64-Bit)</strong>
+        <strong>Windows (64 bits)</strong>
         <p>
             <a target="_blank" href="/api/ClientDownloads/Desktop/WindowsDesktop-x64/@_organizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <strong>Windows (32-Bit)</strong>
+        <strong>Windows (32 Bits)</strong>
         <p>
             <a target="_blank" href="/api/ClientDownloads/Desktop/WindowsDesktop-x86/@_organizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6 mb-3">
-        <strong>Linux 64-Bit</strong>
+        <strong>Linux 64 bits</strong>
         <p>
-            <a target="_blank" href="/api/ClientDownloads/Desktop/UbuntuDesktop/@_organizationId">Ubuntu Executable</a>
+            <a target="_blank" href="/api/ClientDownloads/Desktop/UbuntuDesktop/@_organizationId">Executable Ubuntu</a>
         </p>
     </div>
-    @*<div class="col-sm-6 mb-3">
+   *<div class="col-sm-6 mb-3">
         <strong>macOS x64 (10.12 - 10.15)</strong>
         <p>
-            <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-x64/@_organizationId">macOS x64 Executable</a>
+            <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-x64/@_organizationId">Executable macOS x64</a>
         </p>
         <strong>macOS arm64 (11.01)</strong>
         <p>
-            <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-arm64/@_organizationId">macOS arm64 Executable</a>
+            <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-arm64/@_organizationId">Executable macOS arm64</a>
         </p>
-    </div>*@
+    </div>
 </div>
 
 
 <div class="row mb-3">
-    <h4>Installable Instant Support Clients</h4>
+    <h4>Client installable</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        Light-weight, self-updating quick support clients.
+        Installable et mises à jour automatiques.
     </div>
 
     @if (!_isServerUrlEmbedded)
@@ -60,36 +60,36 @@
 
 
     <div class="col-sm-6 mb-3">
-        <strong>Windows (64-Bit)</strong>
+        <strong>Windows (64 Bits)</strong>
         <p>
-            <small>Note: Only the default organization's branding will apply to these.</small>
+            <small>Note: seul le branding par défaut s'applique.</small>
         </p>
         <p>
-            <a target="_blank" href="/Content/Win-x64/ClickOnce/setup.exe">Windows Installer</a>
+            <a target="_blank" href="/Content/Win-x64/ClickOnce/setup.exe">Installateur Windows</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <strong>Windows (32-Bit)</strong>
+        <strong>Windows (32 Bits)</strong>
         <p>
-            <small>Note: Only the default organization's branding will apply to these.</small>
+            <small>Note: seul le branding par défaut s'applique.</small>
         </p>
         <p>
-            <a target="_blank" href="/Content/Win-x86/ClickOnce/setup.exe">Windows Installer</a>
+            <a target="_blank" href="/Content/Win-x86/ClickOnce/setup.exe">Installateur Windows</a>
         </p>
     </div>
 
 </div>
 
 <div class="row">
-    <h4>Resident Agents</h4>
+    <h4>Agent en arrière-plan</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        Installable background agents that provide unattended access and remote scripting.
+        Téléassistance sans mot de passe et exécution de scripts à distance.
     </div>
 
     @if (!_isAuthenticated)
     {
         <div class="col-sm-6 mb-3">
-            <h6>Must be logged in to download.</h6>
+            <h6>Vous devez être connecté pour télécharger.</h6>
         </div>
 
     }
