@@ -470,7 +470,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                     return;
                 }
 
-                HeaderMessage = "Installion de Remotely...";
+                HeaderMessage = "Installation de Remotely...";
 
                 if (await Installer.Install(ServerUrl, OrganizationID, DeviceGroup, DeviceAlias, DeviceUuid, CreateSupportShortcut))
                 {
@@ -482,8 +482,8 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                 else
                 {
                     Progress = 0;
-                    HeaderMessage = "An error occurred during installation.";
-                    StatusMessage = "There was an error during installation.  Check the logs for details.";
+                    HeaderMessage = "Une erreur s'est produite durant l'installation.";
+                    StatusMessage = "Une erreur s'est produite durant l'installation. Vérifiez les logs pour plus d'informations.";
                 }
                 if (!CheckIsAdministrator())
                 {
