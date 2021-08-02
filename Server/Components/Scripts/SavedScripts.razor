@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Folder Path</label>
+                        <label>Chemin d'accès'</label>
                         <InputText class="form-control" DisplayName="Chemin d'accès'" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
                         <ValidationMessage For="() => _selectedScript.FolderPath" />
                     </div>
@@ -53,7 +53,7 @@
                         <ValidationMessage For="() => _selectedScript.IsQuickScript" />
                     </div>
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Creator</label>
+                        <label>Créateur</label>
                         <br />
                         <input class="form-control" readonly value="@_selectedScript.Creator?.UserName" />
                     </div>
@@ -61,41 +61,41 @@
                         <button class="btn btn-primary"
                                 type="submit"
                                 disabled="@(!CanModifyScript)">
-                            Save
+                            Enregistrer
                         </button>
 
                         <button class="btn btn-success ml-3" type="button" @onclick="CreateNew">
-                            New
+                            Nouveau
                         </button>
                         <button class="btn btn-danger ml-3" type="button"
                                 disabled="@(!CanDeleteScript)"
                                 @onclick="DeleteSelectedScript">
-                            Delete
+                            Effacer
                         </button>
                     </div>
                     <div class="mt-2 col-12">
                         <button type="button" class="btn btn-link mr-3" @onclick="ToggleAlertOptionsShown">
-                            Alert Options
+                            Options d'alerte
                         </button>
                         <button type="button" class="btn btn-link" @onclick="ToggleEnvironmentVarsShown">
-                            Environment Variables
+                            Variables d'environnement
                         </button>
                     </div>
                     <div class="my-2 col-12 collapse @_alertOptionsShowClass">
                         <h5>
-                            <span class="mr-2">On Error</span>
+                            <span class="mr-2">En cas d'erreur'</span>
                             <button class="btn btn-sm btn-secondary" type="button" @onclick="ShowAlertErrorHelp">
                                 <span class="oi oi-question-mark" />
                             </button>
                         </h5>
                         <div class="row">
                             <div class="mt-2 col-md-6">
-                                <label>Send Email</label>
+                                <label>Envoyer un mail</label>
                                 <br />
-                                <InputCheckbox DisplayName="Send Email on Error" @bind-Value="_selectedScript.SendEmailOnError" />
+                                <InputCheckbox DisplayName="Envoyer un mail en cas d'erreur'" @bind-Value="_selectedScript.SendEmailOnError" />
                                 <ValidationMessage For="() => _selectedScript.SendEmailOnError" />
                                 <br />
-                                to
+                                à
                                 <br />
                                 <InputText type="email"
                                            class="form-control"
@@ -105,23 +105,23 @@
                                 <ValidationMessage For="() => _selectedScript.SendErrorEmailTo" />
                             </div>
                             <div class="mt-2 col-md-6">
-                                <label>Generate Alert</label>
+                                <label>Generer une alerte</label>
                                 <br />
-                                <InputCheckbox DisplayName="Alert on Error" @bind-Value="_selectedScript.GenerateAlertOnError" />
+                                <InputCheckbox DisplayName="Alerte en cas d'erreur'" @bind-Value="_selectedScript.GenerateAlertOnError" />
                                 <ValidationMessage For="() => _selectedScript.GenerateAlertOnError" />
                             </div>
                         </div>
                     </div>
                     <div class="my-2 col-12 collapse @_environmentVarsShowClass">
-                        <h5>Environment Variables</h5>
+                        <h5>Variables d'environnement'</h5>
                         <div class="row">
                             <div class="mt-2 col-md-6">
-                                <div>Device ID</div>
-                                <div class="small text-muted mt-1">The device ID (GUID) of the computer currently running the script.</div>
+                                <div>ID appareil</div>
+                                <div class="small text-muted mt-1">ID de l'appareil exécutant le script.</div>
                                 <input type="text" readonly class="form-control" value="DeviceId" />
                             </div>
                             <div class="mt-2 col-md-6">
-                                <div>Server URL</div>
+                                <div>URL du serveur</div>
                                 <div class="small text-muted mt-1">The URL of the server that the device connects to (e.g. https://app.remotely.one).</div>
                                 <input type="text" readonly class="form-control" value="ServerUrl" />
                             </div>
@@ -143,10 +143,10 @@
     </EditForm>
     <div class="tree-view-wrapper-grid h-100 pb-3">
         <div>
-            <h5>Saved Scripts</h5>
+            <h5>Scripts enregistrés</h5>
             <div>
                 <input type="checkbox" @bind="ParentPage.ShowOnlyMyScripts" />
-                <span class="align-top">Show only mine</span>
+                <span class="align-top">Montrer mes scripts uniquement</span>
             </div>
         </div>
         <TreeView DataSource="ParentPage.TreeNodes"
