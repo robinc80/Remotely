@@ -76,7 +76,7 @@ namespace Remotely.Server.Components.Devices
 
                 await CircuitConnection.RunScript(AppState.DevicesFrameSelectedDevices, script.Id, scriptRun.Id, ScriptInputType.OneTimeScript, false);
 
-                ToastService.ShowToast($"Running script on {scriptRun.Devices.Count} devices.");
+                ToastService.ShowToast($"Lancement du script sur {scriptRun.Devices.Count} appareil(s).");
             });
 
         [Inject]
@@ -212,13 +212,13 @@ namespace Remotely.Server.Components.Devices
             {
                 if (_shell != ScriptingShell.PSCore && _shell != ScriptingShell.WinPS)
                 {
-                    ToastService.ShowToast("PowerShell is required for tab completion.", classString: "bg-warning");
+                    ToastService.ShowToast("PowerShell est requis pour l'auto-complétion.", classString: "bg-warning");
                     return;
                 }
 
                 if (!AppState.DevicesFrameSelectedDevices.Any())
                 {
-                    ToastService.ShowToast("No devices are selected.", classString: "bg-warning");
+                    ToastService.ShowToast("Aucun appareil n'est sélectionné.", classString: "bg-warning");
                     return;
                 }
 
@@ -272,13 +272,13 @@ namespace Remotely.Server.Components.Devices
             var quickScripts = await DataService.GetQuickScripts(User.Id);
             if (quickScripts?.Any() != true)
             {
-                ToastService.ShowToast("No quick scripts saved.", classString: "bg-warning");
+                ToastService.ShowToast("Aucun script enregistré.", classString: "bg-warning");
                 return;
             }
 
             if (!AppState.DevicesFrameSelectedDevices.Any())
             {
-                ToastService.ShowToast("You must select at least one device.", classString: "bg-warning");
+                ToastService.ShowToast("Vous devez sélectionner au moins un appareil.", classString: "bg-warning");
                 return;
             }
 

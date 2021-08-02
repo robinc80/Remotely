@@ -290,7 +290,7 @@ namespace Remotely.Server.Components.Devices
         private void HandleRefreshClicked()
         {
             Refresh();
-            ToastService.ShowToast("Devices refreshed.");
+            ToastService.ShowToast("Affichage actualisé.");
         }
 
         private void LoadDevices()

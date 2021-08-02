@@ -178,7 +178,7 @@ namespace Remotely.Server.Components.Devices
                   Device.Notes,
                   Device.WebRtcSetting);
 
-            ToastService.ShowToast("Device settings saved.");
+            ToastService.ShowToast("Paramètres enregistrés.");
 
             await CircuitConnection.TriggerHeartbeat(Device.ID);
         }
