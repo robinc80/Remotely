@@ -20,10 +20,10 @@
                 </div>
             </div>
             <div class="text-muted">
-                You can also go directly to a device's details by:
+                Vous pouvez aussi accéder directement aux informations d'un appareil en:
                 <ul>
-                    <li>Right-clicking a device card on the main page while it's collapsed</li>
-                    <li>Clicking the "Open in New Tab" button in a device card's header while it's expanded</li>
+                    <li>-effectuant un clic droit sur un appareil dans la mosaïque</li>
+                    <li>-en cliquant sur "Ouvrir dans un nouvel onglet"</li>
                 </ul>
             </div>
         </div>
@@ -193,7 +193,7 @@ else
                 <div class="py-3">
                     @if (!Device.IsOnline)
                     {
-                        <h5 class="text-center mt-5">Device must be online to retrieve logs.</h5>
+                        <h5 class="text-center mt-5">L'appareil doit être connecté pour pouvoir récupérer les logs.'</h5>
                     }
                     else
                     {
@@ -224,18 +224,18 @@ else
             <TabContent Name="script-history">
 
                 <h3 class="mb-3 mt-3">
-                    Script History
+                    Historique des scripts
                 </h3>
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Shell</th>
-                            <th>Timestamp</th>
-                            <th>User</th>
-                            <th>Duration</th>
+                            <th>Horodatage</th>
+                            <th>Utilisateur</th>
+                            <th>Durée</th>
                             <th>Input</th>
                             <th>Output</th>
-                            <th>Error</th>
+                            <th>Erreur</th>
                             <th></th>
                         </tr>
                     </thead>
