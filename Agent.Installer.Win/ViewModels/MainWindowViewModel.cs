@@ -25,7 +25,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
     {
         private BrandingInfo _brandingInfo;
         private bool _createSupportShortcut;
-        private string _headerMessage = "Install the service.";
+        private string _headerMessage = "Installer le service.";
 
         private bool _isReadyState = true;
         private bool _isServiceInstalled;
@@ -75,7 +75,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         }
 
         public BitmapImage Icon { get; set; }
-        public string InstallButtonText => IsServiceMissing ? "Install" : "Reinstall";
+        public string InstallButtonText => IsServiceMissing ? "Installer" : "Réinstaller";
 
         public ICommand InstallCommand => new Executor(async (param) => { await Install(); });
 
@@ -124,7 +124,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                     }
                     else
                     {
-                        MessageBoxEx.Show("Log file doesn't exist.", "No Logs", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBoxEx.Show("Le fichier de logs n'existe pas.", "Aucun log", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 });
             }
@@ -208,11 +208,11 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             IsServiceInstalled = ServiceController.GetServices().Any(x => x.ServiceName == "Remotely_Service");
             if (IsServiceMissing)
             {
-                HeaderMessage = $"Install the {ProductName} service.";
+                HeaderMessage = $"Installer le service {ProductName}.";
             }
             else
             {
-                HeaderMessage = $"Modify the {ProductName} installation.";
+                HeaderMessage = $"Modifier l'installation de {ProductName}.";
             }
 
             CommandLineParser.VerifyArguments();
@@ -310,7 +310,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             var result = principal.IsInRole(WindowsBuiltInRole.Administrator);
             if (!result)
             {
-                MessageBoxEx.Show("Elevated privileges are required.  Please restart the installer using 'Run as administrator'.", "Elevation Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBoxEx.Show("Il est nécessaire de lancer l'installeur en tant qu'administrateur.", "Privilèges nécessaires", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             return result;
         }
@@ -320,7 +320,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             if (string.IsNullOrWhiteSpace(OrganizationID) || string.IsNullOrWhiteSpace(ServerUrl))
             {
                 Logger.Write("ServerUrl or OrganizationID param is missing.  Unable to install.");
-                MessageBoxEx.Show("Required settings are missing.  Please enter a server URL and organization ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show("Les champs obligatoires ne sont pas remplis. Entrez l'URL du serveur et l'ID d'organisation.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -470,14 +470,14 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                     return;
                 }
 
-                HeaderMessage = "Installing Remotely...";
+                HeaderMessage = "Installion de Remotely...";
 
                 if (await Installer.Install(ServerUrl, OrganizationID, DeviceGroup, DeviceAlias, DeviceUuid, CreateSupportShortcut))
                 {
                     IsServiceInstalled = true;
                     Progress = 0;
-                    HeaderMessage = "Installation completed.";
-                    StatusMessage = "Remotely has been installed.  You can now close this window.";
+                    HeaderMessage = "Installation terminée.";
+                    StatusMessage = "Remotely a bien été installé.  Vous pouvez fermer cette fenêtre.";
                 }
                 else
                 {
@@ -506,14 +506,14 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             {
                 IsReadyState = false;
 
-                HeaderMessage = "Uninstalling Remotely...";
+                HeaderMessage = "Désinstallation de Remotely...";
 
                 if (await Installer.Uninstall())
                 {
                     IsServiceInstalled = false;
                     Progress = 0;
-                    HeaderMessage = "Uninstall completed.";
-                    StatusMessage = "Remotely has been uninstalled.  You can now close this window.";
+                    HeaderMessage = "Désinstallation terminée";
+                    StatusMessage = "Remotely a bien été désinstallé. Vous pouvez maintenant fermer cette fenêtre.";
                 }
                 else
                 {
