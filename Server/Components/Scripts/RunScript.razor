@@ -5,7 +5,7 @@
     <div style="grid-column: span 3">
         <button class="btn btn-primary align-middle mr-4" @onclick="ExecuteScript">Lancer</button>
         <input type="checkbox" class="mr-1 align-middle" @bind="_runOnNextConnect" />
-        <span class="align-middle">Si l'appareil est hors-ligne, alors exécuter dès la connexion'</span>
+        <span class="align-middle">Si l'appareil est hors-ligne, alors exécuter dès la connexion</span>
     </div>
     <div class="column-wrapper h-100 pb-3">
         <div>
@@ -26,7 +26,7 @@
                   T="ScriptTreeNode" />
     </div>
     <div class="column-wrapper h-100 pb-3">
-        <h5>Groupes d'appareils'</h5>
+        <h5>Groupes d'appareils</h5>
         <div class="item-list-border h-100">
             @foreach (var deviceGroup in _deviceGroups)
             {

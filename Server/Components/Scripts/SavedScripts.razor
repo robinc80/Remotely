@@ -34,22 +34,22 @@
                     </div>
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Chemin d'accès'</label>
-                        <InputText class="form-control" DisplayName="Chemin d'accès'" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
+                        <label>Chemin d'accès</label>
+                        <InputText class="form-control" DisplayName="Chemin d'accès" @bind-Value="_selectedScript.FolderPath" placeholder="Example: or/portland/quick burger #5" />
                         <ValidationMessage For="() => _selectedScript.FolderPath" />
                     </div>
 
 
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Public?</label>
+                        <label>Public ?</label>
                         <br />
-                        <InputCheckbox DisplayName="Public?" @bind-Value="_selectedScript.IsPublic" />
+                        <InputCheckbox DisplayName="Public ?" @bind-Value="_selectedScript.IsPublic" />
                         <ValidationMessage For="() => _selectedScript.IsPublic" />
                     </div>
                     <div class="mt-2 col-md-6 col-lg-4">
-                        <label>Quick Script?</label>
+                        <label>Quick Script ?</label>
                         <br />
-                        <InputCheckbox DisplayName="Quick Script?" @bind-Value="_selectedScript.IsQuickScript" />
+                        <InputCheckbox DisplayName="Quick Script ?" @bind-Value="_selectedScript.IsQuickScript" />
                         <ValidationMessage For="() => _selectedScript.IsQuickScript" />
                     </div>
                     <div class="mt-2 col-md-6 col-lg-4">

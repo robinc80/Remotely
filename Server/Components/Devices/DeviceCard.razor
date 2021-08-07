@@ -16,16 +16,16 @@
             {
                 if (IsOutdated)
                 {
-                    <i class="oi oi-power-standby text-warning" title="Agent Outdated"></i>
+                    <i class="oi oi-power-standby text-warning" title="Agent pas à jour"></i>
                 }
                 else
                 {
-                    <i class="oi oi-power-standby text-success" title="Online"></i>
+                    <i class="oi oi-power-standby text-success" title="En ligne"></i>
                 }
             }
             else
             {
-                <i class="oi oi-power-standby text-danger" title="Offline"></i>
+                <i class="oi oi-power-standby text-danger" title="Déconnecté"></i>
             }
         </div>
         <div class="overflow-hidden ml-2">
@@ -92,7 +92,7 @@
                         </li>
                         <li>
                             <button class="dropdown-item" @onclick="() => StartRemoteControl(true)">
-                                <i class="oi oi-eye" title="View Only"></i>
+                                <i class="oi oi-eye" title="Consulter"></i>
                                 <span class="ml-2">Consulter</span>
                             </button>
                         </li>
