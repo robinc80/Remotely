@@ -6,7 +6,7 @@
 @using Remotely.Server.Models
 @using System.ComponentModel.DataAnnotations
 
-<h3 class="mb-3">Branding</h3>
+<h3 class="mb-3">Personnalisation</h3>
 
 
 @if (User?.IsAdministrator != true)
@@ -20,7 +20,7 @@ else
     <div class="row">
         <div class="col-sm-8 col-lg-6 col-xl-5">
             <div class="form-group">
-                <label class="mb-1">Branding Areas</label>
+                <label class="mb-1">Zones</label>
                 <br />
                 <img class="img-fluid" src="/images/Remotely_Desktop.png" />
             </div>
@@ -33,7 +33,7 @@ else
                 <DataAnnotationsValidator />
 
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">Product Name</label>
+                    <label class="text-info font-weight-bold">Nom du produit</label>
                     <InputText class="form-control" @bind-Value="_inputModel.ProductName" />
                     <ValidationMessage For="() => _inputModel.ProductName" />
                 </div>
@@ -41,14 +41,14 @@ else
                 @if (!string.IsNullOrWhiteSpace(_base64Icon))
                 {
                     <div class="form-group mb-4">
-                        <label class="text-info font-weight-bold">Current Icon</label>
+                        <label class="text-info font-weight-bold">Icône actuelle</label>
                         <br />
                         <img class="img-fluid" src="data:image/png;base64,@_base64Icon" />
                     </div>
                 }
 
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">New Icon</label>
+                    <label class="text-info font-weight-bold">Nouvelle icône</label>
                     <InputFile type="file" accept="image/png" class="form-control" OnChange="IconUploadInputChanged" />
                 </div>
                 <div class="form-group mb-5">

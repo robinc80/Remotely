@@ -310,8 +310,8 @@ namespace Remotely.Server.Pages
 
             resetEvent.Wait(5_000);
 
-            ToastService.ShowToast("Configuration saved.");
-            _alertMessage = "Configuration saved.";
+            ToastService.ShowToast("Configuration enregistrée.");
+            _alertMessage = "Configuration enregistrée.";
         }
 
         private async Task SaveAndTestSmtpSettings()
@@ -321,8 +321,8 @@ namespace Remotely.Server.Pages
             var success = await EmailSender.SendEmailAsync(User.Email, "Remotely Test Email", "Congratulations! Your SMTP settings are working!", User.OrganizationID);
             if (success)
             {
-                ToastService.ShowToast($"Test email sent to {User.Email}.  Check your inbox (or spam folder).");
-                _alertMessage = $"Test email sent to {User.Email}.  Check your inbox (or spam folder).";
+                ToastService.ShowToast($"Email de test envoyé à {User.Email}.  Vérifiez votre boîte de réception ou vos spams.");
+                _alertMessage = $"Email de test envoyé à {User.Email}.  Vérifiez votre boîte de réception ou vos spams.";
             }
             else
             {
@@ -378,11 +378,11 @@ namespace Remotely.Server.Pages
                     .Select(x => x.DeviceName);
 
                 ModalService.ShowModal("Outdated Devices",
-                    (new[] { "Outdated Devices:" }).Concat(outdatedDeviceNames).ToArray());
+                    (new[] { "Appareils à mettre à jour:" }).Concat(outdatedDeviceNames).ToArray());
             }
             else
             {
-                ModalService.ShowModal("Outdated Devices", new[] { "There are no outdated devices currently online." });
+                ModalService.ShowModal("Appareils à mettre à jour", new[] { "Tous les appareils ont la dernière version." });
             }
         }
 
@@ -397,14 +397,14 @@ namespace Remotely.Server.Pages
 
             if (!outdatedDevices.Any())
             {
-                ToastService.ShowToast("No agents need updating.");
+                ToastService.ShowToast("Aucune mise à jour n'est nécessaire.");
                 return;
             }
 
             var agentConnections = AgentHub.ServiceConnections.Where(x => outdatedDevices.Contains(x.Value.ID));
 
             await AgentHubContext.Clients.Clients(agentConnections.Select(x => x.Key)).SendAsync("ReinstallAgent");
-            ToastService.ShowToast("Update command sent.");
+            ToastService.ShowToast("Mise à jour déclenchée.");
         }
     }
 }

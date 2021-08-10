@@ -6,7 +6,7 @@
 @inject IToastService ToastService
 @inject IJsInterop JsInterop
 
-<h3 class="mb-3">Server Logs</h3>
+<h3 class="mb-3">Fichiers log</h3>
 
 
 @if (User?.IsAdministrator == true)
@@ -14,19 +14,19 @@
     <div class="buttons-row mb-3">
         <div>
             <button class="btn btn-danger" type="button" @onclick="ClearAllLogs">
-                Delete Logs
+                Effacer les logs
             </button>
         </div>
         <div>
             <button class="btn btn-primary"
                     onclick="location.assign('/API/ServerLogs/Download')">
-                Download Logs
+                Télécharger les logs
             </button>
         </div>
         <div>
             <button class="btn btn-primary"
                     onclick="location.assign('/API/ScriptResults')">
-                Download Script History
+                Télécharger l'historique des scripts
             </button>
         </div>
     </div>
@@ -35,7 +35,7 @@
             <strong>Type:</strong>
             <br />
             <select class="form-control-sm" @bind="_eventType">
-                <option value="">All</option>
+                <option value="">Tous</option>
                 @foreach (var eventType in Enum.GetValues(typeof(EventType)))
                 {
                     <option @key="eventType" value="@eventType">@eventType</option>
@@ -43,17 +43,17 @@
             </select>
         </div>
         <div style="display:inline-block">
-            <strong>Filter:</strong>
+            <strong>Filtre :</strong>
             <br />
             <input type="text" @bind="_messageFilter" />
         </div>
         <div style="display:inline-block">
-            <strong>From:</strong>
+            <strong>Du :</strong>
             <br />
             <input type="date" @bind="_fromDate" />
         </div>
         <div style="display:inline-block">
-            <strong>To:</strong>
+            <strong>Au :</strong>
             <br />
             <input type="date" @bind-value="_toDate" />
         </div>
@@ -85,7 +85,7 @@
 }
 else
 {
-    <h5 class="text-muted">Only organization administrators can view this page.</h5>
+    <h5 class="text-muted">Seuls les administrateurs peuvent voir cette page.</h5>
 }
 
 @code {
@@ -111,11 +111,11 @@ else
 
     private async Task ClearAllLogs()
     {
-        var result = await JsInterop.Confirm("Are you sure you want to delete all logs?");
+        var result = await JsInterop.Confirm("Etes-vous sûr de vouloir effacer les logs ?");
         if (result)
         {
             await DataService.ClearLogs(User.UserName);
-            ToastService.ShowToast("Logs deleted.");
+            ToastService.ShowToast("Logs effacés.");
         }
     }
 
