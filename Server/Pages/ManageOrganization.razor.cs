@@ -327,11 +327,10 @@ namespace Remotely.Server.Pages
 
         private void ShowDefaultOrgHelp()
         {
-            ModalService.ShowModal("Default Organization", new[]
+            ModalService.ShowModal("Organisation par défaut", new[]
             {
-                @"This option is only available for server administrators.  When selected,
-                it sets this organization as the default for the server.  If the organization can't
-                be determined in the quick support apps, they will use the default organization's branding."
+                @"Option disponible uniquement pour les administrateurs du serveur.  Lorsque sélectionnée,
+                cette option définit l'entreprise courante comme entreprise par défaut."
             });
         }
 
@@ -350,12 +349,12 @@ namespace Remotely.Server.Pages
         {
             ModalService.ShowModal("Invitations", new[]
            {
-                "All pending invitations will be shown here and can be revoked by deleting them.",
+                "Toutes les invitations en cours sont répertoriées ici et peuvent être annulées si besoin.",
 
-                "If a user does not exist, sending an invite will create their account and add them to the current organization. " +
-                "A password reset URL can be generated from the user table.",
+                "Si l'utilisateur n'existe pas, l'envoi du mail leur permettra de créer un compte et les ajouter à l'entreprise actuelle. " +
+                "Un lien de réinitialisation du mot de passe peut être envoyé depuis le tableau.",
 
-                "The Admin checkbox determines if the new user will have administrator privileges in this organization."
+                "La case à cocher permet de déclarer un utilisateur comme administrateur."
             });
         }
 
@@ -363,17 +362,15 @@ namespace Remotely.Server.Pages
         {
             ModalService.ShowModal("Relay Code", new[]
             {
-                @"This relay code will be appended to EXE filenames.  If the clients were built
-                from source and have the server URL embedded, they will use this code to look
-                up your organization's branding to use."
+                @"Le relay code est ajouté à la fin du nom des fichiers EXE.  Si les clients ont été compilés depuis la source et intègrent l'URL du serveur, ils utiliseront ce code pour trouver les informations de branding à utiliser."
             });
         }
         private void ShowUsersHelp()
         {
-            ModalService.ShowModal("Users", new[]
+            ModalService.ShowModal("Utilisateurs", new[]
             {
-                "All users for the organization are managed here",
-                "Administrators will have access to this management screen as well as all computers."
+                "Tous les utilisateurs sont gérés ici",
+                "Les administrateurs auront accès à cet écran de contrôle aussi bien qu'aux ordinateurs."
             });
         }
     }

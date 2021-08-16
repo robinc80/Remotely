@@ -121,9 +121,9 @@
 
         DataService.UpdateUserOptions(User.UserName, _options);
 
-        _alertMessage = "Options saved";
+        _alertMessage = "Options enregistrées";
 
-        ToastService.ShowToast("Options saved.");
+        ToastService.ShowToast("Options enregistrées.");
 
         return Task.CompletedTask;
     }
@@ -135,9 +135,7 @@
 
     private void ShowShortcutHelp()
     {
-        var modalText = @"The shell shortcuts are used to quickly switch between terminal shells on the main page.
-        If you type one of these shortcuts into the terminal, it will select the corresponding command
-        mode (e.g. PowerShell Core, Bash, etc.).";
+        var modalText = @"Les raccourcis permettent de passer rapidement d'un langage à un autre (ex.: PowerShell Core, Bash, etc.).";
 
         ModalService.ShowModal("Shell Shortcuts", new[] { modalText });
     }
