@@ -26,7 +26,8 @@ namespace Remotely.Desktop.Win.ViewModels
         private readonly IConfigService _configService;
         private readonly ICursorIconWatcher _cursorIconWatcher;
         private string _host;
-        private string _sessionID;
+        private string _sessionId;
+        private string _statusMessage;
 
         public MainWindowViewModel()
         {
@@ -47,7 +48,6 @@ namespace Remotely.Desktop.Win.ViewModels
 
             Services.GetRequiredService<IClipboardService>().BeginWatching();
             Services.GetRequiredService<IKeyboardMouseInput>().Init();
-            _conductor.SessionIDChanged += SessionIDChanged;
             _conductor.ViewerRemoved += ViewerRemoved;
             _conductor.ViewerAdded += ViewerAdded;
             _conductor.ScreenCastRequested += ScreenCastRequested;
@@ -166,13 +166,12 @@ namespace Remotely.Desktop.Win.ViewModels
             }
 
         }
-
-        public string SessionID
+		public string StatusMessage
         {
-            get => _sessionID;
+            get => _statusMessage;
             set
             {
-                _sessionID = value;
+                _statusMessage = value;
                 FirePropertyChanged();
             }
         }
@@ -181,18 +180,30 @@ namespace Remotely.Desktop.Win.ViewModels
 
         public void CopyLink()
         {
-            Clipboard.SetText($"{Host}/RemoteControl?sessionID={SessionID?.Replace(" ", "")}");
+            Clipboard.SetText($"{Host}/RemoteControl?sessionID={StatusMessage?.Replace(" ", "")}");
         }
 
         public async Task GetSessionID()
         {
             await _casterSocket.SendDeviceInfo(_conductor.ServiceID, Environment.MachineName, _conductor.DeviceID);
-            await _casterSocket.GetSessionID();
+            var sessionId = await _casterSocket.GetSessionID();
+
+            var formattedSessionID = "";
+            for (var i = 0; i < sessionId.Length; i += 3)
+            {
+                formattedSessionID += sessionId.Substring(i, 3) + " ";
+            }
+
+            App.Current?.Dispatcher?.Invoke(() =>
+            {
+                _sessionId = formattedSessionID.Trim();
+                StatusMessage = _sessionId;
+            });
         }
 
         public async Task Init()
         {
-            SessionID = "Connexion...";
+            StatusMessage = "Connexion...";
 
             Host = _configService.GetConfig().Host;
 
@@ -218,7 +229,7 @@ namespace Remotely.Desktop.Win.ViewModels
                     await App.Current?.Dispatcher?.InvokeAsync(() =>
                     {
                         Viewers.Clear();
-                        SessionID = "Déconnecté";
+                        StatusMessage = "Déconnecté";
                     });
                 };
 
@@ -227,13 +238,14 @@ namespace Remotely.Desktop.Win.ViewModels
                     await App.Current?.Dispatcher?.InvokeAsync(() =>
                     {
                         Viewers.Clear();
-                        SessionID = "Reconnexion";
+                        StatusMessage = "Reconnexion";
                     });
                 };
 
-                _casterSocket.Connection.Reconnected += async (arg) =>
+                _casterSocket.Connection.Reconnected += (id) =>
                 {
-                    await GetSessionID();
+                        StatusMessage = _sessionId;
+                        return Task.CompletedTask;
                 };
 
                 await DeviceInitService.GetInitParams();
@@ -244,7 +256,7 @@ namespace Remotely.Desktop.Win.ViewModels
             catch (Exception ex)
             {
                 Logger.Write(ex);
-                SessionID = "Failed";
+                StatusMessage = "Failed";
                 MessageBox.Show(Application.Current.MainWindow, "Failed to connect to server.", "Connection Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -322,15 +334,6 @@ namespace Remotely.Desktop.Win.ViewModels
                     });
                 }
             });
-        }
-        private void SessionIDChanged(object sender, string sessionID)
-        {
-            var formattedSessionID = "";
-            for (var i = 0; i < sessionID.Length; i += 3)
-            {
-                formattedSessionID += sessionID.Substring(i, 3) + " ";
-            }
-            SessionID = formattedSessionID.Trim();
         }
 
         private void ViewerAdded(object sender, Viewer viewer)
