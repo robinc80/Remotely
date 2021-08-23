@@ -101,8 +101,8 @@ namespace Remotely.Agent.Services
 
                 // Start Desktop app.
                 await hubConnection.SendAsync("DisplayMessage", 
-                    "Starting remote control.",
-                    "Starting remote control.",
+                    "Démarrage de la téléassistance.",
+                    "Démarrage de la téléassistance.",
                     "bg-success",
                     requesterID);
                 if (WindowsIdentity.GetCurrent().IsSystem)
@@ -121,9 +121,9 @@ namespace Remotely.Agent.Services
                         out _);
                     if (!result)
                     {
-                        await hubConnection.SendAsync("DisplayMessage", 
-                            "Remote control failed to start on target device.",
-                            "Failed to start remote control.",
+                        await hubConnection.SendAsync("DisplayMessage",
+                            "Echec du démarrage de la téléassistance.",
+                            "Echec du démarrage de la téléassistance.",
                             "bg-danger",
                             requesterID);
                     }
