@@ -1,17 +1,12 @@
 import { ViewerApp } from "./App.js";
-import { ShowMessage } from "./UI.js";
 export class ClipboardWatcher {
     WatchClipboard() {
         if (navigator.clipboard.readText) {
             this.ClipboardTimer = setInterval(() => {
-                if (!document.hasFocus()) {
+                if (this.PauseMonitoring) {
                     return;
                 }
-                if (this.NewClipboardText && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(this.NewClipboardText);
-                    this.LastClipboardText = this.NewClipboardText;
-                    this.NewClipboardText = null;
-                    ShowMessage("Clipboard updated.");
+                if (!document.hasFocus()) {
                     return;
                 }
                 navigator.clipboard.readText().then(newText => {
@@ -20,14 +15,19 @@ export class ClipboardWatcher {
                         ViewerApp.MessageSender.SendClipboardTransfer(newText, false);
                     }
                 });
-            }, 500);
+            }, 100);
         }
     }
     SetClipboardText(text) {
         if (text == this.LastClipboardText) {
             return;
         }
-        this.NewClipboardText = text;
+        if (navigator.clipboard.writeText) {
+            this.PauseMonitoring = true;
+            this.LastClipboardText = text;
+            navigator.clipboard.writeText(text);
+            this.PauseMonitoring = false;
+        }
     }
 }
 //# sourceMappingURL=ClipboardWatcher.js.map

@@ -98,7 +98,7 @@ export class ViewerHubConnection {
             UI.UpdateCursor(cursor.ImageBytes, cursor.HotSpot.X, cursor.HotSpot.Y, cursor.CssOverride);
         });
         hubConnection.on("RequestingScreenCast", () => {
-            ShowMessage("Requesting remote control...");
+            ShowMessage("Demande de contrôle...");
         });
         hubConnection.on("ReceiveRtcOffer", async (sdp, iceServers) => {
             console.log("Rtc offer SDP received.");
