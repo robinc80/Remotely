@@ -45,7 +45,7 @@ namespace Remotely.Agent.Services
         {
             if (!await MessageLock.WaitAsync(30000))
             {
-                Logger.Write("Timed out waiting for chat message lock.", Shared.Enums.EventType.Warning);
+                Logger.Write("Timeout pour le message du chat.", Shared.Enums.EventType.Warning);
                 return;
             }
 
@@ -64,11 +64,11 @@ namespace Remotely.Agent.Services
 
                     if (procID > 0)
                     {
-                        Logger.Write($"Chat app started.  Process ID: {procID}");
+                        Logger.Write($"Chat démarré.  ID Processus : {procID}");
                     }
                     else
                     {
-                        Logger.Write($"Chat app did not start successfully.");
+                        Logger.Write($"Le chat n'a pas démarré correctement.");
                         return;
                     }
 
@@ -76,7 +76,7 @@ namespace Remotely.Agent.Services
                     clientPipe.Connect(15000);
                     if (!clientPipe.IsConnected)
                     {
-                        Logger.Write("Failed to connect to chat host.");
+                        Logger.Write("Echec de connexion à l'hôte du chat.");
                         return;
                     }
                     chatSession = new ChatSession() { PipeStream = clientPipe, ProcessID = procID };
@@ -89,7 +89,7 @@ namespace Remotely.Agent.Services
                 if (!chatSession.PipeStream.IsConnected)
                 {
                     ChatClients.Remove(senderConnectionID);
-                    await hubConnection.SendAsync("DisplayMessage", "Chat disconnected.  Please try again.", "Chat disconnected.", "bg-warning", senderConnectionID);
+                    await hubConnection.SendAsync("DisplayMessage", "Chat déconnecté.  Réessayez plus tard.", "Chat déconnecté.", "bg-warning", senderConnectionID);
                     return;
                 }
 

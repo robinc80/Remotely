@@ -17,7 +17,7 @@ namespace Remotely.Agent.Services
         {
             try
             {
-                Logger.Write($"Session changed.  Reason: {changeDescription.Reason}.  Session: {changeDescription.SessionId}");
+                Logger.Write($"Session changée.  Raison : {changeDescription.Reason}.  Session: {changeDescription.SessionId}");
                 if (changeDescription.Reason == SessionChangeReason.ConsoleDisconnect ||
                    changeDescription.Reason == SessionChangeReason.RemoteDisconnect)
                 {
@@ -26,7 +26,7 @@ namespace Remotely.Agent.Services
                     {
                         if (screenCaster.SessionId == changeDescription.SessionId)
                         {
-                            Logger.Write($"Session changed.  Kill process ID {screenCaster.Id}.");
+                            Logger.Write($"Session changée.  Kill process ID {screenCaster.Id}.");
                             screenCaster.Kill();
                         }
                     }

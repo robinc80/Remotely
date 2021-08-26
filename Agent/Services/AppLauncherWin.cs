@@ -35,7 +35,7 @@ namespace Remotely.Agent.Services
 
 
                 // Start Desktop app.
-                await hubConnection.SendAsync("DisplayMessage", $"Starting chat service.", "Starting chat service.", "bg-success", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", $"Démarrage du service de chat.", "Démarrage du service de chat.", "bg-success", requesterID);
                 if (WindowsIdentity.GetCurrent().IsSystem)
                 {
                     var result = Win32Interop.OpenInteractiveProcess($"{_rcBinaryPath} " +
@@ -76,8 +76,8 @@ namespace Remotely.Agent.Services
             {
                 Logger.Write(ex);
                 await hubConnection.SendAsync("DisplayMessage", 
-                    "Chat service failed to start on target device.",
-                    "Failed to start chat service.",
+                    "Le service de chat n'a pas pu se lancer.",
+                    "Le service de chat n'a pas pu se lancer.",
                     "bg-danger",
                     requesterID);
             }
@@ -91,8 +91,8 @@ namespace Remotely.Agent.Services
                 if (!File.Exists(_rcBinaryPath))
                 {
                     await hubConnection.SendAsync("DisplayMessage", 
-                        "Remote control executable not found on target device.", 
-                        "Executable not found on device.", 
+                        "Executable non trouvé sur l'appareil.", 
+                        "Executable non trouvé sur l'appareil.", 
                         "bg-danger",
                         requesterID);
                     return;
@@ -144,8 +144,8 @@ namespace Remotely.Agent.Services
             {
                 Logger.Write(ex);
                 await hubConnection.SendAsync("DisplayMessage", 
-                    "Remote control failed to start on target device.", 
-                    "Failed to start remote control.",
+                    "Echec du démarrage de la téléassistance.", 
+                    "Echec du démarrage de la téléassistance.",
                     "bg-danger",
                     requesterID);
             }
@@ -155,7 +155,7 @@ namespace Remotely.Agent.Services
             try
             {
                 // Start Desktop app.                 
-                Logger.Write("Restarting screen caster.");
+                Logger.Write("Redémarrage du streaming d'écran.");
                 if (WindowsIdentity.GetCurrent().IsSystem)
                 {
                     // Give a little time for session changing, etc.

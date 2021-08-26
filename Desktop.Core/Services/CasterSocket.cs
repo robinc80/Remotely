@@ -207,7 +207,7 @@ namespace Remotely.Desktop.Core.Services
                 {
                     if (enforceAttendedAccess)
                     {
-                        await SendMessageToViewer(viewerID, "Asking user for permission...");
+                        await SendMessageToViewer(viewerID, "Demande de permission auprès de l'utilisateur...");
 
                         IdleTimer.Stop();
                         var result = await RemoteControlAccessService.PromptForAccess(requesterName, organizationName);

@@ -60,7 +60,7 @@ namespace Remotely.Desktop.Win.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Error applying branding.");
+                Logger.Write(ex, "Erreur lors de l'application du branding.");
             }
         }
 

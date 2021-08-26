@@ -44,7 +44,7 @@ namespace Remotely.Server.API
             if (User.Identity.IsAuthenticated &&
                 DataService.GetUserByNameWithOrg(User.Identity.Name).Id == userID)
             {
-                return BadRequest("You can't remove administrator rights from yourself.");
+                return BadRequest("Vous ne pouvez pas vous ôter vos privilèges administrateurs.");
             }
 
             Request.Headers.TryGetValue("OrganizationID", out var orgID);
@@ -81,7 +81,7 @@ namespace Remotely.Server.API
             if (User.Identity.IsAuthenticated &&
               DataService.GetUserByNameWithOrg(User.Identity.Name).Id == userID)
             {
-                return BadRequest("You can't delete yourself here.  You must go to the Personal Data page to delete your own account.");
+                return BadRequest("Vous ne pouvez vous supprimer ici.  Vous devez supprimer votre compte depuis votre profil.");
             }
 
             Request.Headers.TryGetValue("OrganizationID", out var orgID);

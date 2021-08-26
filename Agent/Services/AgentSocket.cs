@@ -90,7 +90,7 @@ namespace Remotely.Agent.Services
                     // Orgnanization ID wasn't found, or this device is already connected.
                     // The above can be caused by temporary issues on the server.  So we'll do
                     // nothing here and wait for it to get resolved.
-                    Logger.Write("There was an issue registering with the server.  The server might be undergoing maintenance, or the supplied organization ID might be incorrect.");
+                    Logger.Write("Problèmes lors de l'inscription auprès du serveur.  Le serveur est peut-être en maintenance, ou l'ID d'entreprise est invalide.");
                     await Task.Delay(TimeSpan.FromMinutes(1));
                     await _hubConnection.StopAsync();
                     return;
@@ -125,7 +125,7 @@ namespace Remotely.Agent.Services
                     if (!IsConnected)
                     {
                         var waitTime = new Random().Next(1000, 30000);
-                        Logger.Write($"Websocket closed.  Reconnecting in {waitTime / 1000} seconds...");
+                        Logger.Write($"Reconnexion dans {waitTime / 1000} secondes...");
                         await Task.Delay(waitTime);
                         await Program.Services.GetRequiredService<AgentSocket>().Connect();
                         await Program.Services.GetRequiredService<IUpdater>().CheckForUpdates();
@@ -198,7 +198,7 @@ namespace Remotely.Agent.Services
                 {
                     if (!IsServerVerified)
                     {
-                        Logger.Write("Chat attempted before server was verified.", EventType.Warning);
+                        Logger.Write("Chat débuté avant la vérification du serveur.", EventType.Warning);
                         return;
                     }
 
@@ -214,7 +214,7 @@ namespace Remotely.Agent.Services
             {
                 if (!IsServerVerified)
                 {
-                    Logger.Write("CtrlAltDel attempted before server was verified.", EventType.Warning);
+                    Logger.Write("CtrlAltSuppr tenté avant la vérification du serveur.", EventType.Warning);
                     return;
                 }
                 User32.SendSAS(false);
@@ -239,8 +239,8 @@ namespace Remotely.Agent.Services
                     if (!File.Exists(filePath))
                     {
                         await _hubConnection.SendAsync("DisplayMessage",
-                            "File not found on remote device.",
-                            "File not found.",
+                            "Fichier non trouvé sur l'appareil distant.",
+                            "Fichier non trouvé.",
                             "bg-danger",
                             senderConnectionID);
                         return;
@@ -267,8 +267,8 @@ namespace Remotely.Agent.Services
                     {
                         Logger.Write(ex);
                         await _hubConnection.SendAsync("DisplayMessage",
-                            "Error occurred while uploading file from remote computer.",
-                            "Upload error.",
+                            "Erreur lors de l'upload vers l'ordinateur distant.",
+                            "Erreur de l'upload.",
                             "bg-danger",
                             senderConnectionID);
                     }
@@ -334,7 +334,7 @@ namespace Remotely.Agent.Services
 
                 if (!logBytes.Any())
                 {
-                    var message = "There are no log entries written.";
+                    var message = "Aucune entrée dans le log.";
 
                     await _hubConnection.InvokeAsync("SendLogs", message, senderConnectionId);
                     return;
@@ -394,7 +394,7 @@ namespace Remotely.Agent.Services
                 {
                     if (!IsServerVerified)
                     {
-                        Logger.Write("Remote control attempted before server was verified.", EventType.Warning);
+                        Logger.Write("Téléassistance tentée avant la vérification du serveur.", EventType.Warning);
                         return;
                     }
                     await _appLauncher.LaunchRemoteControl(-1, requesterID, serviceID, _hubConnection);
@@ -411,7 +411,7 @@ namespace Remotely.Agent.Services
                 {
                     if (!IsServerVerified)
                     {
-                        Logger.Write("Remote control attempted before server was verified.", EventType.Warning);
+                        Logger.Write("Téléassistance tentée avant la vérification du serveur.", EventType.Warning);
                         return;
                     }
                     await _appLauncher.RestartScreenCaster(viewerIDs, serviceID, requesterID, _hubConnection);
@@ -452,7 +452,7 @@ namespace Remotely.Agent.Services
                         return;
                     }
 
-                    Logger.Write($"File upload started by {requesterID}.");
+                    Logger.Write($"Upload de fichier par {requesterID}.");
                     var sharedFilePath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "RemotelySharedFiles")).FullName;
 
                     foreach (var fileID in fileIDs)

@@ -68,8 +68,8 @@ namespace Remotely.Agent.Installer.Win.Utilities
         {
             if (_invalidArgumentFound)
             {
-                Logger.Write("Command line arguments are invalid.");
-                MessageBoxEx.Show("Command line arguments are invalid.", "Invalid Arguments", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Write("Les arguments de ligne de commande sont invalides.");
+                MessageBoxEx.Show("Les arguments de ligne de commande sont invalides.", "Arguments invalides", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

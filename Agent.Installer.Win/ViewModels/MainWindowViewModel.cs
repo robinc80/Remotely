@@ -269,7 +269,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         {
             try
             {
-                ProductName = "Remotely";
+                ProductName = "Le Garage à PC";
 
                 if (!string.IsNullOrWhiteSpace(brandingInfo?.Product))
                 {
@@ -319,23 +319,23 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         {
             if (string.IsNullOrWhiteSpace(OrganizationID) || string.IsNullOrWhiteSpace(ServerUrl))
             {
-                Logger.Write("ServerUrl or OrganizationID param is missing.  Unable to install.");
+                Logger.Write("Paramètres manquants.  Impossible d'installer.");
                 MessageBoxEx.Show("Les champs obligatoires ne sont pas remplis. Entrez l'URL du serveur et l'ID d'organisation.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
             if (!Guid.TryParse(OrganizationID, out _))
             {
-                Logger.Write("OrganizationID is not a valid GUID.");
-                MessageBoxEx.Show("Organization ID must be a valid GUID.", "Invalid Organization ID", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Write("l'ID d'entreprise n'est pas valide.");
+                MessageBoxEx.Show("L'ID d'entreprise n'est pas valide.", "L'ID d'entreprise n'est pas valide.", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
             if (!Uri.TryCreate(ServerUrl, UriKind.Absolute, out var serverUri) ||
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
             {
-                Logger.Write("ServerUrl is not valid.");
-                MessageBoxEx.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Write("L'URL du serveur n'est pas valide.");
+                MessageBoxEx.Show("L'URL du serveur n'est pas valide (ex.: https://app.remotely.one).", "URL de serveur invalide", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -518,8 +518,8 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                 else
                 {
                     Progress = 0;
-                    HeaderMessage = "An error occurred during uninstall.";
-                    StatusMessage = "There was an error during uninstall.  Check the logs for details.";
+                    HeaderMessage = "Une erreur s'est produite durant la désinstallation.";
+                    StatusMessage = "Une erreur s'est produite durant la désinstallation.  Consultez les logs pour plus de détails.";
                 }
 
             }

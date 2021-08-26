@@ -39,7 +39,7 @@ namespace Remotely.Desktop.Core.Services
             }
             catch (TaskCanceledException)
             {
-                Logger.Write("A chat session was attempted, but the client failed to connect in time.", Shared.Enums.EventType.Warning);
+                Logger.Write("Session tentée mais le client n'a pas répondu assez vite.", Shared.Enums.EventType.Warning);
                 Environment.Exit(0);
             }
 

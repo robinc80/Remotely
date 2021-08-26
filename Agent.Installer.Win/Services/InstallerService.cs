@@ -37,7 +37,7 @@ namespace Remotely.Agent.Installer.Win.Services
         {
             try
             {
-                Logger.Write("Install started.");
+                Logger.Write("Installation lancée.");
                 if (!CheckIsAdministrator())
                 {
                     return false;
@@ -95,7 +95,7 @@ namespace Remotely.Agent.Installer.Win.Services
 
                 await StopProcesses();
 
-                ProgressMessageChanged?.Invoke(this, "Deleting files.");
+                ProgressMessageChanged?.Invoke(this, "Suppression des fichiers.");
                 ClearInstallDirectory();
                 ProcessEx.StartHidden("cmd.exe", $"/c timeout 5 & rd /s /q \"{InstallPath}\"");
 
@@ -123,8 +123,8 @@ namespace Remotely.Agent.Installer.Win.Services
         {
             if (Directory.Exists(InstallPath))
             {
-                Logger.Write("Backing up current installation.");
-                ProgressMessageChanged?.Invoke(this, "Backing up current installation.");
+                Logger.Write("Sauvegarde de l'installation actuelle.");
+                ProgressMessageChanged?.Invoke(this, "Sauvegarde de l'installation actuelle.");
                 var backupPath = Path.Combine(Path.GetTempPath(), "Remotely_Backup.zip");
                 if (FileIO.Exists(backupPath))
                 {
@@ -385,7 +385,7 @@ namespace Remotely.Agent.Installer.Win.Services
 
                 var state = new System.Collections.Specialized.ListDictionary();
                 serviceInstaller.Install(state);
-                Logger.Write("Service installed.");
+                Logger.Write("Service installé.");
                 serv = ServiceController.GetServices().FirstOrDefault(ser => ser.ServiceName == "Remotely_Service");
 
                 ProcessEx.StartHidden("cmd.exe", "/c sc.exe failure \"Remotely_Service\" reset= 5 actions= restart/5000");
@@ -394,7 +394,7 @@ namespace Remotely.Agent.Installer.Win.Services
             {
                 serv.Start();
             }
-            Logger.Write("Service started.");
+            Logger.Write("Service démarré.");
         }
 
         private void RestoreBackup()
@@ -404,7 +404,7 @@ namespace Remotely.Agent.Installer.Win.Services
                 var backupPath = Path.Combine(Path.GetTempPath(), "Remotely_Backup.zip");
                 if (FileIO.Exists(backupPath))
                 {
-                    Logger.Write("Restoring backup.");
+                    Logger.Write("Restauration.");
                     ClearInstallDirectory();
                     ZipFile.ExtractToDirectory(backupPath, InstallPath);
                     var serv = ServiceController.GetServices().FirstOrDefault(ser => ser.ServiceName == "Remotely_Service");
@@ -439,8 +439,8 @@ namespace Remotely.Agent.Installer.Win.Services
                 var remotelyService = ServiceController.GetServices().FirstOrDefault(x => x.ServiceName == "Remotely_Service");
                 if (remotelyService != null)
                 {
-                    Logger.Write("Stopping existing Remotely service.");
-                    ProgressMessageChanged?.Invoke(this, "Stopping existing Remotely service.");
+                    Logger.Write("Arrêt du service Remotely existant.");
+                    ProgressMessageChanged?.Invoke(this, "Arrêt du service Remotely existant.");
                     remotelyService.Stop();
                     remotelyService.WaitForStatus(ServiceControllerStatus.Stopped);
                 }
