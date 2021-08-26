@@ -123,7 +123,7 @@ export class ViewerHubConnection {
         });
 
         hubConnection.on("RequestingScreenCast", () => {
-            ShowMessage("Demande de contrôle...");
+            ShowMessage("Requesting remote control...");
         });
 
 
