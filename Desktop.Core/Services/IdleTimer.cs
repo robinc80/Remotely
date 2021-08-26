@@ -40,7 +40,7 @@ namespace Remotely.Desktop.Core.Services
             }
             else if (DateTimeOffset.Now - ViewersLastSeen > TimeSpan.FromSeconds(30))
             {
-                Logger.Write("Pas d'utilisateur depuis 30 secondes.  Arrêt en cours.");
+                Logger.Write("No viewers connected after 30 seconds.  Shutting down.");
                 Environment.Exit(0);
             }
         }

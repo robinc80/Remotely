@@ -93,7 +93,7 @@ namespace Remotely.Server.API
                 var currentUsers = CasterHub.SessionInfoList.Count(x => x.Value.OrganizationID == orgID);
                 if (currentUsers >= AppConfig.RemoteControlSessionLimit)
                 {
-                    return BadRequest("Le quota de sessions simultanées a été atteint.");
+                    return BadRequest("There are already the maximum amount of active remote control sessions for your organization.");
                 }
 
                 var existingSessions = CasterHub.SessionInfoList

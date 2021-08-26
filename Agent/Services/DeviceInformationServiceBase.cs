@@ -63,7 +63,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Erreur lors de la récupération des informations.");
+                Logger.Write(ex, "Error getting system drive info.");
             }
 
             return (0, 0);
@@ -80,7 +80,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Erreur lors de la récupération du numéro de version.");
+                Logger.Write(ex, "Error getting agent version.");
             }
 
             return "0.0.0.0";
@@ -103,7 +103,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Erreur lors de la récupération des informations.");
+                Logger.Write(ex, "Error getting drive info.");
                 return null;
             }
         }

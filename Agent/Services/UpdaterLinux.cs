@@ -56,7 +56,7 @@ namespace Remotely.Agent.Services
 
                 if (_lastUpdateFailure.AddDays(1) > DateTimeOffset.Now)
                 {
-                    Logger.Write("Vérification ignorée suite à des tentatives infructueuses.  Redémarrez le serveur ou lancez l'installation manuellement.");
+                    Logger.Write("Skipping update check due to previous failure.  Restart the service to try again, or manually install the update.");
                     return;
                 }
 
@@ -81,17 +81,17 @@ namespace Remotely.Agent.Services
                     using var response = (HttpWebResponse)await wr.GetResponseAsync();
                     if (response.StatusCode == HttpStatusCode.NotModified)
                     {
-                        Logger.Write("Service Updater: aucune mise à jour n'est disponible.");
+                        Logger.Write("Service Updater: Version is current.");
                         return;
                     }
                 }
                 catch (WebException ex) when ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotModified)
                 {
-                    Logger.Write("Service Updater: aucune mise à jour n'est disponible.");
+                    Logger.Write("Service Updater: Version is current.");
                     return;
                 }
 
-                Logger.Write("Service Updater: mise à jour disponible.");
+                Logger.Write("Service Updater: Update found.");
 
                 await InstallLatestVersion();
 
@@ -120,7 +120,7 @@ namespace Remotely.Agent.Services
                 var connectionInfo = _configService.GetConnectionInfo();
                 var serverUrl = connectionInfo.Host;
 
-                Logger.Write("Service Updater: téléchargement du package.");
+                Logger.Write("Service Updater: Downloading install package.");
 
                 var downloadId = Guid.NewGuid().ToString();
                 var zipPath = Path.Combine(Path.GetTempPath(), "RemotelyUpdate.zip");
@@ -152,7 +152,7 @@ namespace Remotely.Agent.Services
 
                 (await WebRequest.CreateHttp(serverUrl + $"/api/AgentUpdate/ClearDownload/{downloadId}").GetResponseAsync()).Dispose();
 
-                Logger.Write("Lancement de l'installateur.");
+                Logger.Write("Launching installer to perform update.");
 
                 Process.Start("sudo", $"chmod +x {installerPath}").WaitForExit();
 
@@ -160,7 +160,7 @@ namespace Remotely.Agent.Services
             }
             catch (WebException ex) when (ex.Status == WebExceptionStatus.Timeout)
             {
-                Logger.Write("Timeout lors du téléchargement.", Shared.Enums.EventType.Warning);
+                Logger.Write("Timed out while waiting to download update.", Shared.Enums.EventType.Warning);
                 _lastUpdateFailure = DateTimeOffset.Now;
             }
             catch (Exception ex)

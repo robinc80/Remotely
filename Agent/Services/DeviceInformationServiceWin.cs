@@ -33,7 +33,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Erreur lors de la récupération des informations.");
+                Logger.Write(ex, "Error getting device info.");
             }
 
             return device;

@@ -73,8 +73,8 @@ namespace Remotely.Agent.Services
             {
                 Logger.Write(ex);
                 await hubConnection.SendAsync("DisplayMessage",
-                    "Il y a eu un problème lors de l'exécution de la commande. Les logs de l'appareil ont été alimentés.",
-                    "Erreur lors de l'exécution de la commande.",
+                    "There was an error executing the command. It has been logged on the client device.",
+                    "Error executing command.",
                     "bg-danger",
                     senderConnectionID);
             }
@@ -88,7 +88,7 @@ namespace Remotely.Agent.Services
         {
             try
             {
-                Logger.Write($"Script lancé.  ID du script : {savedScriptId}. Script : {scriptRunId}. Instigateur: {initiator}.");
+                Logger.Write($"Script run started.  Script ID: {savedScriptId}. Script Run: {scriptRunId}. Initiator: {initiator}.");
 
                 var connectionInfo = ConfigService.GetConnectionInfo();
                 var url = $"{connectionInfo.Host}/API/SavedScripts/{savedScriptId}";
