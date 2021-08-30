@@ -26,7 +26,7 @@ namespace Remotely.Server.Pages
         [Parameter]
         public string ActiveTab { get; set; }
 
-		[Parameter]
+        [Parameter]
         public string DeviceId { get; set; }
         [Inject]
         private ICircuitConnection CircuitConnection { get; set; }
@@ -36,9 +36,9 @@ namespace Remotely.Server.Pages
 
         private Device Device { get; set; }
 
-		[Inject]
+        [Inject]
         private IJsInterop JsInterop { get; set; }
-		
+
         [Inject]
         private IModalService ModalService { get; set; }
 
@@ -71,7 +71,7 @@ namespace Remotely.Server.Pages
             }
         }
 
-		private async Task DeleteLogs()
+        private async Task DeleteLogs()
         {
             var result = await JsInterop.Confirm("Are you sure you want to delete the remote logs?");
             if (result)
@@ -80,7 +80,7 @@ namespace Remotely.Server.Pages
                 ToastService.ShowToast("Delete command sent.");
             }
         }
-		
+
         private void EditFormKeyDown()
         {
             _alertMessage = string.Empty;

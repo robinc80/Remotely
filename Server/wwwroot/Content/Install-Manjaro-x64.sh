@@ -36,7 +36,7 @@ if [ -f "/usr/local/bin/Remotely/ConnectionInfo.json" ]; then
     SavedGUID=`cat "/usr/local/bin/Remotely/ConnectionInfo.json" | jq -r '.DeviceID'`
     if [[ "$SavedGUID" != "null" && -n "$SavedGUID" ]]; then
         GUID="$SavedGUID"
-    fi`
+    fi
 fi
 
 rm -r -f /usr/local/bin/Remotely

@@ -1,4 +1,4 @@
-import { ViewerApp } from "./App.js";
+﻿import { ViewerApp } from "./App.js";
 import { CaptureFrameDto } from "./Interfaces/Dtos.js";
 import { CompletedFrame } from "./Models/CompletedFrame.js";
 import { Screen2DContext } from "./UI.js";

@@ -37,7 +37,7 @@ namespace Remotely.Shared.Utilities
             }
         }
 
-		public static void DeleteLogs()
+        public static void DeleteLogs()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Remotely.Shared.Utilities
                 WriteLock.Release();
             }
         }
-		
+
         public static async Task<byte[]> ReadAllLogs()
         {
             try

@@ -1,12 +1,12 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">Compte</a>
+        <a href="Identity/Account/Manage">Account</a>
         <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Déconnexion</button>
+            <button type="submit" class="nav-link btn btn-link">Log out</button>
         </form>
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Register">Inscription</a>
-        <a href="Identity/Account/Login">Connexion</a>
+        <a href="Identity/Account/Register">Register</a>
+        <a href="Identity/Account/Login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>

@@ -10,7 +10,7 @@ namespace Remotely.Tests.LoadTester
     internal class Program
     {
         private static readonly SemaphoreSlim _lock = new(10, 10);
-		private static readonly double _heartbeatMs = TimeSpan.FromMinutes(1).TotalMilliseconds;
+        private static readonly double _heartbeatMs = TimeSpan.FromMinutes(1).TotalMilliseconds;
         private static int _agentCount;
         private static string _organizationId;
         private static string _serverurl;
@@ -88,10 +88,10 @@ namespace Remotely.Tests.LoadTester
                     return;
                 }
 
-
+                
                 _ = Task.Run(async () =>
                 {
-						await Task.Delay(new Random().Next(1, (int)_heartbeatMs));
+                    await Task.Delay(new Random().Next(1, (int)_heartbeatMs));
                     var heartbeatTimer = new System.Timers.Timer(_heartbeatMs);
                     heartbeatTimer.Elapsed += async (sender, args) =>
                     {

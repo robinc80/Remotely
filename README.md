@@ -5,6 +5,11 @@ A remote control and remote scripting solution, built with .NET 5, Blazor, Signa
 ![GitHub Build](https://github.com/lucent-sea/Remotely/workflows/GitHub%20Build/badge.svg)
 
 
+> ## Repo is "On Pause"
+> My family and I have recently moved into a new house.  Until we've settled in and adjusted to the changes, the repo will be archived.  This is for my own peace of mind, as it's rather stressful to see requests/issues come in when I don't have time to address them.
+>
+> Once I'm ready to resume the project, the archival will be removed.
+
 ## Donations
 If this project has benefited you in some way, or if you just want to show appreciation, please consider donating to a charity.
 
@@ -18,13 +23,13 @@ You can also sponsor the project as a way of saying "thank you".  But if you hav
 
 
 ## Project Links
-Public Server: https://app.remotely.one  
-Website: https://remotely.one  
+Public Server: https://remotely.lucency.co  
+Website: https://remotely-info.lucency.co  
 Subreddit: https://www.reddit.com/r/remotely_app/  
 Docker: https://hub.docker.com/r/translucency/remotely  
-Video Tutorials: https://remotely.one/Tutorials  
+Video Tutorials: https://remotely-info.lucency.co/Tutorials  
 
-![image](https://user-images.githubusercontent.com/20995508/113913261-f7002a00-9790-11eb-81b3-c36fb8aa536d.png)
+![image](https://remotely-info.lucency.co/media/ask-remote.png)
 
 ## Disclaimer
 Hosting a Remotely server requires running an ASP.NET Core web app behind IIS (Windows), Nginx (Ubuntu), or Caddy Server (any OS).  It's expected that the person deploying and maintaining the server is familiar with this process.  Since this is a hobby project that I develop in between working full time and raising a family, there simply isn't time available to provide support in this capacity.
@@ -34,11 +39,13 @@ GitHub Actions allows you to build and deploy Remotely for free from their cloud
 
 I've created a cross-platform command line tool that can leverage the GitHub Actions REST API to build the project and install it on your private server.  This process will also embed your server's URL into the desktop clients, so that they won't need to prompt the end user to enter it.
 
+Branding will not work for the agent installer or quick support clients (in most cases) unless the server URL is embedded this way.  There is no way for the self-contained EXE to know what server to contact unless it's been compiled into it.
+
 However, you can also choose to install the pre-built packages that do not have any server URLs embedded.  These don't require you to fork the repository on GitHub.
 
 ## Installation Instructions:
 - Before attempting installation, verify that your domain name is resolving to your server's IP address.
-  - For example, I can use the command `ping app.remotely.one` and see the IP address to which it resolves.
+  - For example, I can use the command `ping remotely.lucency.co` and see the IP address to which it resolves.
 - Find and download the `Remotely_Server_Installer[.exe]` CLI tool for the latest release on the [Releases page](https://github.com/lucent-sea/Remotely/releases).
   - You will run it on the server where you'll be hosting Remotely.
   - You need to run it with elevation (e.g. sudo or "Run as admin").
@@ -49,8 +56,8 @@ However, you can also choose to install the pre-built packages that do not have 
 - If you want to use the pre-built package, run the installer now, and you're done!
   - Otherwise, follow the below steps for setting up the GitHub Actions integration, then run the installer afterward.
 - Fork the repo if you haven't already.
-  - If you've already forked the repo and haven't updated your fork since the new installer was created, you'll need to do so first.
-  - You can use the following commands to pull the latest changes, merge them, and push them back up to your repo ([git](https://git-scm.com/downloads) required).  Make sure to replace `{your-username}` with your GitHub username.
+  - If you've already forked the repo and haven't updated your fork recently, you'll need to do so first.
+  - You can use the following commands to pull the latest changes, merge them, and push them back up to your repo ([git](https://git-scm.com/downloads) required).  Make sure to replace `{your-username}` with your GitHub username.  This example assumes you've added your SSH key to your GitHub account.
 	```
 	git clone git@github.com:{your-username}/remotely
 	cd ./remotely
@@ -78,6 +85,14 @@ However, you can also choose to install the pre-built packages that do not have 
 - By default, SQLite is used for the database.
     - The "Remotely.db" database file is automatically created in the root folder of your site.
 	- You can browse and modify the contents using [DB Browser for SQLite](https://sqlitebrowser.org/).
+- Create your account by clicking the `Register` button on the main page.
+  - This account will be both the server admin and organization admin.
+  - An organization is automatically created for the account.
+    - Organizations are used to group together users, devices, and other data items into a single pool.
+    - By default, only one organization can exist on a server.
+    - The `Register` button will disappear.
+    - People will no longer be able to create accounts on their own.
+    - To allow self-registration, increase the `MaxOrganizationCount` or set it to -1 (see Configuration section).
 
 ## Upgrading
 * To upgrade a server, do any of the below to copy the new Server application files.
@@ -234,7 +249,7 @@ Alternatively, you can use a command-line argument for the `Remotely_Server` pro
   - `ASPNETCORE_URLS=http://localhost:{port-number}`
 
 ## API and Integrations
-Remotely has a basic API, which can be browsed at https://app.remotely.one/swagger (or your own server instance).  Most endpoints require authentication via an API access token, which can be created by going to Account - API Access.
+Remotely has a basic API, which can be browsed at https://remotely.lucency.co/swagger (or your own server instance).  Most endpoints require authentication via an API access token, which can be created by going to Account - API Access.
 
 When accessing the API from the browser on another website, you'll need to set up CORS in appsettings by adding the website origin URL to the TrustedCorsOrigins array.  If you're not familiar with how CORS works, I recommend reading up on it before proceeding.  For example, if I wanted to create a login form on https://lucency.co that logged into the Remotely API, I'd need to add "https://lucency.co" to the TrustedCorsOrigins.
 

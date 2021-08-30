@@ -166,7 +166,7 @@ namespace Remotely.Desktop.Win.ViewModels
             }
 
         }
-		public string StatusMessage
+        public string StatusMessage
         {
             get => _statusMessage;
             set
@@ -203,7 +203,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
         public async Task Init()
         {
-            StatusMessage = "Connexion...";
+            StatusMessage = "Retrieving...";
 
             Host = _configService.GetConfig().Host;
 
@@ -217,49 +217,52 @@ namespace Remotely.Desktop.Win.ViewModels
 
             try
             {
-                await _casterSocket.Connect(_conductor.Host);
+                var result = await _casterSocket.Connect(_conductor.Host);
 
-                if (_casterSocket.Connection is null)
+                if (result)
                 {
-                    return;
-                }
-
-                _casterSocket.Connection.Closed += async (ex) =>
-                {
-                    await App.Current?.Dispatcher?.InvokeAsync(() =>
+                    _casterSocket.Connection.Closed += (ex) =>
                     {
-                        Viewers.Clear();
-                        StatusMessage = "Déconnecté";
-                    });
-                };
+                        App.Current?.Dispatcher?.Invoke(() =>
+                        {
+                            Viewers.Clear();
+                            StatusMessage = "Disconnected";
+                        });
+                        return Task.CompletedTask;
+                    };
 
-                _casterSocket.Connection.Reconnecting += async (ex) =>
-                {
-                    await App.Current?.Dispatcher?.InvokeAsync(() =>
+                    _casterSocket.Connection.Reconnecting += (ex) =>
                     {
-                        Viewers.Clear();
-                        StatusMessage = "Reconnexion";
-                    });
-                };
+                        App.Current?.Dispatcher?.Invoke(() =>
+                        {
+                            Viewers.Clear();
+                            StatusMessage = "Reconnecting";
+                        });
+                        return Task.CompletedTask;
+                    };
 
-                _casterSocket.Connection.Reconnected += (id) =>
-                {
+                    _casterSocket.Connection.Reconnected += (id) =>
+                    {
                         StatusMessage = _sessionId;
                         return Task.CompletedTask;
-                };
+                    };
 
-                await DeviceInitService.GetInitParams();
-                ApplyBranding();
+                    await DeviceInitService.GetInitParams();
+                    ApplyBranding();
 
-                await GetSessionID();
+                    await GetSessionID();
+
+                    return;
+                }
             }
             catch (Exception ex)
             {
                 Logger.Write(ex);
-                StatusMessage = "Failed";
-                MessageBox.Show(Application.Current.MainWindow, "Failed to connect to server.", "Connection Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
             }
+
+            // If we got here, something went wrong.
+            StatusMessage = "Failed";
+            MessageBox.Show(Application.Current.MainWindow, "Failed to connect to server.", "Connection Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         public void PromptForHostName()
@@ -317,7 +320,7 @@ namespace Remotely.Desktop.Win.ViewModels
             await App.Current.Dispatcher.InvokeAsync(async () =>
             {
                 App.Current.MainWindow.Activate();
-                var result = MessageBox.Show(Application.Current.MainWindow, $"Vous avez recu une demande de {screenCastRequest.RequesterName}.  Accepter ?", "Demande de connexion", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(Application.Current.MainWindow, $"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     Services.GetRequiredService<IScreenCaster>().BeginScreenCasting(screenCastRequest);

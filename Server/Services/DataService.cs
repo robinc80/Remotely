@@ -186,7 +186,7 @@ namespace Remotely.Server.Services
         Task<bool> RemoveUserFromDeviceGroup(string orgID, string groupID, string userID);
         Task RenameApiToken(string userName, string tokenId, string tokenName);
 
-		Task ResetBranding(string organizationId);
+        Task ResetBranding(string organizationId);
 
         void SetAllDevicesNotOnline();
 
@@ -1710,7 +1710,7 @@ namespace Remotely.Server.Services
             await dbContext.SaveChangesAsync();
         }
 
-		public async Task ResetBranding(string organizationId)
+        public async Task ResetBranding(string organizationId)
         {
             using var dbContext = _dbFactory.CreateDbContext();
 
@@ -1727,7 +1727,7 @@ namespace Remotely.Server.Services
 
             await dbContext.SaveChangesAsync();
         }
-		
+
         public void SetAllDevicesNotOnline()
         {
             using var dbContext = _dbFactory.CreateDbContext();

@@ -30,7 +30,7 @@ namespace Remotely.Desktop.Core
             ScreenCastRequested?.Invoke(null, viewerIdAndRequesterName);
         }
 
-		public void InvokeViewerAdded(Services.Viewer viewer)
+        public void InvokeViewerAdded(Services.Viewer viewer)
         {
             ViewerAdded?.Invoke(null, viewer);
         }

@@ -74,7 +74,7 @@ namespace Remotely.Agent.Services
 
 
                 // Start Desktop app.
-                await hubConnection.SendAsync("DisplayMessage", "Démarrage de la téléassistance.", "Démarrage de la téléassistance.",  "bg-success", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", "Starting remote control.", "Starting remote control.",  "bg-success", requesterID);
                 var args = $"{_rcBinaryPath} " +
                     $"-mode Unattended " +
                     $"-requester \"{requesterID}\" " +
