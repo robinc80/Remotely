@@ -470,20 +470,20 @@ namespace Remotely.Agent.Installer.Win.ViewModels
                     return;
                 }
 
-                HeaderMessage = "Installing Remotely...";
+                HeaderMessage = "Installation de Remotely...";
 
                 if (await Installer.Install(ServerUrl, OrganizationID, DeviceGroup, DeviceAlias, DeviceUuid, CreateSupportShortcut))
                 {
                     IsServiceInstalled = true;
                     Progress = 0;
-                    HeaderMessage = "Installation completed.";
-                    StatusMessage = "Remotely has been installed.  You can now close this window.";
+                    HeaderMessage = "Installation terminée.";
+                    StatusMessage = "Remotely a été installé.  Vous pouvez fermer cette fenêtre.";
                 }
                 else
                 {
                     Progress = 0;
-                    HeaderMessage = "An error occurred during installation.";
-                    StatusMessage = "There was an error during installation.  Check the logs for details.";
+                    HeaderMessage = "Une erreur s'est produite durant l'installation.";
+                    StatusMessage = "Une erreur s'est produite durant l'installation.  Pour plus de détails, consultez les logs.";
                 }
                 if (!CheckIsAdministrator())
                 {
@@ -506,14 +506,14 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             {
                 IsReadyState = false;
 
-                HeaderMessage = "Uninstalling Remotely...";
+                HeaderMessage = "Désinstallation de Remotely...";
 
                 if (await Installer.Uninstall())
                 {
                     IsServiceInstalled = false;
                     Progress = 0;
-                    HeaderMessage = "Uninstall completed.";
-                    StatusMessage = "Remotely has been uninstalled.  You can now close this window.";
+                    HeaderMessage = "Désinstallation terminée.";
+                    StatusMessage = "Remotely a bien été désinstallé.  Vous pouvez fermer cette fenêtre.";
                 }
                 else
                 {
