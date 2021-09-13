@@ -144,7 +144,7 @@ namespace Remotely.Server.Components.Scripts
 
             await DataService.AddScriptRun(scriptRun);
 
-            ToastService.ShowToast($"Created script run for {scriptRun.Devices.Count} devices.");
+            ToastService.ShowToast($"Lancement du script sur {scriptRun.Devices.Count} appareil(s).");
 
             await CircuitConnection.RunScript(onlineDevices, _selectedScript.Id, scriptRun.Id, ScriptInputType.OneTimeScript, false);
 
