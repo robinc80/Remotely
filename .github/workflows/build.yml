@@ -24,10 +24,10 @@ on:
   workflow_dispatch:
     inputs:
       serverUrl:
-        description: 'Server URL'     
+        description: 'URL du serveur'     
         required: true
       rid:
-        description: 'Server Runtime Identifier'     
+        description: 'Plateforme'     
         required: false
         default: "linux-x64"
 
