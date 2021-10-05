@@ -320,7 +320,7 @@ namespace Remotely.Desktop.Win.ViewModels
             await App.Current.Dispatcher.InvokeAsync(async () =>
             {
                 App.Current.MainWindow.Activate();
-                var result = MessageBox.Show(Application.Current.MainWindow, $"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(Application.Current.MainWindow, $"Vous avez reçu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     Services.GetRequiredService<IScreenCaster>().BeginScreenCasting(screenCastRequest);
