@@ -52,15 +52,15 @@ else
                     <InputFile type="file" accept="image/png" class="form-control" OnChange="IconUploadInputChanged" />
                 </div>
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">Title Foreground</label>
+                    <label class="text-info font-weight-bold">Premier-plan du titre</label>
                     <ColorPicker @bind-Color="_inputModel.TitleForegroundColor" />
                 </div>
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">Title Background</label>
+                    <label class="text-info font-weight-bold">Arrière-plan du titre</label>
                     <ColorPicker @bind-Color="_inputModel.TitleBackgroundColor" />
                 </div>
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">Button Color</label>
+                    <label class="text-info font-weight-bold">Couleur des boutons</label>
                     <ColorPicker @bind-Color="_inputModel.TitleButtonColor" />
                 </div>
                 <div class="form-group text-right">
@@ -81,7 +81,7 @@ else
     {
         [StringLength(25)]
         [Required]
-        [Display(Name = "Product Name")]
+        [Display(Name = "Le garage à PC")]
         public string ProductName { get; set; }
 
         public ColorPickerModel TitleForegroundColor { get; set; } = new();
@@ -164,12 +164,12 @@ else
 	
 	private async Task ResetBranding()
     {
-        var result = await JsInterop.Confirm("Are you sure you want to reset branding to default?");
+        var result = await JsInterop.Confirm("Etes-vous sûr de vouloir remettre à 0 les valeurs du branding ?");
         if (result)
         {
             await DataService.ResetBranding(User.OrganizationID);
             await LoadBrandingInfo();
-            ToastService.ShowToast("Branding reset.");
+            ToastService.ShowToast("Branding réinitialisé.");
         }
     }
 }
