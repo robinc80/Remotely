@@ -75,7 +75,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Failed to connect to server.  Internet connection may be unavailable.", EventType.Warning);
+                Logger.Write(ex, "Impossible de se connecter au serveur.  Veuillez vérifier la connexion Internet.", EventType.Warning);
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace Remotely.Agent.Services
                     if (!IsConnected)
                     {
                         var waitTime = new Random().Next(1000, 30000);
-                        Logger.Write($"Websocket closed.  Reconnecting in {waitTime / 1000} seconds...");
+                        Logger.Write($"Websocket terminé.  Reconnexion dans {waitTime / 1000} secondes...");
                         await Task.Delay(waitTime);
                         await Program.Services.GetRequiredService<AgentSocket>().Connect();
                         await Program.Services.GetRequiredService<IUpdater>().CheckForUpdates();
@@ -246,8 +246,8 @@ namespace Remotely.Agent.Services
                     if (!File.Exists(filePath))
                     {
                         await _hubConnection.SendAsync("DisplayMessage",
-                            "File not found on remote device.",
-                            "File not found.",
+                            "Fichier non trouvé.",
+                            "Fichier non trouvé.",
                             "bg-danger",
                             senderConnectionID);
                         return;
