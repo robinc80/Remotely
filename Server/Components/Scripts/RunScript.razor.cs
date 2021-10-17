@@ -97,14 +97,14 @@ namespace Remotely.Server.Components.Scripts
         {
             if (_selectedScript is null)
             {
-                ToastService.ShowToast(Localizer["You must select a script."], classString: "bg-warning");
+                ToastService.ShowToast("Vous devez sélectionner un script.", classString: "bg-warning");
                 return;
             }
 
             if (!_selectedDeviceGroups.Any() &&
                 !_selectedDevices.Any())
             {
-                ToastService.ShowToast(Localizer["You must select at least one device or device group."], classString: "bg-warning");
+                ToastService.ShowToast("Vous devez sélectionner au moins un appareil ou groupe d'appareils.", classString: "bg-warning");
                 return;
             }
 
@@ -144,11 +144,11 @@ namespace Remotely.Server.Components.Scripts
 
             await DataService.AddScriptRun(scriptRun);
 
-            ToastService.ShowToast(string.Format( Localizer["Created script run for {0} devices."], scriptRun.Devices.Count));
+            ToastService.ShowToast($"Lancement du script sur {scriptRun.Devices.Count} appareil(s).");
 
             await CircuitConnection.RunScript(onlineDevices, _selectedScript.Id, scriptRun.Id, ScriptInputType.OneTimeScript, false);
 
-            ToastService.ShowToast(string.Format("Running script immediately on {0} devices."), onlineDevices.Count());
+            ToastService.ShowToast($"Lancement du script sur {onlineDevices.Count()} appareil(s).");
         }
 
         private async Task ScriptSelected(ScriptTreeNode viewModel)

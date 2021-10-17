@@ -43,7 +43,7 @@ namespace Remotely.Shared.Models
 
         public bool SendEmailOnError { get; set; }
 
-        [EmailAddress(ErrorMessage = "The true field is not a valid e-mail address.")]
+        [EmailAddress]
         public string SendErrorEmailTo { get; set; }
 
         public ScriptingShell Shell { get; set; }

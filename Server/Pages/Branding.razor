@@ -2,17 +2,16 @@
 @inherits AuthComponentBase
 @inject IDataService DataService
 @inject IToastService ToastService
-@inject IJsInterop JsInterop 
+@inject IJsInterop JsInterop
 @using Remotely.Server.Models
 @using System.ComponentModel.DataAnnotations
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer Localizer
-<h3 class="mb-3">Branding</h3>
+
+<h3 class="mb-3">Personnalisation</h3>
 
 
 @if (User?.IsAdministrator != true)
 {
-    <h5 class="text-muted">@Localizer["AdminViewOnly"]</h5>
+    <h5 class="text-muted">Seuls les administrateurs peuvent voir cette page.</h5>
 }
 else
 {
@@ -21,7 +20,7 @@ else
     <div class="row">
         <div class="col-sm-8 col-lg-6 col-xl-5">
             <div class="form-group">
-                <label class="mb-1">@Localizer["Branding Areas"]</label>
+                <label class="mb-1">Zones</label>
                 <br />
                 <img class="img-fluid" src="/images/Remotely_Desktop.png" />
             </div>
@@ -34,7 +33,7 @@ else
                 <DataAnnotationsValidator />
 
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">@Localizer["Product Name"]</label>
+                    <label class="text-info font-weight-bold">Nom du produit</label>
                     <InputText class="form-control" @bind-Value="_inputModel.ProductName" />
                     <ValidationMessage For="() => _inputModel.ProductName" />
                 </div>
@@ -42,31 +41,31 @@ else
                 @if (!string.IsNullOrWhiteSpace(_base64Icon))
                 {
                     <div class="form-group mb-4">
-                        <label class="text-info font-weight-bold">@Localizer["Current Icon"]</label>
+                        <label class="text-info font-weight-bold">Icône actuelle</label>
                         <br />
                         <img class="img-fluid" src="data:image/png;base64,@_base64Icon" />
                     </div>
                 }
 
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">@Localizer["New Icon"]</label>
+                    <label class="text-info font-weight-bold">Nouvelle icône</label>
                     <InputFile type="file" accept="image/png" class="form-control" OnChange="IconUploadInputChanged" />
                 </div>
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">@Localizer["Title Foreground"]</label>
+                    <label class="text-info font-weight-bold">Premier-plan du titre</label>
                     <ColorPicker @bind-Color="_inputModel.TitleForegroundColor" />
                 </div>
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">@Localizer["Title Background"]</label>
+                    <label class="text-info font-weight-bold">Arrière-plan du titre</label>
                     <ColorPicker @bind-Color="_inputModel.TitleBackgroundColor" />
                 </div>
                 <div class="form-group mb-5">
-                    <label class="text-info font-weight-bold">@Localizer["Button Color"]</label>
+                    <label class="text-info font-weight-bold">Couleur des boutons</label>
                     <ColorPicker @bind-Color="_inputModel.TitleButtonColor" />
                 </div>
                 <div class="form-group text-right">
-                    <button class="btn btn-secondary mr-3" type="button" @onclick="ResetBranding">@Localizer["Reset"]</button>
-                    <button class="btn btn-primary" type="submit">@Localizer["Submit"]</button>
+				<button class="btn btn-secondary mr-3" type="button" @onclick="ResetBranding">RAZ</button>
+                    <button class="btn btn-primary" type="submit">Envoyer</button>
                 </div>
             </EditForm>
         </div>
@@ -82,7 +81,7 @@ else
     {
         [StringLength(25)]
         [Required]
-        [Display(Name = "Product Name")]
+        [Display(Name = "Le garage à PC")]
         public string ProductName { get; set; }
 
         public ColorPickerModel TitleForegroundColor { get; set; } = new();
@@ -114,8 +113,8 @@ else
             _base64Icon = Convert.ToBase64String(_inputModel.IconBytes);
         }
 
-        _alertMessage = Localizer["Branding saved"];
-        ToastService.ShowToast(Localizer["Branding saved"]);
+        _alertMessage = "Branding enregistré.";
+        ToastService.ShowToast("Branding enregistré.");
     }
 
     private async Task IconUploadInputChanged(InputFileChangeEventArgs args)
@@ -125,9 +124,9 @@ else
             return;
         }
 
-        if (args.File.Size > 1_024_000)
+		if (args.File.Size > 1_024_000)
         {
-            ToastService.ShowToast(Localizer["File size must be under 1 MB"], classString: "bg-warning");
+            ToastService.ShowToast("File size must be under 1 MB.", classString: "bg-warning");
             return;
         }
 
@@ -162,15 +161,15 @@ else
         _inputModel.TitleButtonColor.Green = brandingInfo.ButtonForegroundGreen;
         _inputModel.TitleButtonColor.Blue = brandingInfo.ButtonForegroundBlue;
     }
-
-    private async Task ResetBranding()
+	
+	private async Task ResetBranding()
     {
-        var result = await JsInterop.Confirm(Localizer["ResetBrandConfirm"]);
+        var result = await JsInterop.Confirm("Etes-vous sûr de vouloir remettre à 0 les valeurs du branding ?");
         if (result)
         {
             await DataService.ResetBranding(User.OrganizationID);
             await LoadBrandingInfo();
-            ToastService.ShowToast(Localizer["Branding reset"]);
+            ToastService.ShowToast("Branding réinitialisé.");
         }
     }
 }
