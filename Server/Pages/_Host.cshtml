@@ -1,11 +1,12 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Localization
 @using Remotely.Server.Services
 @using Remotely.Shared.Models
 @namespace Remotely.Server.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject IDataService DataService
 @inject IApplicationConfig AppConfig
-
+@inject IStringLocalizer Localizer
 @{
     Layout = null;
     var user = DataService.GetUserByNameWithOrg(User?.Identity?.Name);
@@ -16,7 +17,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=550, user-scalable=no" />
-    <title>Le garage à PC</title>
+    <title>Remotely</title>
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
@@ -65,7 +66,7 @@
         <environment include="Development">
             An unhandled exception has occurred. See browser dev tools for details.
         </environment>
-        <a href="" class="reload">Recharger</a>
+        <a href="" class="reload">@Localizer["Reload"]</a>
         <a class="dismiss">🗙</a>
     </div>
 

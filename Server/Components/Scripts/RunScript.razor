@@ -1,18 +1,19 @@
 ﻿@inherits AuthComponentBase
 @attribute [Authorize]
-
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer Localizer
 <div class="main-grid mt-3 auto-height">
     <div style="grid-column: span 3">
-        <button class="btn btn-primary align-middle mr-4" @onclick="ExecuteScript">Lancer</button>
+        <button class="btn btn-primary align-middle mr-4" @onclick="ExecuteScript">@Localizer["Run"]</button>
         <input type="checkbox" class="mr-1 align-middle" @bind="_runOnNextConnect" />
-        <span class="align-middle">Si l'appareil est hors-ligne, alors exécuter dès la connexion</span>
+        <span class="align-middle">@Localizer["If offline, run immediately when next connected"]</span>
     </div>
     <div class="column-wrapper h-100 pb-3">
         <div>
-            <h5>Scripts enregistrés</h5>
+            <h5>@Localizer["Saved Scripts"]</h5>
             <div>
                 <input type="checkbox" @bind="ParentPage.ShowOnlyMyScripts" />
-                <span class="align-top">Montrer mes scripts uniquement</span>
+                <span class="align-top">@Localizer["Show only mine"]</span>
             </div>
         </div>
         <TreeView DataSource="ParentPage.TreeNodes"
@@ -26,7 +27,7 @@
                   T="ScriptTreeNode" />
     </div>
     <div class="column-wrapper h-100 pb-3">
-        <h5>Groupes d'appareils</h5>
+        <h5>Device Groups</h5>
         <div class="item-list-border h-100">
             @foreach (var deviceGroup in _deviceGroups)
             {
@@ -42,7 +43,7 @@
     </div>
 
     <div class="column-wrapper h-100 pb-3">
-        <h5>Appareils</h5>
+        <h5>@Localizer["Devices"]</h5>
         <div class="item-list-border h-100">
             @foreach (var device in _devices)
             {

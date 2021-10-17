@@ -76,7 +76,7 @@ namespace Remotely.Server.Pages
         public string SmtpDisplayName { get; set; }
 
         [Display(Name = "SMTP Email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "The true field is not a valid e-mail address.")]
         public string SmtpEmail { get; set; }
 
         [Display(Name = "SMTP Host")]
@@ -162,9 +162,9 @@ namespace Remotely.Server.Pages
         [Inject]
         private IModalService ModalService { get; set; }
 
-		[Inject]
+        [Inject]
         private ICircuitManager CircuitManager { get; set; }
-		
+
         private IEnumerable<string> OutdatedDevices => GetOutdatedDevices();
 
         [Inject]
@@ -310,8 +310,8 @@ namespace Remotely.Server.Pages
 
             resetEvent.Wait(5_000);
 
-            ToastService.ShowToast("Configuration enregistrée.");
-            _alertMessage = "Configuration enregistrée.";
+            ToastService.ShowToast("Configuration saved.");
+            _alertMessage = "Configuration saved.";
         }
 
         private async Task SaveAndTestSmtpSettings()
@@ -321,8 +321,8 @@ namespace Remotely.Server.Pages
             var success = await EmailSender.SendEmailAsync(User.Email, "Remotely Test Email", "Congratulations! Your SMTP settings are working!", User.OrganizationID);
             if (success)
             {
-                ToastService.ShowToast($"Email de test envoyé à {User.Email}.  Vérifiez votre boîte de réception ou vos spams.");
-                _alertMessage = $"Email de test envoyé à {User.Email}.  Vérifiez votre boîte de réception ou vos spams.";
+                ToastService.ShowToast($"Test email sent to {User.Email}.  Check your inbox (or spam folder).");
+                _alertMessage = $"Test email sent to {User.Email}.  Check your inbox (or spam folder).";
             }
             else
             {
@@ -377,12 +377,12 @@ namespace Remotely.Server.Pages
                     .GetDevices(OutdatedDevices)
                     .Select(x => x.DeviceName);
 
-                ModalService.ShowModal("Outdated Devices",
-                    (new[] { "Appareils à mettre à jour:" }).Concat(outdatedDeviceNames).ToArray());
+                ModalService.ShowModal(Localizer["Outdated Devices"],
+                    (new[] { "Outdated Devices:" }).Concat(outdatedDeviceNames).ToArray());
             }
             else
             {
-                ModalService.ShowModal("Appareils à mettre à jour", new[] { "Tous les appareils ont la dernière version." });
+                ModalService.ShowModal(Localizer["Outdated Devices"], new[] { Localizer["There are no outdated devices currently online."].Value });
             }
         }
 
@@ -397,14 +397,14 @@ namespace Remotely.Server.Pages
 
             if (!outdatedDevices.Any())
             {
-                ToastService.ShowToast("Aucune mise à jour n'est nécessaire.");
+                ToastService.ShowToast("No agents need updating.");
                 return;
             }
 
             var agentConnections = AgentHub.ServiceConnections.Where(x => outdatedDevices.Contains(x.Value.ID));
 
             await AgentHubContext.Clients.Clients(agentConnections.Select(x => x.Key)).SendAsync("ReinstallAgent");
-            ToastService.ShowToast("Mise à jour déclenchée.");
+            ToastService.ShowToast("Update command sent.");
         }
     }
 }
