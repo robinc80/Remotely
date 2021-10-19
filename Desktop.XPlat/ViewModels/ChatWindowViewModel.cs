@@ -13,11 +13,11 @@ namespace Remotely.Desktop.XPlat.ViewModels
     public class ChatWindowViewModel : BrandedViewModelBase
     {
         private string _inputText;
-        private string _organizationName = "Le garage à PC";
-        private string _senderName = "un technicien";
+        private string _organizationName = "your IT provider";
+        private string _senderName = "a technician";
         public ObservableCollection<ChatMessage> ChatMessages { get; } = new ObservableCollection<ChatMessage>();
 
-        public string ChatSessionHeader => $"Session de chat avec {OrganizationName}";
+        public string ChatSessionHeader => $"Chat session with {OrganizationName}";
 
         public ICommand CloseCommand => new Executor((param) =>
         {

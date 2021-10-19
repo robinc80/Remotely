@@ -34,7 +34,7 @@ namespace Remotely.Desktop.Win.Views
                 PlacementTarget = sender as Button,
                 Placement = PlacementMode.Bottom,
                 VerticalOffset = 5,
-                Content = "Copié dans le presse-papier !",
+                Content = "Copied to clipboard!",
                 HasDropShadow = true,
                 StaysOpen = false,
                 IsOpen = true

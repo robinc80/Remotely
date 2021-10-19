@@ -8,10 +8,10 @@
 @inject IDataService DataService
 
 @{
-var organizationName = "Remotely";
+    var organizationName = "Remotely";
     var user = DataService.GetUserByNameWithOrg(User?.Identity?.Name);
-	
-	if (user is null)
+
+    if (user is null)
     {
         var defaultOrg = await DataService.GetDefaultOrganization();
         if (!string.IsNullOrWhiteSpace(defaultOrg?.OrganizationName))
@@ -79,7 +79,7 @@ var organizationName = "Remotely";
                     <div>
                         @organizationName
                     </div>
-                    <div class="logo-subtitle">Portail de téléassistance</div>
+                    <div class="logo-subtitle">Support Portal</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

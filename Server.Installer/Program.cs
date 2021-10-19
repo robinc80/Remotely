@@ -187,7 +187,7 @@ namespace Server.Installer
 
             await serverInstaller.PerformInstall(cliParams);
 
-            ConsoleHelper.WriteLine("Installation terminée.");
+            ConsoleHelper.WriteLine("Installation completed.");
         }
 
         private static void BuildServices()

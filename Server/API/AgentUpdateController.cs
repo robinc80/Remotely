@@ -137,7 +137,7 @@ namespace Remotely.Server.API
 
             if (AppConfig.BannedDevices.Contains(deviceIp))
             {
-                DataService.WriteEvent($"L'IP ({deviceIp}) est bannie.  Instruction de désinstallation envoyée.", null);
+                DataService.WriteEvent($"Device IP ({deviceIp}) is banned.  Sending uninstall command.", null);
 
                 var bannedDevices = AgentHub.ServiceConnections.Where(x => x.Value.PublicIP == deviceIp);
                 foreach (var bannedDevice in bannedDevices)

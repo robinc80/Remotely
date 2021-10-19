@@ -60,14 +60,14 @@ namespace Remotely.Server.Components.Scripts
 
             if (!CanModifyScript)
             {
-                ToastService.ShowToast("Vous ne pouvez pas modifier les scripts d'autres utilisateurs.", classString: "bg-warning");
+                ToastService.ShowToast("You can't modify other people's scripts.", classString: "bg-warning");
                 return;
             }
 
             await DataService.AddOrUpdateSavedScript(_selectedScript, User.Id);
             await ParentPage.RefreshScripts();
-            ToastService.ShowToast("Script enregistré.");
-            _alertMessage = "Script enregistré.";
+            ToastService.ShowToast("Script saved.");
+            _alertMessage = "Script saved.";
         }
 
         private void CreateNew()
@@ -79,16 +79,16 @@ namespace Remotely.Server.Components.Scripts
         {
             if (!CanDeleteScript)
             {
-                ToastService.ShowToast("Vous ne pouvez pas supprimer les scripts des autres utilisateurs.", classString: "bg-warning");
+                ToastService.ShowToast("You can't delete other people's scripts.", classString: "bg-warning");
                 return;
             }
 
-            var result = await JsInterop.Confirm($"Etes-vous sûr de vouloir supprimer le script {_selectedScript.Name}?");
+            var result = await JsInterop.Confirm($"Are you sure you want to delete the script {_selectedScript.Name}?");
             if (result)
             {
                 await DataService.DeleteSavedScript(_selectedScript.Id);
-                ToastService.ShowToast("Script effacé.");
-                _alertMessage = "Script effacé.";
+                ToastService.ShowToast("Script deleted.");
+                _alertMessage = "Script deleted.";
                 await ParentPage.RefreshScripts();
                 _selectedScript = new();
             }

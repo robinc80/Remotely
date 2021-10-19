@@ -72,7 +72,7 @@ namespace Remotely.Server.Components.Devices
                     {
                         session.ChatHistory.Add(new ChatHistoryItem()
                         {
-                            Message = $"{Session.DeviceName} déconnecté.",
+                            Message = $"{Session.DeviceName} disconnected.",
                             Origin = ChatHistoryItemOrigin.System
                         });
                     }

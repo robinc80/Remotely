@@ -8,13 +8,13 @@ namespace Remotely.Server.Models
 {
     public class ColorPickerModel
     {
-        [DisplayName("Rouge")]
+        [DisplayName("Red")]
         public byte Red { get; set; }
 
-        [DisplayName("Vert")]
+        [DisplayName("Green")]
         public byte Green { get; set; }
 
-        [DisplayName("Bleu")]
+        [DisplayName("Blue")]
         public byte Blue { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Remotely.Server.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Téléphone")]
+            [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
 
@@ -89,7 +89,7 @@ namespace Remotely.Server.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Votre profil a été mis à jour";
+            StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
     }
