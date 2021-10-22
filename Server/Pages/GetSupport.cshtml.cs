@@ -35,12 +35,12 @@ namespace Remotely.Server.Pages
                 return Page();
             }
 
-            var orgID = _dataService.GetDevice(deviceId)?.OrganizationID;
+             var orgID = _dataService.GetDevice(deviceId)?.OrganizationID;
 
-            var alertParts = new string[]
+                        var alertParts = new string[]
             {
-                $"{Input.Name} is requesting support.",
-                $"Device ID: {deviceId}",
+                $"{Input.Name} demande de l'aide.",
+				$"Device ID: {deviceId}",
                 $"Email: {Input.Email}.",
                 $"Phone: {Input.Phone}.",
                 $"Chat OK: {Input.ChatResponseOk}."

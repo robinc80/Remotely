@@ -1,96 +1,95 @@
 ﻿@page "/downloads"
 @using Microsoft.AspNetCore.Hosting
-@using Microsoft.Extensions.Logging
+@using Microsoft.Extensions.Logging 
 
 @inject AuthenticationStateProvider AuthProvider
 @inject IDataService DataService
 @inject UserManager<RemotelyUser> UserManager
 @inject IWebHostEnvironment HostEnv
 @inject NavigationManager NavManager
-@inject ILogger<Downloads> Logger
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer Localizer
+@inject ILogger<Downloads> Logger 
+
 <div class="row mb-3">
-    <h4>@Localizer["Portable Instant Support Clients"]</h4>
+    <h4>Client portable</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        @Localizer["Instant desktop sharing.  No account required."]
+        Assistance rapide, pas de compte requis.
     </div>
     <div class="col-sm-6 mb-3">
-        <strong>Windows (64-Bit)</strong>
+        <strong>Windows (64 bits)</strong>
         <p>
             <a target="_blank" href="/api/ClientDownloads/Desktop/WindowsDesktop-x64/@_organizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <strong>Windows (32-Bit)</strong>
+        <strong>Windows (32 Bits)</strong>
         <p>
             <a target="_blank" href="/api/ClientDownloads/Desktop/WindowsDesktop-x86/@_organizationId">Windows EXE</a>
         </p>
     </div>
     <div class="col-sm-6 mb-3">
-        <strong>Linux 64-Bit</strong>
+        <strong>Linux 64 bits</strong>
         <p>
-            <a target="_blank" href="/api/ClientDownloads/Desktop/UbuntuDesktop/@_organizationId">Ubuntu Executable</a>
+            <a target="_blank" href="/api/ClientDownloads/Desktop/UbuntuDesktop/@_organizationId">Executable Ubuntu</a>
         </p>
     </div>
-    @*<div class="col-sm-6 mb-3">
+   *<div class="col-sm-6 mb-3">
         <strong>macOS x64 (10.12 - 10.15)</strong>
         <p>
-        <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-x64/@_organizationId">macOS x64 Executable</a>
+            <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-x64/@_organizationId">Executable macOS x64</a>
         </p>
         <strong>macOS arm64 (11.01)</strong>
         <p>
-        <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-arm64/@_organizationId">macOS arm64 Executable</a>
+            <a target="_blank" href="/api/ClientDownloads/Desktop/MacOS-arm64/@_organizationId">Executable macOS arm64</a>
         </p>
-        </div>*@
+    </div>
 </div>
 
 
 <div class="row mb-3">
-    <h4>@Localizer["Installable Instant Support Clients"]</h4>
+    <h4>Client installable</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        @Localizer["Light-weight, self-updating quick support clients."]
+        Installable et mises à jour automatiques.
     </div>
 
     @if (!_isServerUrlEmbedded)
     {
         <div class="col-sm-12">
-            <AlertBanner Message="@Localizer["Must be built from source to target specific server URL."]" StatusClass="warning" />
+            <AlertBanner Message="Must be built from source to target specific server URL." StatusClass="warning" />
         </div>
     }
 
 
     <div class="col-sm-6 mb-3">
-        <strong>Windows (64-Bit)</strong>
+        <strong>Windows (64 Bits)</strong>
         <p>
-            <small>@Localizer["Note: Only the default organization's branding will apply to these."]</small>
+            <small>Note: seul le branding par défaut s'applique.</small>
         </p>
         <p>
-            <a target="_blank" href="/Content/Win-x64/ClickOnce/setup.exe">Windows Installer</a>
+            <a target="_blank" href="/Content/Win-x64/ClickOnce/setup.exe">Installateur Windows</a>
         </p>
     </div>
     <div class="col-sm-6">
-        <strong>Windows (32-Bit)</strong>
+        <strong>Windows (32 Bits)</strong>
         <p>
-            <small>@Localizer["Note: Only the default organization's branding will apply to these."]</small>
+            <small>Note: seul le branding par défaut s'applique.</small>
         </p>
         <p>
-            <a target="_blank" href="/Content/Win-x86/ClickOnce/setup.exe">Windows Installer</a>
+            <a target="_blank" href="/Content/Win-x86/ClickOnce/setup.exe">Installateur Windows</a>
         </p>
     </div>
 
 </div>
 
 <div class="row">
-    <h4>@Localizer["Resident Agents"]</h4>
+    <h4>Agent en arrière-plan</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
-        @Localizer["Installable background agents that provide unattended access and remote scripting."]
+        Téléassistance sans mot de passe et exécution de scripts à distance.
     </div>
 
     @if (!_isAuthenticated)
     {
         <div class="col-sm-6 mb-3">
-            <h6>@Localizer["Must be logged in to download."]</h6>
+            <h6>Vous devez être connecté pour télécharger.</h6>
         </div>
 
     }
@@ -99,7 +98,7 @@
         <div class="col-sm-6 mb-3">
             <strong>Windows 10 / 8.1 / 7 (64-Bit and 32-Bit)</strong>
             <p>
-                <small>@Localizer["Note: GPU-accelerated screen capture and PowerShell Core is unavailable on Windows 7."]</small>
+                <small>Note: GPU-accelerated screen capture and PowerShell Core is unavailable on Windows 7.</small>
             </p>
             <p>
                 <a target="_blank" href="/API/ClientDownloads/WindowsInstaller">Windows Installer (x64/x86)</a>
@@ -110,8 +109,8 @@
             </p>
 
             <p>
-                <div class="small">@Localizer["Example Quiet Install"]:</div>
-
+                <div class="small">Example Quiet Install:</div>
+                
                 <code class="label label-default small">
                     Remotely_Installer.exe
                     -install
@@ -121,13 +120,13 @@
                 </code>
             </p>
             <p>
-                <div class="small">@Localizer["Example Quiet Uninstall"]:</div>
+                <div class="small">Example Quiet Uninstall:</div>
 
                 <code class="label label-default small">Remotely_Installer.exe -uninstall -quiet</code>
             </p>
             <p>
-                <div class="small">@Localizer["Example Local Install"]:</div>
-
+                <div class="small">Example Local Install:</div>
+               
                 <code class="label label-default small">
                     Remotely_Installer.exe
                     -install
@@ -138,8 +137,8 @@
                 </code>
             </p>
             <p>
-                <div class="small">@Localizer["All Override Options"]:</div>
-
+                <div class="small">All Override Options:</div>
+                
                 <code class="label label-default small">
                     Remotely_Installer.exe -install -quiet -supportshortcut
                     -organizationid "0b3d706b-9c5d-41e6-8ae9-5720d16324e6"
@@ -161,17 +160,17 @@
                 <a target="_blank" href="/Content/Remotely-Linux.zip">Linux x64 Files Only</a>
             </p>
             <p>
-                <div class="small">@Localizer["Example Install"]:</div>
-
+                <div class="small">Example Install:</div>
+                
                 <code class="label label-default small">sudo [path]/Install-Ubuntu-x64.sh</code>
             </p>
             <p>
-                <div class="small">@Localizer["Example Local Install"]:</div>
-
+                <div class="small">Example Local Install:</div>
+              
                 <code class="label label-default small">sudo [path]/Install-Ubuntu-x64.sh --path [path]/Remotely-Linux.zip</code>
             </p>
             <p>
-                <div class="small">@Localizer["Uninstall"]:</div>
+                <div class="small">Uninstall:</div>
 
                 <code class="label label-default small">sudo [path]/Install-Ubuntu-x64.sh --uninstall</code>
             </p>
@@ -186,25 +185,25 @@
             </p>
 
             @*<strong>macOS arm64 (11.01)</strong>
-                <p>
+            <p>
                 <a target="_blank" href="/API/ClientDownloads/MacOSInstaller-arm64">macOS arm64 Bash Installer</a>
                 <br />
                 <a target="_blank" href="/Content/Remotely-MacOS-arm64.zip">macOS arm64 Files Only</a>
-                </p>*@
+            </p>*@
 
             <p>
-                <div class="small">@Localizer["Example Install"]:</div>
-
+                <div class="small">Example Install:</div>
+                
                 <code class="label label-default small">sudo [path]/Install-MacOS-x64.sh</code>
             </p>
             <p>
-                <div class="small">@Localizer["Example Local Install"]:</div>
-
+                <div class="small">Example Local Install:</div>
+               
                 <code class="label label-default small">sudo [path]/Install-MacOS-x64.sh --path [path]/Remotely-MacOS-x64.zip</code>
             </p>
             <p>
-                <div class="small">@Localizer["Example Uninstall"]:</div>
-
+                <div class="small">Example Uninstall:</div>
+                
                 <code class="label label-default small">sudo [path]/Install-MacOS-x64.sh --uninstall</code>
             </p>
         </div>
@@ -249,7 +248,7 @@
         }
         catch (Exception ex)
         {
-            Logger.LogWarning(ex, @Localizer["Error while checking ClickOnce file."]);
+            Logger.LogWarning(ex, "Error while checking ClickOnce file.");
         }
         finally
         {

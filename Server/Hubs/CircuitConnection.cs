@@ -287,7 +287,7 @@ namespace Remotely.Server.Hubs
 
             if (connection.Value is null)
             {
-                _toastService.ShowToast("Device not found.");
+                _toastService.ShowToast("Appareil non trouvé.");
                 return Task.CompletedTask;
             }
 

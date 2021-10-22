@@ -1,17 +1,16 @@
 ﻿@attribute [Authorize]
 @inherits AuthComponentBase
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer Localizer
-<h3>@Localizer["Devices"]</h3>
+
+<h3>Appareils</h3>
 
 <div @onclick="ClearSelectedCard">
     <div id="deviceControlsWrapper">
         <div>
             <div>
-                <div>@Localizer["Device Group"]</div>
+                <div>Groupe d'appareils</div>
                 <select class="form-control" style="width: 200px" @bind="_selectedGroupId">
-                    <option value="@_deviceGroupAll">@Localizer["All"]</option>
-                    <option value="@_deviceGroupNone">@Localizer["None"]</option>
+                    <option value="@_deviceGroupAll">Tous</option>
+                    <option value="@_deviceGroupNone">Aucun</option>
                     @foreach (var group in _deviceGroups)
                     {
                         <option @key="group.ID" value="@group.ID">@group.Name</option>
@@ -20,7 +19,7 @@
             </div>
 
             <div>
-                <div class="mt-1">@Localizer["Sort"]</div>
+                <div class="mt-1">Trier</div>
                 <select class="form-control d-inline" style="width: 150px" @bind="_selectedSortProperty">
                     <option value=""></option>
                     @foreach (var prop in _sortableProperties)
@@ -28,38 +27,38 @@
                         <option value="@prop.Name">@GetDisplayName(prop)</option>
                     }
                 </select>
-                <button class="btn btn-sm btn-secondary" title="Sort Direction" style="width: 40px; margin-left: 5px;" @onclick="ToggleSortDirection">
+                <button class="btn btn-sm btn-secondary" title="Sens" style="width: 40px; margin-left: 5px;" @onclick="ToggleSortDirection">
                     <span class="oi @GetSortIcon()"></span>
                 </button>
             </div>
 
             <div class="custom-control custom-checkbox mt-2">
                 <input id="hideOfflineDevicesCheckbox" type="checkbox" class="custom-control-input" @bind="_hideOfflineDevices" />
-                <label class="custom-control-label" for="hideOfflineDevicesCheckbox">@Localizer["Hide offline devices"]</label>
+                <label class="custom-control-label" for="hideOfflineDevicesCheckbox">Masquer les appareils hors ligne</label>
             </div>
             <div class="mt-2">
-                <button class="btn btn-sm btn-secondary mr-2" @onclick="SelectAllCards">@Localizer["Select All"]</button>
-                <button class="btn btn-sm btn-primary" @onclick="HandleRefreshClicked">@Localizer["Refresh"]</button>
+                <button class="btn btn-sm btn-secondary mr-2" @onclick="SelectAllCards">Sélectionner</button>
+                <button class="btn btn-sm btn-primary" @onclick="HandleRefreshClicked">Actualiser</button>
             </div>
         </div>
          
         <div>
             <div class="d-inline-block text-left">
                 <div>
-                    <div>@Localizer["Search"]</div>
+                    <div>Chercher</div>
                     <input class="form-control d-inline"
                            style="width: 200px"
-                           placeholder="@Localizer["Search device properties"]"
-                           @bind="_filter" />
+                           placeholder="Chercher selon propriétés"
+                            @bind="_filter" />
                 </div>
 
                 <div class="mt-2" style="white-space: nowrap">
                     <button class="btn btn-sm btn-secondary" @onclick="PageDown">
                         <i class="oi oi-chevron-left"></i>
                     </button>
-                    <span class="small">@Localizer["Page"]</span>
+                    <span class="small">Page</span>
                     <input id="currentPageInput" style="width:75px; text-align: center" pattern="[0-9]" @bind="_currentPage" @bind:event="oninput" />
-                    <span class="small">@Localizer["of"]</span>
+                    <span class="small">sur</span>
                     <span>@TotalPages</span>
                     <button class="btn btn-sm btn-secondary" @onclick="PageUp">
                         <i class="oi oi-chevron-right"></i>
@@ -68,12 +67,12 @@
 
                 <div class="mt-2">
                     <select class="form-control d-inline" style="width:100px" @bind="_devicesPerPage">
-                        <option value="25">25</option>
+					<option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                         <option value="200">200</option>
                     </select>
-                    <span class="ml-1 small">@Localizer["per page"]</span>
+                    <span class="ml-1 small">par page</span>
                 </div>
             </div>
            

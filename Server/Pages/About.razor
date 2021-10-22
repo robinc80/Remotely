@@ -1,19 +1,18 @@
 ﻿@page "/about"
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer Localizer
-<h3>@Localizer["About"] Remotely</h3>
+
+<h3>A propos</h3>
 
 <p>
-    @Localizer["Website"]: <a href="https://remotely.one">https://remotely.one</a>
+    Website: <a href="https://remotely.one">https://remotely.one</a>
 </p>
 <p>
-    @Localizer["Contact"]:  <a href="https://remotely.one/Contact">https://remotely.one/Contact</a>
+    Contact:  <a href="https://remotely.one/Contact">https://remotely.one/Contact</a>
 </p>
 <p>
-    @Localizer["Open-Source Licenses"]: <a href="/credits">Credits</a>
+    Open-Source Licenses: <a href="/credits">Credits</a>
 </p>
 <p>
-    @Localizer["Version"]: @if (System.IO.File.Exists("Remotely_Server.dll"))
+    Version: @if (System.IO.File.Exists("Remotely_Server.dll"))
     {
         <span>@System.Diagnostics.FileVersionInfo.GetVersionInfo("Remotely_Server.dll").FileVersion.ToString()</span>
     }

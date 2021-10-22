@@ -5,9 +5,8 @@
 @inject IDataService DataService
 @inject IToastService ToastService
 @inject IJsInterop JsInterop
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer Localizer
-<h3 class="mb-3">@Localizer["Server Logs"]</h3>
+
+<h3 class="mb-3">Fichiers log</h3>
 
 
 @if (User?.IsAdministrator == true)
@@ -15,28 +14,28 @@
     <div class="buttons-row mb-3">
         <div>
             <button class="btn btn-danger" type="button" @onclick="ClearAllLogs">
-                @Localizer["Delete Logs"]
+                Effacer les logs
             </button>
         </div>
         <div>
             <button class="btn btn-primary"
-                onclick="location.assign('/API/ServerLogs/Download')">
-                @Localizer["Download Logs"]
+                    onclick="location.assign('/API/ServerLogs/Download')">
+                Télécharger les logs
             </button>
         </div>
         <div>
             <button class="btn btn-primary"
-                onclick="location.assign('/API/ScriptResults')">
-                @Localizer["Download Script History"]
+                    onclick="location.assign('/API/ScriptResults')">
+                Télécharger l'historique des scripts
             </button>
         </div>
     </div>
     <div class="filters-row mb-3">
         <div style="display:inline-block">
-            <strong>@Localizer["Type"]:</strong>
+            <strong>Type:</strong>
             <br />
             <select class="form-control-sm" @bind="_eventType">
-                <option value="">@Localizer["All"]</option>
+                <option value="">Tous</option>
                 @foreach (var eventType in Enum.GetValues(typeof(EventType)))
                 {
                     <option @key="eventType" value="@eventType">@eventType</option>
@@ -44,17 +43,17 @@
             </select>
         </div>
         <div style="display:inline-block">
-            <strong>@Localizer["Filter"]:</strong>
+            <strong>Filtre :</strong>
             <br />
             <input type="text" @bind="_messageFilter" />
         </div>
         <div style="display:inline-block">
-            <strong>@Localizer["From"]:</strong>
+            <strong>Du :</strong>
             <br />
             <input type="date" @bind="_fromDate" />
         </div>
         <div style="display:inline-block">
-            <strong>@Localizer["To"]:</strong>
+            <strong>Au :</strong>
             <br />
             <input type="date" @bind-value="_toDate" />
         </div>
@@ -63,11 +62,11 @@
     <table class="table table-hover table-striped">
         <thead>
             <tr>
-                <th>@Localizer["Type"]</th>
-                <th>@Localizer["Timestamp"]</th>
-                <th>@Localizer["Message"]</th>
-                <th>@Localizer["Source"]</th>
-                <th>@Localizer["Stack Trace"]</th>
+                <th>Type</th>
+                <th>Timestamp</th>
+                <th>Message</th>
+                <th>Source</th>
+                <th>Stack Trace</th>
             </tr>
         </thead>
         <tbody>
@@ -86,7 +85,7 @@
 }
 else
 {
-    <h5 class="text-muted">@Localizer["Only organization administrators can view this page."]</h5>
+    <h5 class="text-muted">Seuls les administrateurs peuvent voir cette page.</h5>
 }
 
 @code {
@@ -112,11 +111,11 @@ else
 
     private async Task ClearAllLogs()
     {
-        var result = await JsInterop.Confirm(Localizer["Are you sure you want to delete all logs?"]);
+        var result = await JsInterop.Confirm("Etes-vous sûr de vouloir effacer les logs ?");
         if (result)
         {
             await DataService.ClearLogs(User.UserName);
-            ToastService.ShowToast(Localizer["Logs deleted."]);
+            ToastService.ShowToast("Logs effacés.");
         }
     }
 

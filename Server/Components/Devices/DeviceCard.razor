@@ -1,7 +1,6 @@
 ﻿@attribute [Authorize]
 @inherits AuthComponentBase
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer Localizer
+
 <div @ref="_card" class="card border-secondary my-3 mr-3 device-card @_theme @GetCardStateClass(Device)"
      @onclick="ExpandCard"
      @onclick:stopPropagation
@@ -9,24 +8,24 @@
      @oncontextmenu:preventDefault="GetCardState() == DeviceCardState.Normal"
      @oncontextmenu:stopPropagation="GetCardState() == DeviceCardState.Normal">
 
-    <div class="card-header" @onclick="HandleHeaderClick"
+    <div class="card-header" @onclick="HandleHeaderClick" 
          @onclick:stopPropagation="GetCardState() == DeviceCardState.Expanded"
          @onclick:preventDefault="GetCardState() == DeviceCardState.Expanded">
         <div>
-            @if (Device.IsOnline)
+		@if (Device.IsOnline)
             {
                 if (IsOutdated)
                 {
-                    <i class="oi oi-power-standby text-warning" title="Agent Outdated"></i>
+                    <i class="oi oi-power-standby text-warning" title="Agent pas à jour"></i>
                 }
                 else
                 {
-                    <i class="oi oi-power-standby text-success" title="Online"></i>
+                    <i class="oi oi-power-standby text-success" title="En ligne"></i>
                 }
             }
             else
             {
-                <i class="oi oi-power-standby text-danger" title="Offline"></i>
+                <i class="oi oi-power-standby text-danger" title="Déconnecté"></i>
             }
         </div>
         <div class="overflow-hidden ml-2">
@@ -35,14 +34,14 @@
 
                 <div class="small text-muted" style="height: 1rem">@Device.Alias</div>
             </div>
-
+            
         </div>
         <div class="text-right">
             @if (IsExpanded)
             {
-                <button class="btn btn-sm mr-2" title="@Localizer["Open in New Tab"]"
-                    @onclick:stopPropagation
-                    @onclick="OpenDeviceDetails">
+                <button class="btn btn-sm mr-2" title="Ouvrir dans un nouvel onglet"
+                        @onclick:stopPropagation
+                        @onclick="OpenDeviceDetails">
                     <i class="oi oi-external-link" style="font-size: 1.3em"></i>
                 </button>
             }
@@ -62,10 +61,10 @@
             {
                 <AlertBanner Message="@GetProgressMessage(kvp.Key)" />
             }
-        }
+        } 
         <div>
             <div class="font-weight-bold text-info">
-                <label>@Localizer["User"]</label>
+                <label>Utilisateur</label>
             </div>
             <div>
                 @Device.CurrentUser
@@ -76,25 +75,25 @@
                 <DropdownButton DropDownMenuClass="dropdown-menu-right mb-2" ButtonClass="btn-primary">
                     <ButtonContent>
                         <i class="oi oi-bolt"></i>
-                        <span class="ml-2">@Localizer["Actions"]</span>
+                        <span class="ml-2">Actions</span>
                     </ButtonContent>
                     <ChildListItems>
                         <li>
                             <button class="dropdown-item" @onclick="StartChat">
                                 <i class="oi oi-chat" title="Chat"></i>
-                                <span class="ml-2">@Localizer["Chat"]</span>
+                                <span class="ml-2">Chat</span>
                             </button>
                         </li>
                         <li>
                             <button class="dropdown-item" @onclick="() => StartRemoteControl(false)">
                                 <i class="oi oi-laptop" title="Remote Control"></i>
-                                <span class="ml-2">@Localizer["Remote Control"]</span>
+                                <span class="ml-2">Contrôle</span>
                             </button>
                         </li>
                         <li>
                             <button class="dropdown-item" @onclick="() => StartRemoteControl(true)">
-                                <i class="oi oi-eye" title="View Only"></i>
-                                <span class="ml-2">@Localizer["View Only"]</span>
+                                <i class="oi oi-eye" title="Consulter"></i>
+                                <span class="ml-2">Consulter</span>
                             </button>
                         </li>
                         <li>
@@ -102,14 +101,14 @@
                                              OnChanged="OnFileInputChanged">
                                 <ButtonContent>
                                     <i class="oi oi-data-transfer-upload" title="Upload File"></i>
-                                    <span class="ml-2">@Localizer["Upload File"]</span>
+                                    <span class="ml-2">Upload</span>
                                 </ButtonContent>
                             </FileInputButton>
                         </li>
                         <li>
                             <button class="dropdown-item bg-danger" @onclick="UninstallAgent">
                                 <i class="oi oi-delete" title="Uninstall"></i>
-                                <span class="ml-2">@Localizer["Uninstall"]</span>
+                                <span class="ml-2">Désinstaller</span>
                             </button>
                         </li>
                     </ChildListItems>
@@ -117,19 +116,19 @@
             </div>
 
             <div class="font-weight-bold text-info">
-                <label>@Localizer["Platform"]</label>
+                <label>Plateforme</label>
             </div>
             <div>
                 @Device.Platform
             </div>
 
             <div class="font-weight-bold text-info">
-                <label>@Localizer["Disk"]</label>
+                <label>Stockage</label>
                 <button class="btn btn-link p-0 m-0 expanded-visible"
                         style="font-size: 50%"
-                        @onclick="ShowAllDisks"
+                        @onclick="ShowAllDisks" 
                         @onclick:stopPropagation>
-                    (View All)
+                    (Voir tout)
                 </button>
             </div>
             <div>
@@ -137,25 +136,25 @@
             </div>
 
             <div class="font-weight-bold text-info expanded-visible">
-                @Localizer["Total Storage"]
+                Stockage total
             </div>
             <div class="expanded-visible">
-                @(Device.TotalStorage) GB
+                @(Device.TotalStorage) Go
             </div>
 
 
             <div class="font-weight-bold text-info">
-                <label>@Localizer["Memory"]</label>
+                <label>RAM</label>
             </div>
             <div>
                 @(MathHelper.GetFormattedPercent(Device.UsedMemoryPercent))
             </div>
 
             <div class="font-weight-bold text-info expanded-visible">
-                @Localizer["Total Memory"]
+                RAM totale
             </div>
             <div class="expanded-visible">
-                @(Device.TotalMemory) GB
+                @(Device.TotalMemory) Go
             </div>
 
             @if (IsExpanded)
@@ -174,28 +173,28 @@
                 @if (IsExpanded)
                 {
                     <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Device ID"]
+                        ID
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.ID" />
                     </div>
 
                     <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Agent Version"]
+                        Version de l'agent
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.AgentVersion" />
                     </div>
 
                     <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Last Online"]
+                        Dernière connexion
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.LastOnline" />
                     </div>
 
                     <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Public IP"]
+                        IP
                     </div>
                     <div>
                         <input class="form-control" readonly value="@Device.PublicIP" />
@@ -205,7 +204,7 @@
                         <DataAnnotationsValidator />
 
                         <div class="font-weight-bold text-info mt-2">
-                            @Localizer["Device Alias"]
+                            Alias
                         </div>
                         <div>
                             <InputText class="form-control" @bind-Value="@Device.Alias" />
@@ -213,57 +212,57 @@
                         </div>
 
                         <div class="font-weight-bold text-info mt-2">
-                            @Localizer["WebRTC Setting"]
+                            WebRTC
                         </div>
                         <div>
                             <InputSelect @bind-Value="Device.WebRtcSetting" class="form-control">
                                 @foreach (var setting in Enum.GetValues(typeof(WebRtcSetting)))
                                 {
-                                <option @key="setting" value="@setting">@setting</option>
+                                    <option @key="setting" value="@setting">@setting</option>
                                 }
-                        </InputSelect>
-                        <ValidationMessage For="() => Device.WebRtcSetting" />
-                    </div>
+                            </InputSelect>
+                            <ValidationMessage For="() => Device.WebRtcSetting" />
+                        </div>
 
-                    <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Device Group"]
-                    </div>
-                    <div>
-                        <InputSelect @bind-Value="Device.DeviceGroupID" class="form-control">
-                            <option value="">@Localizer["None"]</option>
+                        <div class="font-weight-bold text-info mt-2">
+                            Groupe
+                        </div>
+                        <div>
+                            <InputSelect @bind-Value="Device.DeviceGroupID" class="form-control">
+                                <option value="">Aucun</option>
 
-                            @foreach (var group in DataService.GetDeviceGroups(Username))
+                                @foreach (var group in DataService.GetDeviceGroups(Username))
                                 {
-                                <option @key="group.ID" value="@group.ID">@group.Name</option>
+                                    <option @key="group.ID" value="@group.ID">@group.Name</option>
                                 }
-                        </InputSelect>
-                        <ValidationMessage For="() => Device.DeviceGroupID" />
-                    </div>
+                            </InputSelect>
+                            <ValidationMessage For="() => Device.DeviceGroupID" />
+                        </div>
 
-                    <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Tags"]
-                    </div>
-                    <div>
-                        <InputText @bind-Value="Device.Tags" class="form-control" />
-                        <ValidationMessage For="() => Device.Tags" />
-                    </div>
+                        <div class="font-weight-bold text-info mt-2">
+                            Tags
+                        </div>
+                        <div>
+                            <InputText @bind-Value="Device.Tags" class="form-control" />
+                            <ValidationMessage For="() => Device.Tags" />
+                        </div>
 
-                    <div class="font-weight-bold text-info mt-2">
-                        @Localizer["Notes"]
-                    </div>
-                    <div>
-                        <InputTextArea @bind-Value="Device.Notes" style="width:100%; height: 10em;"></InputTextArea>
-                        <ValidationMessage For="() => Device.Notes" />
-                    </div>
+                        <div class="font-weight-bold text-info mt-2">
+                            Notes
+                        </div>
+                        <div>
+                            <InputTextArea @bind-Value="Device.Notes" style="width:100%; height: 10em;"></InputTextArea>
+                            <ValidationMessage For="() => Device.Notes" />
+                        </div>
 
-                    <div>
-                        <ValidationSummary />
-                    </div>
+                        <div>
+                            <ValidationSummary />
+                        </div>
 
-                    <div class="text-right mt-2">
-                        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
-                    </div>
-                </EditForm>
+                        <div class="text-right mt-2">
+                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        </div>
+                    </EditForm>
 
                 }
             </div>

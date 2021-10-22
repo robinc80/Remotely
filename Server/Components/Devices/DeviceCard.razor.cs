@@ -25,7 +25,7 @@ namespace Remotely.Server.Components.Devices
     {
         private ElementReference _card;
         private ConcurrentDictionary<string, double> _fileUploadProgressLookup = new();
-        private Theme _theme;
+		private Theme _theme;
 
         [Parameter]
         public Device Device { get; set; }
@@ -50,13 +50,13 @@ namespace Remotely.Server.Components.Devices
         private bool IsOutdated =>
             Version.TryParse(Device.AgentVersion, out var result) &&
             result < ParentFrame.HighestVersion;
-
-        private bool IsSelected => AppState.DevicesFrameSelectedDevices.Contains(Device.ID);
-
+			
+		private bool IsSelected => AppState.DevicesFrameSelectedDevices.Contains(Device.ID);
+		
         [Inject]
         private IJsInterop JsInterop { get; set; }
 
-        [Inject]
+		[Inject]
         private IModalService ModalService { get; set; }
         [Inject]
         private IToastService ToastService { get; set; }
@@ -64,16 +64,16 @@ namespace Remotely.Server.Components.Devices
         public void Dispose()
         {
             AppState.PropertyChanged -= AppState_PropertyChanged;
-            CircuitConnection.MessageReceived -= CircuitConnection_MessageReceived;
+			CircuitConnection.MessageReceived -= CircuitConnection_MessageReceived;
             GC.SuppressFinalize(this);
         }
 
         protected override async Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
+			await base.OnInitializedAsync();
             _theme = await AppState.GetEffectiveTheme();
             AppState.PropertyChanged += AppState_PropertyChanged;
-            CircuitConnection.MessageReceived += CircuitConnection_MessageReceived;
+			CircuitConnection.MessageReceived += CircuitConnection_MessageReceived;
         }
 
         private void AppState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -86,9 +86,9 @@ namespace Remotely.Server.Components.Devices
             }
         }
 
-        private void CircuitConnection_MessageReceived(object sender, CircuitEvent e)
+		private void CircuitConnection_MessageReceived(object sender, CircuitEvent e)
         {
-            switch (e.EventName)
+           switch (e.EventName)
             {
                 case CircuitEventName.DeviceUpdate:
                 case CircuitEventName.DeviceWentOffline:
@@ -105,6 +105,7 @@ namespace Remotely.Server.Components.Devices
                     break;
             }
         }
+		
         private void ContextMenuOpening(MouseEventArgs args)
         {
             if (GetCardState() == DeviceCardState.Normal)
@@ -127,10 +128,10 @@ namespace Remotely.Server.Components.Devices
             AppState.DevicesFrameFocusedDevice = Device.ID;
             AppState.DevicesFrameFocusedCardState = DeviceCardState.Expanded;
             JsInterop.ScrollToElement(_card);
-
-            await CircuitConnection.TriggerHeartbeat(Device.ID);
+			
+			await CircuitConnection.TriggerHeartbeat(Device.ID);
         }
-
+		
         private DeviceCardState GetCardState()
         {
             if (AppState.DevicesFrameFocusedDevice == Device.ID)
@@ -151,7 +152,7 @@ namespace Remotely.Server.Components.Devices
             return string.Empty;
         }
 
-        private string GetProgressMessage(string key)
+		private string GetProgressMessage(string key)
         {
             if (_fileUploadProgressLookup.TryGetValue(key, out var value))
             {
@@ -177,14 +178,14 @@ namespace Remotely.Server.Components.Devices
                   Device.Notes,
                   Device.WebRtcSetting);
 
-            ToastService.ShowToast(Localizer["Device settings saved."]);
+            ToastService.ShowToast("Paramètres enregistrés.");
 
             await CircuitConnection.TriggerHeartbeat(Device.ID);
         }
-
+		
         private async Task OnFileInputChanged(InputFileChangeEventArgs args)
         {
-            ToastService.ShowToast(Localizer["File upload started."]);
+            ToastService.ShowToast("Upload débuté.");
 
             var fileId = await DataService.AddSharedFile(args.File, User.OrganizationID, OnFileInputProgress);
 
@@ -194,11 +195,11 @@ namespace Remotely.Server.Components.Devices
 
             if (!result)
             {
-                ToastService.ShowToast(Localizer["Device not found."], classString: "bg-warning");
+                ToastService.ShowToast("Appareil non trouvé.", classString: "bg-warning");
             }
             else
             {
-                ToastService.ShowToast(Localizer["File upload completed."]);
+                ToastService.ShowToast("Upload terminé.");
             }
         }
 
@@ -234,7 +235,7 @@ namespace Remotely.Server.Components.Devices
                 builder.AddMarkupContent(0, $"<div style='white-space: pre'>{disksString}</div>");
             }
 
-            ModalService.ShowModal($"{Localizer["All Disks for"]} {Device.DeviceName}", modalBody);
+            ModalService.ShowModal($"All Disks for {Device.DeviceName}", modalBody);
         }
 
         private void StartChat()
@@ -284,11 +285,11 @@ namespace Remotely.Server.Components.Devices
 
         private async Task UninstallAgent()
         {
-            var result = await JsInterop.Confirm(Localizer["Are you sure you want to uninstall this agent?  This is permanent!"]);
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir désinstaller ?");
             if (result)
             {
                 await CircuitConnection.UninstallAgents(new[] { Device.ID });
-                AppState.DevicesFrameFocusedDevice = null;
+				AppState.DevicesFrameFocusedDevice = null;
                 AppState.DevicesFrameFocusedCardState = DeviceCardState.Normal;
                 ParentFrame.Refresh();
             }

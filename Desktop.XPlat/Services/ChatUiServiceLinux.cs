@@ -28,7 +28,7 @@ namespace Remotely.Desktop.XPlat.Services
             {
                 if (chatMessage.Disconnected)
                 {
-                    await MessageBox.Show("The partner has disconnected.", "Partner Disconnected", MessageBoxType.OK);
+                    await MessageBox.Show("Partenaire déconnecté.", "Partenaire déconnecté", MessageBoxType.OK);
                     Environment.Exit(0);
                     return;
                 }
