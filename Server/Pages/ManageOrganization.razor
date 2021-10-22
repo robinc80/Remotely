@@ -116,9 +116,9 @@
                                 @if (User.Id == orgUser.Id)
                                 {
                                     <td><input type="checkbox" readonly disabled checked="@orgUser.IsAdministrator" /></td>
-                                    <td><button type="button" class="btn btn-secondary" title="Edit" @onclick="() => EditDeviceGroups(orgUser)">Edit</button></td>
+                                    <td><button type="button" class="btn btn-secondary" title="Edit" @onclick="() => EditDeviceGroups(orgUser)">Editer</button></td>
                                     <td></td>
-                                    <td><button type="button" class="btn btn-danger delete-user-button" disabled>Delete</button></td>
+                                    <td><button type="button" class="btn btn-danger delete-user-button" disabled>Supprimer</button></td>
                                 }
                                 else
                                 {

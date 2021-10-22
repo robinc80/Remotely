@@ -284,9 +284,9 @@ namespace Remotely.Server.API
                             <br><br>
                             Hello!
                             <br><br>
-                            You've been invited to join an organization in Remotely.
+                            Vous avez été invité à rejoindre une entreprise dans Remotely.
                             <br><br>
-                            You can join the organization by <a href='{HtmlEncoder.Default.Encode(inviteURL)}'>clicking here</a>.",
+                            Vous pouvez rejoindre l'entreprise en <a href='{HtmlEncoder.Default.Encode(inviteURL)}'>cliquant ici</a>.",
                             orgID);
 
                 if (!emailResult)
