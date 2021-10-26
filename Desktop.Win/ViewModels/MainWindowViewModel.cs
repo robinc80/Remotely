@@ -203,7 +203,7 @@ namespace Remotely.Desktop.Win.ViewModels
 
         public async Task Init()
         {
-            StatusMessage = "Retrieving...";
+            StatusMessage = "Récupération...";
 
             Host = _configService.GetConfig().Host;
 
@@ -226,7 +226,7 @@ namespace Remotely.Desktop.Win.ViewModels
                         App.Current?.Dispatcher?.Invoke(() =>
                         {
                             Viewers.Clear();
-                            StatusMessage = "Disconnected";
+                            StatusMessage = "Déconnecté";
                         });
                         return Task.CompletedTask;
                     };
@@ -236,7 +236,7 @@ namespace Remotely.Desktop.Win.ViewModels
                         App.Current?.Dispatcher?.Invoke(() =>
                         {
                             Viewers.Clear();
-                            StatusMessage = "Reconnecting";
+                            StatusMessage = "Reconnexion";
                         });
                         return Task.CompletedTask;
                     };
@@ -261,8 +261,8 @@ namespace Remotely.Desktop.Win.ViewModels
             }
 
             // If we got here, something went wrong.
-            StatusMessage = "Failed";
-            MessageBox.Show(Application.Current.MainWindow, "Failed to connect to server.", "Connection Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+            StatusMessage = "Echec";
+            MessageBox.Show(Application.Current.MainWindow, "La connexion a échoué.", "Echec de connexion", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         public void PromptForHostName()
@@ -281,7 +281,7 @@ namespace Remotely.Desktop.Win.ViewModels
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
             {
                 Logger.Write("Server URL is not valid.");
-                MessageBox.Show("Server URL must be a valid Uri (e.g. https://app.remotely.one).", "Invalid Server URL", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("L'URL doit être valide (ex.: https://app.remotely.one).", "URL invalide", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -320,7 +320,7 @@ namespace Remotely.Desktop.Win.ViewModels
             await App.Current.Dispatcher.InvokeAsync(async () =>
             {
                 App.Current.MainWindow.Activate();
-                var result = MessageBox.Show(Application.Current.MainWindow, $"Vous avez reçu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(Application.Current.MainWindow, $"Vous avez reçu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Demande de connexion", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     Services.GetRequiredService<IScreenCaster>().BeginScreenCasting(screenCastRequest);
