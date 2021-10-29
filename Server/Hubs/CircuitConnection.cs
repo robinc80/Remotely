@@ -215,8 +215,8 @@ namespace Remotely.Server.Hubs
             if (targetDevice.Value is null)
             {
                 MessageReceived?.Invoke(this, new CircuitEvent(CircuitEventName.DisplayMessage,
-                    "The selected device is not online.",
-                    "Device is not online.",
+                    "L'appareil est déconnecté.",
+                    "Appareil hors-ligne.",
                     "bg-warning"));
                 return false;
             }
