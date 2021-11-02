@@ -174,7 +174,7 @@ namespace Remotely.Server.Pages
                 builder.AddAttribute(2, EditDeviceGroup.DeviceGroupsPropName, deviceGroups);
                 builder.CloseComponent();
             }
-            await ModalService.ShowModal("Device Groups", editDeviceGroupsModal);
+            await ModalService.ShowModal("Groupes d'appareils", editDeviceGroupsModal);
         }
 
         private async Task EvaluateInviteInputKeypress(KeyboardEventArgs args)
@@ -336,12 +336,11 @@ namespace Remotely.Server.Pages
 
         private void ShowDeviceGroupHelp()
         {
-            ModalService.ShowModal("Device Groups", new[]
+            ModalService.ShowModal("Groupes d'appareils", new[]
            {
-                "Device groups can be used to restrict user permissions and to filter computers on " +
-                "the main page.",
-                "Everyone will have access to devices that are not in a group.  Only " +
-                "administrators and users in a device group will have access to devices in that group."
+                "Les groupes permettent de restreindre l'accès à certains utilisateurs " +
+                "et filtrer la page principale.",
+                "Les appareils qui ne sont pas dans un groupe sont accessibles à tous."
             });
         }
 

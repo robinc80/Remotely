@@ -135,10 +135,8 @@
 
     private void ShowShortcutHelp()
     {
-        var modalText = @"The shell shortcuts are used to quickly switch between terminal shells on the main page.
-        If you type one of these shortcuts into the terminal, it will select the corresponding command
-        mode (e.g. PowerShell Core, Bash, etc.).";
+        var modalText = @"Les raccourcis sont utilisés pour passer d'un shell à l'autre sur la page principale.";
 
-        ModalService.ShowModal("Shell Shortcuts", new[] { modalText });
+        ModalService.ShowModal("Raccourcis de commandes", new[] { modalText });
     }
 }

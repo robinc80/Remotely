@@ -15,7 +15,7 @@ namespace Remotely.Shared.Models
         public string Id { get; set; }
 
         [StringLength(25)]
-        public string Product { get; set; } = "Remotely";
+        public string Product { get; set; } = "Le garage à PC";
 
         public byte[] Icon { get; set; }
 

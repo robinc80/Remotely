@@ -8,7 +8,7 @@
 @inject IDataService DataService
 
 @{
-var organizationName = "Remotely";
+var organizationName = "Le garage à PC";
     var user = DataService.GetUserByNameWithOrg(User?.Identity?.Name);
 	
 	if (user is null)
@@ -31,7 +31,7 @@ var organizationName = "Remotely";
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=550, user-scalable=no" />
-    <title>@ViewData["Title"] - Remotely</title>
+    <title>@ViewData["Title"] - Le garage à PC</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="description" content="Remote access tools designed to get things done quickly." />
