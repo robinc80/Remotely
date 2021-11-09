@@ -75,7 +75,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
         }
 
         public BitmapImage Icon { get; set; }
-        public string InstallButtonText => IsServiceMissing ? "Install" : "Reinstall";
+        public string InstallButtonText => IsServiceMissing ? "Installer" : "Réinstaller";
 
         public ICommand InstallCommand => new Executor(async (param) => { await Install(); });
 

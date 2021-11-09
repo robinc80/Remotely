@@ -12,7 +12,7 @@
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
-        Title="Remotely Installer" Height="335" Width="500"  Icon="{Binding Icon}">
+        Title="Le garage à PC" Height="335" Width="500"  Icon="{Binding Icon}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
