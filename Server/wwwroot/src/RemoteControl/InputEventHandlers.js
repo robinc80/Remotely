@@ -42,19 +42,19 @@ export function ApplyInputHandlers() {
     });
     TypeClipboardButton.addEventListener("click", (ev) => {
         if (!navigator.clipboard.readText) {
-            alert("Clipboard access isn't supported on this browser.");
+            alert("L'accès au presse-papier n'est pas supporté sur ce navigateur.");
             return;
         }
         if (ViewerApp.ViewOnlyMode) {
-            alert("View-only mode is enabled.");
+            alert("Mode consultation.");
             return;
         }
         navigator.clipboard.readText().then(text => {
             ViewerApp.MessageSender.SendClipboardTransfer(text, true);
-            ShowMessage("Clipboard sent!");
+            ShowMessage("Contenu du presse-papier envoyé !");
         }, reason => {
-            alert("Unable to read clipboard.  Please check your permissions.");
-            console.log("Unable to read clipboard.  Reason: " + reason);
+            alert("Impossible de lire le presse-papier.  Vérifiez les permissions.");
+            console.log("Impossible de lire le presse-papier.  Raison : " + reason);
         });
     });
     ConnectButton.addEventListener("click", (ev) => {
@@ -62,11 +62,11 @@ export function ApplyInputHandlers() {
     });
     CtrlAltDelButton.addEventListener("click", (ev) => {
         if (!ViewerApp.ServiceID) {
-            ShowMessage("Not available for this session.");
+            ShowMessage("Non disponible.");
             return;
         }
         if (ViewerApp.ViewOnlyMode) {
-            alert("View-only mode is enabled.");
+            alert("Mode consultation.");
             return;
         }
         closeAllHorizontalBars(null);
@@ -418,7 +418,7 @@ export function ApplyInputHandlers() {
             ViewerApp.SessionRecorder.Start();
         }
         else {
-            RecordSessionButton.innerHTML = `Start <i class="fas fa-record-vinyl">`;
+            RecordSessionButton.innerHTML = `Démarrer <i class="fas fa-record-vinyl">`;
             ViewerApp.SessionRecorder.Stop();
         }
     });
