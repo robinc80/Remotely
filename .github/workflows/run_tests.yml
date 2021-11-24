@@ -30,13 +30,13 @@ jobs:
         fetch-depth: 0
 
     # Install the .NET Core workload
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '2.2.106'
+    #- uses: actions/setup-dotnet@v1
+    #  with:
+    #   dotnet-version: '2.2.106'
     - name: Install .NET Core
       uses: actions/setup-dotnet@v1.6.0
       with: 
-            dotnet-version : '6.x'
+            dotnet-version : 6.x
       
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
