@@ -30,6 +30,9 @@ jobs:
         fetch-depth: 0
 
     # Install the .NET Core workload
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '2.2.106'
     - name: Install .NET Core
       uses: actions/setup-dotnet@v1.6.0
       with: 
