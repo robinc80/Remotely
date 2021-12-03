@@ -15,13 +15,13 @@ namespace Remotely.Server.API
     [Route("api/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
-		private readonly IDataService _dataService;
+    public class AlertsController : ControllerBase
+    {
+        private readonly IDataService _dataService;
         private readonly IEmailSenderEx _emailSender;
         private readonly IHttpClientFactory _httpClientFactory;
 
         public AlertsController(IDataService dataService, IEmailSenderEx emailSender, IHttpClientFactory httpClientFactory)
-    {
-        public AlertsController(IDataService dataService, IEmailSenderEx emailSender)
         {
             _dataService = dataService;
             _emailSender = emailSender;
@@ -33,7 +33,7 @@ namespace Remotely.Server.API
         {
             Request.Headers.TryGetValue("OrganizationID", out var orgID);
 
-            _dataService.WriteEvent("Alerte créée.  Options : " + JsonSerializer.Serialize(alertOptions), orgID);
+            _dataService.WriteEvent("Alert created.  Alert Options: " + JsonSerializer.Serialize(alertOptions), orgID);
 
             if (alertOptions.ShouldAlert)
             {
@@ -74,12 +74,12 @@ namespace Remotely.Server.API
 
                     request.Content = new StringContent(alertOptions.ApiRequestBody);
                     request.Content.Headers.ContentType.MediaType = "application/json";
-					
+                    
                     foreach (var header in alertOptions.ApiRequestHeaders)
                     {
                         request.Headers.TryAddWithoutValidation(header.Key, header.Value);
                     }
-					
+
                     using var response = await httpClient.SendAsync(request);
                     _dataService.WriteEvent($"Alert API Response Status: {response.StatusCode}.", orgID);
                 }
