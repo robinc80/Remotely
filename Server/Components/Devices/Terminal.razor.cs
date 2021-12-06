@@ -296,23 +296,23 @@ namespace Remotely.Server.Components.Devices
 
         private void ShowTerminalHelp()
         {
-            ModalService.ShowModal("Terminal Help", new[]
+            ModalService.ShowModal("Terminal", new[]
             {
-                "Enter terminal commands that will execute on all selected devices.",
+                "Entrez les commandes qui seront exécutées sur tous les appareils sélectionnés.",
 
-                "Tab completion is available for PowerShell Core (PSCore) and Windows PowerShell (WinPS).  Tab and Shift + Tab " +
-                "will cycle through potential completions.  Ctrl + Space will show all available completions.",
+                "L'autocomplétion est disponible pour PowerShell Core et Windows PowerShell.  Tab and Shift + Tab " +
+                "will cycle through potential completions.  Utilisez Ctrl + Space pour voir toutes les possibilités.",
 
-                "If more than one devices is selected, the first device's file system will be used when " +
-                "auto-completing file and directory paths.",
+                "Si plus d'un appareil est sélectionné, le système du premier sera utilisé " +
+                "pour l'autocomplétion et les chemins d'accès.",
 
-                "PowerShell Core is cross-platform and is available on all client operating systems.  Bash is available " +
-                "on Windows 10 if WSL (Windows Subsystem for Linux) is installed.",
+                "PowerShell Core est multiplateforme et disponible pour tous les clients.  Bash est disponible " +
+                "sur Windows 10 uniquement si WSL (Windows Subsystem for Linux) est installé.",
 
-                "Up and down arrow keys will cycle through terminal input history.  Ctrl + Q will clear the output window.",
+                "Utilisez les touches fléchées pour naviguer dans l'historique de commandes.  Appuyez sur Ctrl + Q pour vider le terminal.",
 
-                "Note: The first PS Core command or tab completion takes a few moments while the service is " +
-                "starting on the remote device."
+                "Note : les premières commandes PS Core peuvent prendre un moment le temps " +
+                "que le service démarre."
             });
         }
         private void ToggleTerminalOpen()
