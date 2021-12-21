@@ -159,8 +159,8 @@ namespace Remotely.Server.Components.Scripts
             await DataService.AddOrUpdateScriptSchedule(_selectedSchedule);
             CreateNew();
             await RefreshSchedules();
-            ToastService.ShowToast("Schedule saved.");
-            _alertMessage = "Schedule saved.";
+            ToastService.ShowToast("Programmation enregistrée.");
+            _alertMessage = "Programmation enregistrée.";
         }
 
         private async Task RefreshSchedules()

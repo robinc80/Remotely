@@ -41,7 +41,7 @@ namespace Remotely.Agent.Services
 
 
                 // Start Desktop app.
-                await hubConnection.SendAsync("DisplayMessage", $"Starting chat service.", "Starting chat service.", "bg-success", requesterID);
+                await hubConnection.SendAsync("DisplayMessage", $"Lancement du chat.", "Lancement du chat.", "bg-success", requesterID);
                 var args = $"{_rcBinaryPath} " +
                     $"-mode Chat " +
                     $"-requester \"{requesterID}\" " +
