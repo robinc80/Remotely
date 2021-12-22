@@ -79,12 +79,12 @@ namespace Remotely.Server.Components.Scripts
                 return;
             }
 
-            var result = await JsInterop.Confirm($"Are you sure you want to delete the schedule {_selectedSchedule.Name}?");
+            var result = await JsInterop.Confirm($"Etes-vous sûr de vouloir effacer la programmation {_selectedSchedule.Name}?");
             if (result)
             {
                 await DataService.DeleteScriptSchedule(_selectedSchedule.Id);
-                ToastService.ShowToast("Schedule deleted.");
-                _alertMessage = "Schedule deleted.";
+                ToastService.ShowToast("Programmation effacée.");
+                _alertMessage = "Programmation effacée.";
                 CreateNew();
                 await ParentPage.RefreshScripts();
                 await RefreshSchedules();
@@ -126,19 +126,19 @@ namespace Remotely.Server.Components.Scripts
 
             if (_selectedScript is null)
             {
-                ToastService.ShowToast("You must select a script to run.", classString: "bg-warning");
+                ToastService.ShowToast("Vous devez sélectionner un script.", classString: "bg-warning");
                 return;
             }
 
             if (!CanModifyScript)
             {
-                ToastService.ShowToast("You can't modify other people's schedules.", classString: "bg-warning");
+                ToastService.ShowToast("Vous ne pouvez pas modifier les scripts des autres.", classString: "bg-warning");
                 return;
             }
 
             if (!_selectedDevices.Any() && !_selectedDeviceGroups.Any())
             {
-                ToastService.ShowToast("You must select at least one device or device group.", classString: "bg-warning");
+                ToastService.ShowToast("Vous devez sélectionner au moins un appareil ou un groupe.", classString: "bg-warning");
                 return;
             }
 
