@@ -123,9 +123,9 @@
                                 else
                                 {
                                     <td><input type="checkbox" @onchange="(ev) => SetUserIsAdmin(ev, orgUser)" checked="@orgUser.IsAdministrator" /></td>
-                                    <td><button type="button" class="btn btn-secondary" title="Edit" @onclick="() => EditDeviceGroups(orgUser)">Modifier</button></td>
-                                    <td><button type="button" class="btn btn-danger" title="Reset Password" @onclick="() => ResetPassword(orgUser)">Reset</button></td>
-                                    <td><button type="button" class="btn btn-danger" title="Delete User" @onclick="() => DeleteUser(orgUser)">Effacer</button></td>
+                                    <td><button type="button" class="btn btn-secondary" title="Editer" @onclick="() => EditDeviceGroups(orgUser)">Modifier</button></td>
+                                    <td><button type="button" class="btn btn-danger" title="Réinitialiser le mot de passe" @onclick="() => ResetPassword(orgUser)">Reset</button></td>
+                                    <td><button type="button" class="btn btn-danger" title="Effacer l'utilisateur" @onclick="() => DeleteUser(orgUser)">Effacer</button></td>
                                 }
                             </tr>
                         }
