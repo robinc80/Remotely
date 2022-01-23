@@ -25,7 +25,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
     {
         private BrandingInfo _brandingInfo;
         private bool _createSupportShortcut;
-        private string _headerMessage = "Install the service.";
+        private string _headerMessage = "Installer le service.";
 
         private bool _isReadyState = true;
         private bool _isServiceInstalled;
@@ -208,11 +208,11 @@ namespace Remotely.Agent.Installer.Win.ViewModels
             IsServiceInstalled = ServiceController.GetServices().Any(x => x.ServiceName == "Remotely_Service");
             if (IsServiceMissing)
             {
-                HeaderMessage = $"Install the {ProductName} service.";
+                HeaderMessage = $"Installer le programme {ProductName}.";
             }
             else
             {
-                HeaderMessage = $"Modify the {ProductName} installation.";
+                HeaderMessage = $"Modifier l'installation.";
             }
 
             CommandLineParser.VerifyArguments();
