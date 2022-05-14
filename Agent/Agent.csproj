@@ -6,12 +6,12 @@
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>Copyright ©  2022 Translucency Software</Copyright>
-    <Description>Background service that maintains a connection to the Remotely server.  The service is used for remote support and maintenance by this computer's administrators.</Description>
+    <Description>Service tournant en arrière-plan pour maintenir une connexion au serveur Remotely.  Ce service est utilisé à des fins de téléassistance et de maintenance informatique.</Description>
     <Authors>Jared Goodwin</Authors>
     <Product>Remotely Agent</Product>
     <Company>Translucency Software</Company>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <PackageProjectUrl>https://remotely.one</PackageProjectUrl>
+    <PackageProjectUrl>https://sos.pcenpanne.fr</PackageProjectUrl>
     <Platforms>AnyCPU;x86;x64</Platforms>
     <AssemblyName>Remotely_Agent</AssemblyName>
     <RootNamespace>Remotely.Agent</RootNamespace>
