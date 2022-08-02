@@ -27,8 +27,6 @@ namespace Remotely.Server.Hubs
 
         Task DeleteRemoteLogs(string deviceId);
 
-        Task DownloadFile(string filePath, string deviceID);
-
         Task ExecuteCommandOnAgent(ScriptingShell shell, string command, string[] deviceIDs);
 
         Task GetPowerShellCompletions(string inputText, int currentIndex, CompletionIntent intent, bool? forward);
@@ -109,16 +107,6 @@ namespace Remotely.Server.Hubs
                 User.UserName);
 
             return _agentHubContext.Clients.Client(key).SendAsync("DeleteLogs");
-        }
-
-        public Task DownloadFile(string filePath, string deviceID)
-        {
-            if (_dataService.DoesUserHaveAccessToDevice(deviceID, User))
-            {
-                var targetDevice = AgentHub.ServiceConnections.FirstOrDefault(x => x.Value.ID == deviceID);
-                _agentHubContext.Clients.Client(targetDevice.Key).SendAsync("DownloadFile", filePath, ConnectionId);
-            }
-            return Task.CompletedTask;
         }
 
         public Task ExecuteCommandOnAgent(ScriptingShell shell, string command, string[] deviceIDs)
@@ -215,8 +203,8 @@ namespace Remotely.Server.Hubs
             if (targetDevice.Value is null)
             {
                 MessageReceived?.Invoke(this, new CircuitEvent(CircuitEventName.DisplayMessage,
-                    "L'appareil est déconnecté.",
-                    "Appareil hors-ligne.",
+                    "The selected device is not online.",
+                    "Device is not online.",
                     "bg-warning"));
                 return false;
             }
@@ -287,7 +275,7 @@ namespace Remotely.Server.Hubs
 
             if (connection.Value is null)
             {
-                _toastService.ShowToast("Appareil non trouvé.");
+                _toastService.ShowToast("Device not found.");
                 return Task.CompletedTask;
             }
 

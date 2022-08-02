@@ -10,10 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Text;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -28,7 +26,7 @@ namespace Remotely.Agent.Services
         private readonly ConfigService _configService;
 
         private readonly IDeviceInformationService _deviceInfoService;
-
+        private readonly IHttpClientFactory _httpFactory;
         private readonly ScriptExecutor _scriptExecutor;
 
         private readonly Uninstaller _uninstaller;
@@ -47,7 +45,8 @@ namespace Remotely.Agent.Services
             ChatClientService chatService,
             IAppLauncher appLauncher,
             IUpdater updater,
-            IDeviceInformationService deviceInfoService)
+            IDeviceInformationService deviceInfoService,
+            IHttpClientFactory httpFactory)
         {
             _configService = configService;
             _uninstaller = uninstaller;
@@ -56,6 +55,7 @@ namespace Remotely.Agent.Services
             _chatService = chatService;
             _updater = updater;
             _deviceInfoService = deviceInfoService;
+            _httpFactory = httpFactory;
         }
         public bool IsConnected => _hubConnection?.State == HubConnectionState.Connected;
         public async Task Connect()
@@ -75,7 +75,7 @@ namespace Remotely.Agent.Services
             }
             catch (Exception ex)
             {
-                Logger.Write(ex, "Impossible de se connecter au serveur.  Veuillez vérifier la connexion Internet.", EventType.Warning);
+                Logger.Write(ex, "Failed to connect to server.  Internet connection may be unavailable.", EventType.Warning);
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace Remotely.Agent.Services
                     if (!IsConnected)
                     {
                         var waitTime = new Random().Next(1000, 30000);
-                        Logger.Write($"Websocket terminé.  Reconnexion dans {waitTime / 1000} secondes...");
+                        Logger.Write($"Websocket closed.  Reconnecting in {waitTime / 1000} seconds...");
                         await Task.Delay(waitTime);
                         await Program.Services.GetRequiredService<AgentSocket>().Connect();
                         await Program.Services.GetRequiredService<IUpdater>().CheckForUpdates();
@@ -232,59 +232,6 @@ namespace Remotely.Agent.Services
                Logger.DeleteLogs();
            });
 
-            _hubConnection.On("DownloadFile", async (string filePath, string senderConnectionID) =>
-            {
-                try
-                {
-                    if (!IsServerVerified)
-                    {
-                        Logger.Write("File download attempted before server was verified.", EventType.Warning);
-                        return;
-                    }
-
-                    filePath = filePath.Replace("\"", "");
-                    if (!File.Exists(filePath))
-                    {
-                        await _hubConnection.SendAsync("DisplayMessage",
-                            "Fichier non trouvé.",
-                            "Fichier non trouvé.",
-                            "bg-danger",
-                            senderConnectionID);
-                        return;
-                    }
-
-                    using var wc = new WebClient();
-                    var lastProgressPercent = 0;
-                    wc.UploadProgressChanged += async (sender, args) =>
-                    {
-                        if (args.ProgressPercentage > lastProgressPercent)
-                        {
-                            lastProgressPercent = args.ProgressPercentage;
-                            await _hubConnection.SendAsync("DownloadFileProgress", lastProgressPercent, senderConnectionID);
-                        }
-                    };
-
-                    try
-                    {
-                        var response = await wc.UploadFileTaskAsync($"{_connectionInfo.Host}/API/FileSharing/", filePath);
-                        var fileIDs = JsonSerializer.Deserialize<string[]>(Encoding.UTF8.GetString(response));
-                        await _hubConnection.SendAsync("DownloadFile", fileIDs[0], senderConnectionID);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Write(ex);
-                        await _hubConnection.SendAsync("DisplayMessage",
-                            "Error occurred while uploading file from remote computer.",
-                            "Upload error.",
-                            "bg-danger",
-                            senderConnectionID);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Write(ex);
-                }
-            });
 
             _hubConnection.On("ExecuteCommand", ((ScriptingShell shell, string command, string authToken, string senderUsername, string senderConnectionID) =>
             {
@@ -465,21 +412,16 @@ namespace Remotely.Agent.Services
                     foreach (var fileID in fileIDs)
                     {
                         var url = $"{_connectionInfo.Host}/API/FileSharing/{fileID}";
-                        var wr = WebRequest.CreateHttp(url);
-                        wr.Headers[HttpRequestHeader.Authorization] = authToken;
-                        using var response = await wr.GetResponseAsync();
-                        var cd = response.Headers["Content-Disposition"];
-                        var filename = cd
-                                        .Split(";")
-                                        .FirstOrDefault(x => x.Trim()
-                                        .StartsWith("filename"))
-                                        .Split("=")[1];
+                        using var client = _httpFactory.CreateClient();
+                        client.DefaultRequestHeaders.Add("Authorization", authToken);
+                        using var response = await client.GetAsync(url);
 
+                        var filename = response.Content.Headers.ContentDisposition.FileName;
                         var legalChars = filename.ToCharArray().Where(x => !Path.GetInvalidFileNameChars().Any(y => x == y));
 
                         filename = new string(legalChars.ToArray());
 
-                        using var rs = response.GetResponseStream();
+                        using var rs = await response.Content.ReadAsStreamAsync();
                         using var fs = new FileStream(Path.Combine(sharedFilePath, filename), FileMode.Create);
                         rs.CopyTo(fs);
                     }
