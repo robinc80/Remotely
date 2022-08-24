@@ -25,8 +25,8 @@
     <Authors>Jared Goodwin</Authors>
     <Company>Translucency Software</Company>
     <Product>Remotely Desktop</Product>
-    <Description>Client permettant l'accès à ce PC par un technicien.</Description>
-    <Copyright>Copyright ©  2022 Translucency Software</Copyright>
+    <Description>Desktop client for allowing your IT admin to provide remote support.</Description>
+    <Copyright>Copyright ©  2021 Translucency Software</Copyright>
     <PackageProjectUrl>https://remotely.one</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>

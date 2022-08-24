@@ -157,8 +157,7 @@ namespace Remotely.Server.Components.Devices
                                     _devicesForPage[index] = device;
                                 }
                             }
-
-Debouncer.Debounce(TimeSpan.FromSeconds(2), Refresh);
+                            Debouncer.Debounce(TimeSpan.FromSeconds(2), Refresh);
                         }
                         break;
                     }
@@ -224,7 +223,7 @@ Debouncer.Debounce(TimeSpan.FromSeconds(2), Refresh);
                         continue;
                     }
 
-                            if (!string.IsNullOrWhiteSpace(_filter) &&
+                    if (!string.IsNullOrWhiteSpace(_filter) &&
                             device.Alias?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
                             device.CurrentUser?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
                             device.DeviceName?.Contains(_filter, StringComparison.OrdinalIgnoreCase) != true &&
@@ -235,7 +234,7 @@ Debouncer.Debounce(TimeSpan.FromSeconds(2), Refresh);
                         continue;
                     }
 
-                                        if (_selectedGroupId == _deviceGroupAll ||
+                    if (_selectedGroupId == _deviceGroupAll ||
                         _selectedGroupId == device.DeviceGroupID ||
                         (
                             _selectedGroupId == _deviceGroupNone && 
@@ -244,8 +243,6 @@ Debouncer.Debounce(TimeSpan.FromSeconds(2), Refresh);
                     {
                         _filteredDevices.Add(device);
                     }
-
-                    _filteredDevices.Add(device);
                 }
 
                 if (!string.IsNullOrWhiteSpace(_selectedSortProperty))
@@ -292,7 +289,7 @@ Debouncer.Debounce(TimeSpan.FromSeconds(2), Refresh);
         private void HandleRefreshClicked()
         {
             Refresh();
-            ToastService.ShowToast("Affichage actualisé.");
+            ToastService.ShowToast("Devices refreshed.");
         }
 
         private void LoadDevices()

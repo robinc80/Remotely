@@ -93,7 +93,7 @@ namespace Remotely.Desktop.Core.Services
                 ImageQuality = Math.Min(DefaultQuality, ImageQuality + 2);
             }
 
-            // Limit to 20 FPS.
+            // Limit FPS.
             _ = TaskHelper.DelayUntil(() =>
                 !PendingSentFrames.TryPeek(out var result) || DateTimeOffset.Now - result.Timestamp > TimeSpan.FromMilliseconds(50),
                 TimeSpan.FromSeconds(5));
@@ -283,7 +283,8 @@ namespace Remotely.Desktop.Core.Services
 
             for (var i = 0; i < chunkCount; i++)
             {
-				var chunk = chunks[i];
+                var chunk = chunks[i];
+
                 var dto = new CaptureFrameDto()
                 {
                     Left = left,
@@ -299,39 +300,6 @@ namespace Remotely.Desktop.Core.Services
                       () => RtcSession.SendDto(dto),
                       () => CasterSocket.SendDtoToViewer(dto, ViewerConnectionID));
             }
-
-            
-            //for (var i = 0; i < screenFrame.EncodedImageBytes.Length; i += 50_000)
-            //{
-            //    var dto = new CaptureFrameDto()
-            //    {
-            //        Left = left,
-            //        Top = top,
-            //        Width = width,
-            //        Height = height,
-            //        EndOfFrame = false,
-            //        Sequence = screenFrame.Sequence,
-            //        ImageBytes = screenFrame.EncodedImageBytes.Skip(i).Take(50_000).ToArray()
-            //    };
-
-            //    await SendToViewer(
-            //          () => RtcSession.SendDto(dto),
-            //          () => CasterSocket.SendDtoToViewer(dto, ViewerConnectionID));
-            //}
-
-            //var endOfFrameDto = new CaptureFrameDto()
-            //{
-            //    Left = left,
-            //    Top = top,
-            //    Width = width,
-            //    Height = height,
-            //    EndOfFrame = true,
-            //    Sequence = screenFrame.Sequence,
-            //};
-
-            //await SendToViewer(
-            //           () => RtcSession.SendDto(endOfFrameDto),
-            //           () => CasterSocket.SendDtoToViewer(endOfFrameDto, ViewerConnectionID));
         }
 
         public async Task SendScreenData(
