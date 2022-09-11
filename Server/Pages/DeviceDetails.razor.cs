@@ -73,11 +73,11 @@ namespace Remotely.Server.Pages
 
         private async Task DeleteLogs()
         {
-            var result = await JsInterop.Confirm("Are you sure you want to delete the remote logs?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir effacer les logs ?");
             if (result)
             {
                 await CircuitConnection.DeleteRemoteLogs(Device.ID);
-                ToastService.ShowToast("Delete command sent.");
+                ToastService.ShowToast("Effacement effectué.");
             }
         }
 
@@ -162,7 +162,7 @@ namespace Remotely.Server.Pages
                   Device.WebRtcSetting);
 
             _alertMessage = "Device details saved.";
-            ToastService.ShowToast("Device details saved.");
+            ToastService.ShowToast("Détails enregistrés.");
 
             return Task.CompletedTask;
         }

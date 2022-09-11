@@ -182,7 +182,7 @@ namespace Remotely.Server.Components.Devices
                 var devices = AppState.DevicesFrameSelectedDevices.ToArray();
                 if (!devices.Any())
                 {
-                    ToastService.ShowToast("You must select at least one device.", classString: "bg-warning");
+                    ToastService.ShowToast("Vous devez sélectionner au moins un appareil.", classString: "bg-warning");
                     return;
                 }
                 CircuitConnection.ExecuteCommandOnAgent(_shell, InputText, devices);

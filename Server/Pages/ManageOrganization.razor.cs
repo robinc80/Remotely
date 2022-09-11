@@ -81,7 +81,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            ToastService.ShowToast("Device group created.");
+            ToastService.ShowToast("Groupe d'appareils créé.");
             _deviceGroups.Add(deviceGroup);
             _newDeviceGroupName = string.Empty;
         }
@@ -95,7 +95,7 @@ namespace Remotely.Server.Pages
 
             var isDefault = (bool)args.Value;
             DataService.SetIsDefaultOrganization(_organization.ID, isDefault);
-            ToastService.ShowToast("Default organization set.");
+            ToastService.ShowToast("Entreprise par défaut enregistrée.");
         }
 
         private async Task DeleteInvite(InviteLink invite)
@@ -105,7 +105,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var result = await JsInterop.Confirm("Are you sure you want to delete this invitation?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir retirer cette invitation ?");
             if (!result)
             {
                 return;
@@ -113,7 +113,7 @@ namespace Remotely.Server.Pages
 
             DataService.DeleteInvite(User.OrganizationID, invite.ID);
             _invites.RemoveAll(x => x.ID == invite.ID);
-            ToastService.ShowToast("Invitation deleted.");
+            ToastService.ShowToast("Invitation retirée.");
         }
 
         private async Task DeleteSelectedDeviceGroup()
@@ -128,7 +128,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var result = await JsInterop.Confirm("Are you sure you want to delete this device group?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir supprimer ce groupe ?");
             if (!result)
             {
                 return;
@@ -152,7 +152,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var result = await JsInterop.Confirm("Are you sure you want to delete this user?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?");
             if (!result)
             {
                 return;
@@ -160,7 +160,7 @@ namespace Remotely.Server.Pages
 
             await DataService.DeleteUser(User.OrganizationID, user.Id);
             _orgUsers.RemoveAll(x => x.Id == user.Id);
-            ToastService.ShowToast("User deleted.");
+            ToastService.ShowToast("Utilisateur supprimé.");
         }
 
         private async Task EditDeviceGroups(RemotelyUser user)
@@ -207,14 +207,14 @@ namespace Remotely.Server.Pages
 
             if (newName.Length > 25)
             {
-                ToastService.ShowToast("Must be 25 characters or less.",
+                ToastService.ShowToast("Maxi 25 caractères.",
                     classString: "bg-warning");
                 return;
             }
 
             DataService.UpdateOrganizationName(_organization.ID, newName);
             _organization.OrganizationName = newName;
-            ToastService.ShowToast("Organization name changed.");
+            ToastService.ShowToast("Le nom de l'entreprise a été changé.");
         }
 
         private async Task RefreshData()
@@ -269,12 +269,12 @@ namespace Remotely.Server.Pages
 
                     _inviteAsAdmin = false;
                     _inviteEmail = string.Empty;
-                    ToastService.ShowToast("User account created.");
+                    ToastService.ShowToast("Compte créé.");
                     return;
                 }
                 else
                 {
-                    ToastService.ShowToast("Create user failed.", classString: "bg-danger");
+                    ToastService.ShowToast("La création de l'utilisateur a échoué.", classString: "bg-danger");
                     return;
                 }
             }
@@ -300,7 +300,7 @@ namespace Remotely.Server.Pages
                         User.OrganizationID);
                 if (emailResult)
                 {
-                    ToastService.ShowToast("Invitation sent.");
+                    ToastService.ShowToast("Invitation envoyée.");
                     
                     _inviteAsAdmin = false;
                     _inviteEmail = string.Empty;
@@ -308,7 +308,7 @@ namespace Remotely.Server.Pages
                 }
                 else
                 {
-                    ToastService.ShowToast("Error sending invititation email.", classString: "bg-danger");
+                    ToastService.ShowToast("Une erreur s'est produite.", classString: "bg-danger");
                 }
             }
         }
@@ -322,7 +322,7 @@ namespace Remotely.Server.Pages
 
             var isAdmin = (bool)args.Value;
             DataService.ChangeUserIsAdmin(User.OrganizationID, orgUser.Id, isAdmin);
-            ToastService.ShowToast("Administrator value set.");
+            ToastService.ShowToast("Administrateur enregistré.");
         }
 
         private void ShowDefaultOrgHelp()
