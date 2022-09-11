@@ -4,7 +4,7 @@
 @inject IToastService ToastService  
 
 <h5 class="text-info">
-   Edition de @EditUser?.UserName
+    Editing @EditUser?.UserName
 </h5>
 
 @foreach (var group in DeviceGroups ?? Array.Empty<DeviceGroup>())
@@ -18,13 +18,14 @@
 
 @code {
     public static string EditUserPropName => nameof(EditUser);
-	public static string DeviceGroupsPropName => nameof(DeviceGroups);
+    public static string DeviceGroupsPropName => nameof(DeviceGroups);
 
     [Parameter]
     public RemotelyUser EditUser { get; set; }
-	
-	[Parameter]
+
+    [Parameter]
     public DeviceGroup[] DeviceGroups { get; set; }
+
 
     private bool DoesGroupContainUser(DeviceGroup group)
     {
@@ -41,7 +42,7 @@
             }
             else
             {
-                ToastService.ShowToast("Utilisateur ajouté au groupe.");
+                ToastService.ShowToast("User added to group.");
             }
 
         }
@@ -50,11 +51,11 @@
             var result = await DataService.RemoveUserFromDeviceGroup(EditUser.OrganizationID, group.ID, EditUser.Id);
             if (!result)
             {
-                ToastService.ShowToast("Impossible de retirer l'utilisateur du groupe.", classString: "bg-warning");
+                ToastService.ShowToast("Failed to remove from group.", classString: "bg-warning");
             }
             else
             {
-                ToastService.ShowToast("Utilisateur retiré du groupe.");
+                ToastService.ShowToast("Removed user from group.");
             }
         }
     }

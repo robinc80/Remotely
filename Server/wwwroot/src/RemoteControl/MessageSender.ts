@@ -161,7 +161,7 @@ export class MessageSender {
         else if (ViewerApp.ViewerHubConnection.Connection) {
             websocketSend();
         }
-		else {
+        else {
             console.warn("No connection available.");
         }
     }

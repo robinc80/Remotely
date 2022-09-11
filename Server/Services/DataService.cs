@@ -525,7 +525,7 @@ namespace Remotely.Server.Services
                 progressCallback.Invoke((double)stream.Position / stream.Length, file.Name);
             }
 
-			progressCallback.Invoke(1, file.Name);
+            progressCallback.Invoke(1, file.Name);
 
             return await AddSharedFileInternal(file.Name, fileContents, file.ContentType, organizationID);
         }

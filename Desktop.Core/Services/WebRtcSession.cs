@@ -184,7 +184,7 @@ namespace Remotely.Desktop.Core.Services
                 }
 
                 using var currentFrame = result.Value;
-				
+
                 if (currentFrame == null)
                 {
                     return;

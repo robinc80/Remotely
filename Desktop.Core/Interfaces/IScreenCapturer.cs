@@ -15,7 +15,7 @@ namespace Remotely.Desktop.Core.Interfaces
         string SelectedScreen { get; }
 
         IEnumerable<string> GetDisplayNames();
-		SKRect GetFrameDiffArea();
+        SKRect GetFrameDiffArea();
 
         Result<SKBitmap> GetImageDiff();
 

@@ -33,7 +33,7 @@ namespace Remotely.Server.Auth
                 if (headerComponents.Length < 2)
                 {
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-					context.Result = new UnauthorizedResult();
+                    context.Result = new UnauthorizedResult();
                     return;
                 };
 
@@ -50,7 +50,7 @@ namespace Remotely.Server.Auth
                         if (authComponents.Length < 2)
                         {
                             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-							context.Result = new UnauthorizedResult();
+                            context.Result = new UnauthorizedResult();
                             return;
                         };
 

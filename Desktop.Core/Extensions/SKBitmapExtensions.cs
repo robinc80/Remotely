@@ -1,4 +1,4 @@
-using Remotely.Shared;
+﻿using Remotely.Shared;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
