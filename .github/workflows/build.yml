@@ -44,10 +44,10 @@ jobs:
       - name: Install .NET Core
         uses: actions/setup-dotnet@v3.0.2
         with:
-          dotnet-version: 7.x
+          dotnet-version: 6.x
         
       - name: Setup NuGet.exe for use with actions
-        uses: NuGet/setup-nuget@v1.1.1
+        uses: NuGet/setup-nuget@v1.0.6
 
       - name: Set current version
         shell: pwsh
@@ -125,7 +125,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3.0.2
       with:
-        dotnet-version: 7.x
+        dotnet-version: 6.x
       
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
