@@ -16,7 +16,7 @@
                 <div class="d-inline-block text-center mr-2">
                     <label>Appareils en ligne</label>
                     <br />
-                    <span class="badge badge-primary p-2">@AgentHub.ServiceConnections.Count</span>
+                    <span class="badge badge-primary p-2">@ServiceSessionCache.GetAllDevices().Count</span>
                 </div>
 				
                 <div class="d-inline-block text-center mr-2">
@@ -338,15 +338,6 @@
                     <br />
                     <ValidationMessage For="() => Input.UseHsts" />
                 </div>
-
-                <div class="form-group">
-                    <label>Utiliser WebRTC</label>
-                    <br />
-                    <InputCheckbox @bind-Value="Input.UseWebRtc" autocomplete="off" />
-                    <br />
-                    <ValidationMessage For="() => Input.UseWebRtc" />
-                </div>
-
                 <div class="form-group">
                     <label>Serveurs ICE</label>
                     <br />

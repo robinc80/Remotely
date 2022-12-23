@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Immense.RemoteControl.Server.Abstractions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR;
@@ -23,9 +24,9 @@ namespace Remotely.Server.Components.Devices
 {
     public partial class DeviceCard : AuthComponentBase, IDisposable
     {
+        private readonly ConcurrentDictionary<string, double> _fileUploadProgressLookup = new();
         private ElementReference _card;
-        private ConcurrentDictionary<string, double> _fileUploadProgressLookup = new();
-		private Theme _theme;
+        private Theme _theme;
 
         [Parameter]
         public Device Device { get; set; }
@@ -33,14 +34,15 @@ namespace Remotely.Server.Components.Devices
         [CascadingParameter]
         public DevicesFrame ParentFrame { get; set; }
 
-        [Parameter]
-        public ConcurrentDictionary<string, RemoteControlTarget> RemoteControlTargetLookup { get; set; }
 
         [Inject]
         private IClientAppState AppState { get; set; }
 
         [Inject]
         private ICircuitConnection CircuitConnection { get; set; }
+
+        [Inject]
+        private IServiceHubSessionCache ServiceSessionCache { get; init; }
 
         [Inject]
         private IDataService DataService { get; set; }
@@ -50,13 +52,13 @@ namespace Remotely.Server.Components.Devices
         private bool IsOutdated =>
             Version.TryParse(Device.AgentVersion, out var result) &&
             result < ParentFrame.HighestVersion;
-			
-		private bool IsSelected => AppState.DevicesFrameSelectedDevices.Contains(Device.ID);
-		
+
+        private bool IsSelected => AppState.DevicesFrameSelectedDevices.Contains(Device.ID);
+
         [Inject]
         private IJsInterop JsInterop { get; set; }
 
-		[Inject]
+        [Inject]
         private IModalService ModalService { get; set; }
         [Inject]
         private IToastService ToastService { get; set; }
@@ -64,16 +66,16 @@ namespace Remotely.Server.Components.Devices
         public void Dispose()
         {
             AppState.PropertyChanged -= AppState_PropertyChanged;
-			CircuitConnection.MessageReceived -= CircuitConnection_MessageReceived;
+            CircuitConnection.MessageReceived -= CircuitConnection_MessageReceived;
             GC.SuppressFinalize(this);
         }
 
         protected override async Task OnInitializedAsync()
         {
-			await base.OnInitializedAsync();
+            await base.OnInitializedAsync();
             _theme = await AppState.GetEffectiveTheme();
             AppState.PropertyChanged += AppState_PropertyChanged;
-			CircuitConnection.MessageReceived += CircuitConnection_MessageReceived;
+            CircuitConnection.MessageReceived += CircuitConnection_MessageReceived;
         }
 
         private void AppState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -86,7 +88,7 @@ namespace Remotely.Server.Components.Devices
             }
         }
 
-		private void CircuitConnection_MessageReceived(object sender, CircuitEvent e)
+        private void CircuitConnection_MessageReceived(object sender, CircuitEvent e)
         {
            switch (e.EventName)
             {
@@ -105,7 +107,6 @@ namespace Remotely.Server.Components.Devices
                     break;
             }
         }
-		
         private void ContextMenuOpening(MouseEventArgs args)
         {
             if (GetCardState() == DeviceCardState.Normal)
@@ -128,10 +129,10 @@ namespace Remotely.Server.Components.Devices
             AppState.DevicesFrameFocusedDevice = Device.ID;
             AppState.DevicesFrameFocusedCardState = DeviceCardState.Expanded;
             JsInterop.ScrollToElement(_card);
-			
-			await CircuitConnection.TriggerHeartbeat(Device.ID);
+
+            await CircuitConnection.TriggerHeartbeat(Device.ID);
         }
-		
+
         private DeviceCardState GetCardState()
         {
             if (AppState.DevicesFrameFocusedDevice == Device.ID)
@@ -152,7 +153,7 @@ namespace Remotely.Server.Components.Devices
             return string.Empty;
         }
 
-		private string GetProgressMessage(string key)
+        private string GetProgressMessage(string key)
         {
             if (_fileUploadProgressLookup.TryGetValue(key, out var value))
             {
@@ -175,14 +176,13 @@ namespace Remotely.Server.Components.Devices
                   Device.Tags,
                   Device.Alias,
                   Device.DeviceGroupID,
-                  Device.Notes,
-                  Device.WebRtcSetting);
+                  Device.Notes);
 
             ToastService.ShowToast("Paramètres enregistrés.");
 
             await CircuitConnection.TriggerHeartbeat(Device.ID);
         }
-		
+
         private async Task OnFileInputChanged(InputFileChangeEventArgs args)
         {
             ToastService.ShowToast("Upload débuté.");
@@ -259,14 +259,13 @@ namespace Remotely.Server.Components.Devices
 
         private void StartRemoteControl(bool viewOnly)
         {
-            var targetDevice = AgentHub.ServiceConnections.FirstOrDefault(x => x.Value.ID == Device.ID);
-            RemoteControlTargetLookup[Device.ID] = new RemoteControlTarget()
+            if (!ServiceSessionCache.TryGetConnectionId(Device.ID, out var connectionId))
             {
-                ViewOnlyMode = viewOnly,
-                ServiceConnectionId = targetDevice.Key
-            };
+                ToastService.ShowToast("Device connection not found", classString: "bg-danger");
+                return;
+            }
 
-            CircuitConnection.RemoteControl(Device.ID);
+            CircuitConnection.RemoteControl(Device.ID, viewOnly);
         }
 
         private void ToggleIsSelected(ChangeEventArgs args)
@@ -289,7 +288,7 @@ namespace Remotely.Server.Components.Devices
             if (result)
             {
                 await CircuitConnection.UninstallAgents(new[] { Device.ID });
-				AppState.DevicesFrameFocusedDevice = null;
+                AppState.DevicesFrameFocusedDevice = null;
                 AppState.DevicesFrameFocusedCardState = DeviceCardState.Normal;
                 ParentFrame.Refresh();
             }
