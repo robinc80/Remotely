@@ -18,10 +18,10 @@
 
   <StackPanel Margin="15 10 40 15">
     <TextBlock Classes="SectionHeader" Foreground="White">
-      Remote Control Started
+      Téléassistance en cours
     </TextBlock>
     <TextBlock Foreground="LightGray">
-      A remote control session has started.
+      Une session de téléassistance a démarré.
     </TextBlock>
   </StackPanel>
 </Window>

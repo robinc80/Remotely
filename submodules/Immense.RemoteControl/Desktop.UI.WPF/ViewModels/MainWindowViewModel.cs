@@ -126,7 +126,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
             _dispatcher.CurrentApp.Exit -= Application_Exit;
             _dispatcher.CurrentApp.Exit += Application_Exit;
 
-            StatusMessage = "Retrieving...";
+            StatusMessage = "Récupération...";
 
             Host = _appState.Host;
 
@@ -150,7 +150,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
                         _dispatcher.InvokeWpf(() =>
                         {
                             Viewers.Clear();
-                            StatusMessage = "Disconnected";
+                            StatusMessage = "Déconnecté";
                         });
                         return Task.CompletedTask;
                     };
@@ -160,7 +160,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
                         _dispatcher.InvokeWpf(() =>
                         {
                             Viewers.Clear();
-                            StatusMessage = "Reconnecting";
+                            StatusMessage = "Reconnexion";
                         });
                         return Task.CompletedTask;
                     };
@@ -321,7 +321,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
             await _dispatcher.InvokeWpfAsync(async () =>
             {
                 _dispatcher.CurrentApp.MainWindow.Activate();
-                var result = MessageBox.Show(_dispatcher.CurrentApp.MainWindow, $"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show(_dispatcher.CurrentApp.MainWindow, $"Vous avez reçu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Demande de téléassistance", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     _screenCaster.BeginScreenCasting(screenCastRequest);

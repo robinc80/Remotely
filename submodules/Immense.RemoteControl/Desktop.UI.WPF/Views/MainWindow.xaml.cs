@@ -43,7 +43,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.Views
                 PlacementTarget = sender as Button,
                 Placement = PlacementMode.Bottom,
                 VerticalOffset = 5,
-                Content = "Copied to clipboard!",
+                Content = "Copié dans le presse-papiers !",
                 HasDropShadow = true,
                 StaysOpen = false,
                 IsOpen = true

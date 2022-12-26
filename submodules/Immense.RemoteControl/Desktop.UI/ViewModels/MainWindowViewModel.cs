@@ -183,11 +183,11 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
                 Environment.Exit(0);
             }
 
-            StatusMessage = "Initializing...";
+            StatusMessage = "Initialisation";
 
             await InstallDependencies();
 
-            StatusMessage = "Retrieving...";
+            StatusMessage = "Récupération...";
 
             Host = _appState.Host;
 
@@ -209,7 +209,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
                     await _dispatcher.InvokeAsync(() =>
                     {
                         Viewers.Clear();
-                        StatusMessage = "Disconnected";
+                        StatusMessage = "Déconnecté";
                     });
                 };
 
@@ -218,7 +218,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
                     await _dispatcher.InvokeAsync(() =>
                     {
                         Viewers.Clear();
-                        StatusMessage = "Reconnecting";
+                        StatusMessage = "Reconnexion";
                     });
                 };
 
@@ -235,12 +235,12 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during initialization.");
+                _logger.LogError(ex, "Erreur pendant l'initialisation.");
             }
 
             // If we got here, something went wrong.
-            StatusMessage = "Failed";
-            await MessageBox.Show("Failed to connect to server.", "Connection Failed", MessageBoxType.OK);
+            StatusMessage = "Echec";
+            await MessageBox.Show("Echec de connexion au serveur.", "La connexion a échoué", MessageBoxType.OK);
         }
 
         public async Task PromptForHostName()
@@ -262,8 +262,8 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
             if (!Uri.TryCreate(result, UriKind.Absolute, out var serverUri) ||
                 (serverUri.Scheme != Uri.UriSchemeHttp && serverUri.Scheme != Uri.UriSchemeHttps))
             {
-                _logger.LogWarning("Server URL is not valid.");
-                await MessageBox.Show("Server URL must be a valid Uri (e.g. https://example.com).", "Invalid Server URL", MessageBoxType.OK);
+                _logger.LogWarning("L'URL du serveur n'est pas valide.");
+                await MessageBox.Show("L'URL doit être au format URI (ex.: https://exemple.com).", "URL non valide", MessageBoxType.OK);
                 return;
             }
 
@@ -318,7 +318,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
         {
             Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                var result = await MessageBox.Show($"You've received a connection request from {screenCastRequest.RequesterName}.  Accept?", "Connection Request", MessageBoxType.YesNo);
+                var result = await MessageBox.Show($"Vous avez reçu une demande de connexion de la part de {screenCastRequest.RequesterName}.  Accepter ?", "Demande de connexion", MessageBoxType.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     _screenCaster.BeginScreenCasting(screenCastRequest);

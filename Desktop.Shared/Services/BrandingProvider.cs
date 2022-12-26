@@ -23,7 +23,7 @@ namespace Remotely.Desktop.Shared.Services
         private readonly IOrganizationIdProvider _orgIdProvider;
         private BrandingInfoBase _brandingInfo = new()
         {
-            Product = "Remote Control"
+            Product = "Le garage à PC"
         };
 
         public BrandingProvider(IAppState appState, IOrganizationIdProvider orgIdProvider)

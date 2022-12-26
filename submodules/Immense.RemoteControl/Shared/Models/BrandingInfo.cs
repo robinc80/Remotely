@@ -15,7 +15,7 @@ namespace Immense.RemoteControl.Shared.Models
         public byte[] Icon { get; set; } = Array.Empty<byte>();
 
         [StringLength(25)]
-        public string Product { get; set; } = "Remote Control";
+        public string Product { get; set; } = "Le garage à PC";
 
         public byte TitleForegroundRed { get; set; } = 29;
 

@@ -47,7 +47,7 @@ namespace Immense.RemoteControl.Desktop.UI.Views
         private async void SessionIndicatorWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            var result = await MessageBox.Show("Stop the remote control session?", "Stop Session", MessageBoxType.YesNo);
+            var result = await MessageBox.Show("Arrêter la session de téléassistance?", "Arrêt de session", MessageBoxType.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 var shutdownService = StaticServiceProvider.Instance?.GetRequiredService<IShutdownService>();

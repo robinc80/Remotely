@@ -130,11 +130,11 @@ export class ViewerHubConnection {
         });
         hubConnection.on("SessionIDNotFound", () => {
             UI.ConnectButton.removeAttribute("disabled");
-            UI.StatusMessage.innerHTML = "Session ID not found.";
+            UI.StatusMessage.innerHTML = "ID non trouvé.";
             this.Connection.stop();
         });
         hubConnection.on("ScreenCasterDisconnected", () => {
-            UI.StatusMessage.innerHTML = "The host has disconnected.";
+            UI.StatusMessage.innerHTML = "Hôte déconnecté.";
             this.Connection.stop();
         });
         hubConnection.on("RelaunchedScreenCasterReady", (newSessionId: string, newAccessKey: string) => {
@@ -145,7 +145,7 @@ export class ViewerHubConnection {
         });
       
         hubConnection.on("Reconnecting", () => {
-            ShowMessage("Reconnecting...");
+            ShowMessage("Reconnexion...");
         });
 
         hubConnection.on("CursorChange", (cursor: CursorInfo) => {
@@ -153,7 +153,7 @@ export class ViewerHubConnection {
         });
 
         hubConnection.on("RequestingScreenCast", () => {
-            ShowMessage("Requesting remote control...");
+            ShowMessage("Demande de téléassistance...");
         });
 
         hubConnection.on("ShowMessage", (message: string) => {

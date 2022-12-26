@@ -58,7 +58,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
 
         public string OrganizationName
         {
-            get => Get<string>() ?? "your IT provider";
+            get => Get<string>() ?? "Le garage à PC";
             set
             {
                 Set(value);
@@ -71,7 +71,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
 
         public string RequesterName
         {
-            get => Get<string>() ?? "a technician";
+            get => Get<string>() ?? "un technicien";
             set
             {
                 Set(value);
@@ -83,7 +83,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
         {
             get
             {
-                return $"Would you like to allow {RequesterName} from {OrganizationName} to control your computer?";
+                return $"Voulez-vous permettre {RequesterName} de contrôler votre ordinateur ?";
             }
         }
         public ICommand SetResultNo => new RelayCommand<Window>(window =>

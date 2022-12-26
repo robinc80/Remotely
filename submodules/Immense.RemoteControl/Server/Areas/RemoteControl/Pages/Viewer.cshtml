@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no" />
-    <title>Remotely Remote Control</title>
+    <title>Le garage à PC - Téléassistance</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="description" content="Remote support tools designed to get things done quickly." />
@@ -38,11 +38,11 @@
     </environment>
 </head>
 <body>
-    <div class="remotely-header" title="Remotely">
+    <div class="remotely-header" title="Le garage à PC">
         <div class="logo-title">
-            Remotely
+            Le garage à PC
         </div>
-        <div class="logo-subtitle">Support Portal</div>
+        <div class="logo-subtitle">Portail de téléassistance</div>
     </div>
 
     <button id="keyboardButton" hidden="hidden" title="Invoke the mobile touch keyboard.">
@@ -61,51 +61,51 @@
         </div>
 
         <div>
-            <button id="viewOnlyButton" class="option-button" title="If toggled, prevents sending commnads and input to the remote computer.">
-                View Only <i class="fas fa-eye"></i>
+            <button id="viewOnlyButton" class="option-button" title="Consulter sans contrôler.">
+                Consulter <i class="fas fa-eye"></i>
             </button>
 
-            <button id="clipboardTransferButton" class="option-button" title="Type the current clipboard text on the remote computer.">
-                Clipboard  <i class="fas fa-clipboard"></i>
+            <button id="clipboardTransferButton" class="option-button" title="Copier le contenu du presse-papier.">
+                Presse-papier  <i class="fas fa-clipboard"></i>
             </button>
 
-            <button id="blockInputButton" class="option-button" title="Prevent remote user from using keyboard and mouse.">
-                Block Remote Input <i class="fas fa-mouse"></i>
+            <button id="blockInputButton" class="option-button" title="Empêcher l'utilisateur d'utiliser la souris ou le clavier.">
+                Bloquer la saisie <i class="fas fa-mouse"></i>
             </button>
 
-            <button id="inviteButton" class="option-button" title="Copy a link that lets another person view the remote screen.">
-                Invite Others  <i class="fas fa-user-plus"></i>
+            <button id="inviteButton" class="option-button" title="Copier un lien permettant à un tiers de voir l'écran.">
+                Inviter  <i class="fas fa-user-plus"></i>
             </button>
 
-            <button id="audioButton" class="option-button" title="Windows only.  Stream the remote audio to the browser.">
+            <button id="audioButton" class="option-button" title="Windows uniquement : permet d'avoir le son.">
                 Audio <i class="fas fa-volume-up"></i>
             </button>
 
-            <button id="fileTransferButton" class="option-button" title="Transfer files to the remote computer.">
-                File Transfer  <i class="fas fa-file-upload"></i>
+            <button id="fileTransferButton" class="option-button" title="Transférer des fichiers.">
+                Transfert de fichiers  <i class="fas fa-file-upload"></i>
             </button>
 
             <button id="ctrlAltDelButton" class="option-button" title="Simulate the Ctrl+Alt+Del command on the remote computer.">
-                Ctrl+Alt+Del <i class="fas fa-sign-in-alt"></i>
+                Ctrl+Alt+Sup <i class="fas fa-sign-in-alt"></i>
             </button>
 
-            <button id="disconnectButton" class="option-button" title="Disconnect from the current session.">
-                Disconnect <i class="fas fa-window-close"></i>
+            <button id="disconnectButton" class="option-button" title="Déconnexion.">
+                Déconnexion <i class="fas fa-window-close"></i>
             </button>
         </div>
 
 
         <div class="menu-options-header">
-            View
+            Vue
         </div>
 
         <div>
             <button id="changeScreenButton" class="option-button" title="Switch monitors on remote multi-monitor setups.">
-                Monitors <i class="fas fa-desktop"></i>
+                Moniteurs <i class="fas fa-desktop"></i>
             </button>
 
-            <button id="fullScreenButton" class="option-button" title="Enter fullscreen mode.">
-                Fullscreen <i class="fas fa-window-maximize"></i>
+            <button id="fullScreenButton" class="option-button" title="Entrer en plein écran.">
+                Plein écran <i class="fas fa-window-maximize"></i>
             </button>
 
 
@@ -116,21 +116,21 @@
 
 
         <div class="menu-options-header">
-            Recording
+            Enregistrement
         </div>
 
         <div>
             <button id="recordSessionButton" class="option-button" title="Record session as a WEBM video in the browser.">
-                Start <i class="fas fa-record-vinyl"></i>
+                Commencer <i class="fas fa-record-vinyl"></i>
             </button>
 
             <button id="downloadRecordingButton" class="option-button" title="Download the recorded session as a WEBM file.">
-                Download <i class="fas fa-download"></i>
+                Télécharger <i class="fas fa-download"></i>
             </button>
         </div>
 
         <div class="menu-options-header">
-            Windows Session
+            Session Windows
         </div>
         <div>
             <select id="windowsSessionSelect"
@@ -146,7 +146,7 @@
 
     <div id="clipboardTransferBar" class="horizontal-button-bar">
         <div style="color:white; font-size:12px">
-            Shared Clipboard
+            Presse-papier
         </div>
         <div style="color:white; font-size:12px;">
             <button id="typeClipboardButton" class="horizontal-bar-button">Type Clipboard</button>
@@ -155,27 +155,27 @@
 
     <div id="fileTransferBar" class="horizontal-button-bar">
         <div style="color:white; font-size:12px">
-            File Transfer
+            Transfert de fichiers
         </div>
         <div style="color:white; font-size:12px;">
-            <button id="fileUploadButton" class="horizontal-bar-button">Upload File</button>
-            <button id="fileDownloadButton" class="horizontal-bar-button">Download File</button>
+            <button id="fileUploadButton" class="horizontal-bar-button">Uploader</button>
+            <button id="fileDownloadButton" class="horizontal-bar-button">Télécharger</button>
         </div>
     </div>
     <div id="connectBox" class="center-connection-box" style="display: none">
-        <h3>Connect to a client:</h3>
+        <h3>Connexion :</h3>
         <div class="form-block">
-            <label>Your Name (shown to client): </label>
+            <label>Nom : </label>
             <br />
             <input id="nameInput" type="text" value="@Model.UserDisplayName" />
         </div>
         <div class="form-block">
-            <label>Session ID: </label>
+            <label>ID de session: </label>
             <br />
             <input id="sessionIDInput" type="text" pattern="[0-9 ]+" />
         </div>
         <div class="right-aligned">
-            <button id="connectButton">Connect</button>
+            <button id="connectButton">Connexion</button>
         </div>
         <div id="statusMessage" class="status-message">
 
@@ -183,7 +183,7 @@
     </div>
 
     <div id="disconnectedBox" class="center-connection-box" style="text-align: center; display: none;">
-        <h3>Disconnected from client.</h3>
+        <h3>Déconnecté.</h3>
     </div>
 
 

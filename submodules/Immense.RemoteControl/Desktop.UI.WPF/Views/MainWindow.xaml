@@ -65,23 +65,23 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                    <TextBlock Style="{StaticResource SectionHeader}"><Run Text="Share Screen"/></TextBlock>
-                    <TextBlock FontSize="16" Margin="0,10,0,5"><Run Text="Your Session ID:"/></TextBlock>
+                    <TextBlock Style="{StaticResource SectionHeader}"><Run Text="Partage d'écran"/></TextBlock>
+                    <TextBlock FontSize="16" Margin="0,10,0,5"><Run Text="ID de session:"/></TextBlock>
                     <TextBox FontSize="16" Text="{Binding StatusMessage}" IsReadOnly="True"/>
                     <Grid Margin="0,10,0,0">
                         <TextBlock VerticalAlignment="Center">
-                        Invite Link:
+                        Lien :
                         </TextBlock>
                         <Button HorizontalAlignment="Right" Style="{StaticResource NormalButton}" Click="CopyLinkButton_Click">
-                            Copy
+                            Copier
                         </Button>
                     </Grid>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="15,0,0,0">
                     <TextBlock Style="{StaticResource SectionHeader}"><Run Text="Viewers"/></TextBlock>
                     <Grid  Margin="0,5,0,0">
-                        <TextBlock FontSize="8" Margin="5,0,0,0">Name</TextBlock>
-                        <TextBlock FontSize="8" Margin="0,0,5,0" HorizontalAlignment="Right">Has Control</TextBlock>
+                        <TextBlock FontSize="8" Margin="5,0,0,0">Nom</TextBlock>
+                        <TextBlock FontSize="8" Margin="0,0,5,0" HorizontalAlignment="Right">Contrôle</TextBlock>
                     </Grid>
                     <ListBox x:Name="ViewerListBox" Height="90" 
                              HorizontalContentAlignment="Stretch" 
@@ -102,7 +102,7 @@
                             Command="{Binding RemoveViewersCommand}"
                             CommandParameter="{Binding ElementName=ViewerListBox, Path=SelectedItems}"  
                             Margin="0,5,0,0"
-                            Content="Remove">
+                            Content="Enlever">
                     </Button>
                 </StackPanel>
             </Grid>
@@ -120,10 +120,10 @@
                 Click="OptionsButton_Click">
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Change Server" Click="ChangeServerMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Changer de serveur" Click="ChangeServerMenuItem_Click"></MenuItem>
 
-                    <MenuItem Header="Elevate to Admin" Click="ElevateToAdminMenuItem_Click"></MenuItem>
-                    <MenuItem Header="Elevate to Service" Click="ElevateToServiceMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Passer en admin" Click="ElevateToAdminMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Passer en service" Click="ElevateToServiceMenuItem_Click"></MenuItem>
                 </ContextMenu>
             </Button.ContextMenu>
             <Rectangle Fill="{StaticResource GearBrush}"></Rectangle>
