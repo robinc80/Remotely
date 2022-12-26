@@ -6,7 +6,7 @@ using System.ServiceProcess;
 
 namespace Remotely.Agent.Services
 {
-	[SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows")]
     partial class WindowsService : ServiceBase
     {
         public WindowsService()
