@@ -9,7 +9,7 @@ namespace Remotely.Shared
     public class AppConstants
     {
         public const string ServerUrl = "https://localhost:5001";
-        public const string DefaultProductName = "Remotely";
+        public const string DefaultProductName = "Le garage à PC";
         public const string DefaultPublisherName = "Translucency Software";
         public const long MaxUploadFileSize = 100_000_000;
         public const int RelayCodeLength = 4;
