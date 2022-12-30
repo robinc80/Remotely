@@ -10,8 +10,6 @@ namespace Remotely.Shared.Models
 {
     public class Device
     {
-		public static Device Empty { get; } = new();
-		
         [Sortable]
         [Display(Name = "Version de l'agent")]
         public string AgentVersion { get; set; }
@@ -112,5 +110,7 @@ namespace Remotely.Shared.Models
         [Sortable]
         [Display(Name = "Stockage utilisé (%)")]
         public double UsedStoragePercent => UsedStorage / TotalStorage;
+
+        public WebRtcSetting WebRtcSetting { get; set; }
     }
 }

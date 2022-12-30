@@ -1,6 +1,7 @@
 using Remotely.Agent.Installer.Win.Models;
 using Remotely.Agent.Installer.Win.Services;
 using Remotely.Agent.Installer.Win.Utilities;
+using Remotely.Shared.Utilities;
 using Remotely.Shared.Models;
 using System;
 using System.Diagnostics;
@@ -17,7 +18,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Net;
-using Remotely.Shared;
 
 namespace Remotely.Agent.Installer.Win.ViewModels
 {
@@ -34,7 +34,7 @@ namespace Remotely.Agent.Installer.Win.ViewModels
 
         private int _progress;
 
-        private string _serverUrl = AppConstants.ServerUrl;
+        private string _serverUrl;
 
         private string _statusMessage;
         public MainWindowViewModel()

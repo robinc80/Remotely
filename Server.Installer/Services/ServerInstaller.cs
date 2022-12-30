@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Remotely.Shared.Extensions;
-using Immense.RemoteControl.Shared.Helpers;
 
 namespace Server.Installer.Services
 {
@@ -129,7 +128,7 @@ namespace Server.Installer.Services
                         try { proc.Kill(); } 
                         catch { }
                     }
-                    WaitHelper.WaitFor(() => Process.GetProcessesByName("w3wp").Length < w3wpProcs.Length, TimeSpan.FromMinutes(5), 100);
+                    TaskHelper.DelayUntil(() => Process.GetProcessesByName("w3wp").Length < w3wpProcs.Length, TimeSpan.FromMinutes(5), 100);
                 }
             }
 

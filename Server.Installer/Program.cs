@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared;
 using Remotely.Shared.Enums;
 using Remotely.Shared.Services;
 using Remotely.Shared.Utilities;

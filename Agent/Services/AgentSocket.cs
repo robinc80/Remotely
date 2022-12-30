@@ -65,7 +65,7 @@ namespace Remotely.Agent.Services
                 _connectionInfo = _configService.GetConnectionInfo();
 
                 _hubConnection = new HubConnectionBuilder()
-                    .WithUrl(_connectionInfo.Host + "/hubs/service")
+                    .WithUrl(_connectionInfo.Host + "/AgentHub")
                     .AddMessagePackProtocol()
                     .Build();
 
@@ -178,8 +178,10 @@ namespace Remotely.Agent.Services
 
         private void RegisterMessageHandlers()
         {
+            // TODO: Remove possibility for circular dependencies in the future
+            // by emitting these events so other services can listen for them.
 
-            _hubConnection.On("ChangeWindowsSession", async (string viewerConnectionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, int targetSessionID) =>
+            _hubConnection.On("ChangeWindowsSession", async (string serviceID, string viewerID, int targetSessionID) =>
             {
                 try
                 {
@@ -189,7 +191,7 @@ namespace Remotely.Agent.Services
                         return;
                     }
 
-                    await _appLauncher.RestartScreenCaster(new List<string>() { viewerConnectionId }, sessionId, accessKey, userConnectionId, requesterName, orgName, orgId, _hubConnection, targetSessionID);
+                    await _appLauncher.RestartScreenCaster(new List<string>() { viewerID }, serviceID, viewerID, _hubConnection, targetSessionID);
                 }
                 catch (Exception ex)
                 {
@@ -197,7 +199,7 @@ namespace Remotely.Agent.Services
                 }
             });
 
-            _hubConnection.On("Chat", async (string senderName, string message, string orgName, string orgId, bool disconnected, string senderConnectionID) =>
+            _hubConnection.On("Chat", async (string senderName, string message, string orgName, bool disconnected, string senderConnectionID) =>
             {
                 try
                 {
@@ -207,7 +209,7 @@ namespace Remotely.Agent.Services
                         return;
                     }
 
-                    await _chatService.SendMessage(senderName, message, orgName, orgId, disconnected, senderConnectionID, _hubConnection);
+                    await _chatService.SendMessage(senderName, message, orgName, disconnected, senderConnectionID, _hubConnection);
                 }
                 catch (Exception ex)
                 {
@@ -340,7 +342,7 @@ namespace Remotely.Agent.Services
                 }
             });
 
-            _hubConnection.On("RemoteControl", async (string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId) =>
+            _hubConnection.On("RemoteControl", async (string requesterID, string serviceID) =>
             {
                 try
                 {
@@ -349,7 +351,7 @@ namespace Remotely.Agent.Services
                         Logger.Write("Remote control attempted before server was verified.", EventType.Warning);
                         return;
                     }
-                    await _appLauncher.LaunchRemoteControl(-1, sessionId, accessKey, userConnectionId, requesterName, orgName, orgId, _hubConnection);
+                    await _appLauncher.LaunchRemoteControl(-1, requesterID, serviceID, _hubConnection);
                 }
                 catch (Exception ex)
                 {
@@ -357,7 +359,7 @@ namespace Remotely.Agent.Services
                 }
             });
 
-            _hubConnection.On("RestartScreenCaster", async (List<string> viewerIDs, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId) =>
+            _hubConnection.On("RestartScreenCaster", async (List<string> viewerIDs, string serviceID, string requesterID) =>
             {
                 try
                 {
@@ -366,7 +368,7 @@ namespace Remotely.Agent.Services
                         Logger.Write("Remote control attempted before server was verified.", EventType.Warning);
                         return;
                     }
-                    await _appLauncher.RestartScreenCaster(viewerIDs, sessionId, accessKey, userConnectionId, requesterName, orgName, orgId, _hubConnection);
+                    await _appLauncher.RestartScreenCaster(viewerIDs, serviceID, requesterID, _hubConnection);
                 }
                 catch (Exception ex)
                 {

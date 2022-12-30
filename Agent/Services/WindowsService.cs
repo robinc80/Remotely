@@ -1,12 +1,10 @@
 ﻿using Remotely.Shared.Utilities;
 using System;
 using System.Diagnostics;
-using System.Runtime.Versioning;
 using System.ServiceProcess;
 
 namespace Remotely.Agent.Services
 {
-	[SupportedOSPlatform("windows")]
     partial class WindowsService : ServiceBase
     {
         public WindowsService()

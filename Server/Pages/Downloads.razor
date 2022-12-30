@@ -45,6 +45,41 @@
 </div>
 
 
+<div class="row mb-3">
+    <h4>Client installable</h4>
+    <div class="text-info col-sm-12 pl-0 mb-2">
+        Installable et mises à jour automatiques.
+    </div>
+
+    @if (!_isServerUrlEmbedded)
+    {
+        <div class="col-sm-12">
+            <AlertBanner Message="Must be built from source to target specific server URL." StatusClass="warning" />
+        </div>
+    }
+
+
+    <div class="col-sm-6 mb-3">
+        <strong>Windows (64 Bits)</strong>
+        <p>
+            <small>Note: seul le branding par défaut s'applique.</small>
+        </p>
+        <p>
+            <a target="_blank" href="/Content/Win-x64/ClickOnce/setup.exe">Installateur Windows</a>
+        </p>
+    </div>
+    <div class="col-sm-6">
+        <strong>Windows (32 Bits)</strong>
+        <p>
+            <small>Note: seul le branding par défaut s'applique.</small>
+        </p>
+        <p>
+            <a target="_blank" href="/Content/Win-x86/ClickOnce/setup.exe">Installateur Windows</a>
+        </p>
+    </div>
+
+</div>
+
 <div class="row">
     <h4>Agent en arrière-plan</h4>
     <div class="text-info col-sm-12 pl-0 mb-2">
@@ -61,7 +96,10 @@
     else
     {
         <div class="col-sm-6 mb-3">
-            <strong>Windows 10 / 11 (64-Bit and 32-Bit)</strong>
+            <strong>Windows 10 / 8.1 / 7 (64-Bit and 32-Bit)</strong>
+            <p>
+                <small>Note: GPU-accelerated screen capture and PowerShell Core is unavailable on Windows 7.</small>
+            </p>
             <p>
                 <a target="_blank" href="/API/ClientDownloads/WindowsInstaller">Windows Installer (x64/x86)</a>
                 <br />
@@ -175,7 +213,8 @@
 
 @code {
     private string _organizationId;
-	private bool _isAuthenticated;
+    private bool _isServerUrlEmbedded;
+    private bool _isAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
@@ -193,5 +232,27 @@
         {
             _organizationId = (await DataService.GetDefaultOrganization())?.ID;
         }
+
+        var appFilePath = System.IO.Path.Combine(
+            HostEnv.WebRootPath,
+            "Content",
+            "Win-x64",
+            "ClickOnce",
+            "Remotely_Desktop.application");
+
+        try
+        {
+            await ClickOnceMiddleware.AppFileLock.WaitAsync();
+            var appContent = await System.IO.File.ReadAllTextAsync(appFilePath);
+            _isServerUrlEmbedded = appContent.Contains(NavManager.BaseUri.TrimEnd('/'));
         }
+        catch (Exception ex)
+        {
+            Logger.LogWarning(ex, "Error while checking ClickOnce file.");
+        }
+        finally
+        {
+            ClickOnceMiddleware.AppFileLock.Release();
+        }
+    }
 }

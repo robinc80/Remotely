@@ -1,5 +1,4 @@
-﻿using Immense.RemoteControl.Server.Abstractions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Remotely.Server.Hubs;
@@ -41,9 +40,6 @@ namespace Remotely.Server.Components.Scripts
 
         [Inject]
         private IToastService ToastService { get; set; }
-
-        [Inject]
-        private IServiceHubSessionCache ServiceSessionCache { get; init; }
 
         [Inject]
         private ICircuitConnection CircuitConnection { get; set; }
@@ -123,7 +119,9 @@ namespace Remotely.Server.Components.Scripts
 
             var filteredDevices = DataService.FilterDeviceIDsByUserPermission(deviceIds.ToArray(), User);
 
-            var onlineDevices = ServiceSessionCache.GetConnectionIdsByDeviceIds(filteredDevices);
+            var onlineDevices = AgentHub.ServiceConnections
+                .Where(x => filteredDevices.Contains(x.Value.ID))
+                .Select(x=>x.Value.ID);
 
             var scriptRun = new ScriptRun()
             {

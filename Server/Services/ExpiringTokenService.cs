@@ -1,5 +1,4 @@
-﻿using Immense.RemoteControl.Shared.Helpers;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Remotely.Shared.Utilities;
 using System;
 using System.Collections.Generic;

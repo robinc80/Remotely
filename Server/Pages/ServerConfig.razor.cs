@@ -1,13 +1,10 @@
-﻿using Immense.RemoteControl.Server.Abstractions;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Remotely.Server.Components;
 using Remotely.Server.Hubs;
 using Remotely.Server.Services;
@@ -16,7 +13,6 @@ using Remotely.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -109,6 +105,9 @@ namespace Remotely.Server.Pages
 
         [Display(Name = "Use HSTS")]
         public bool UseHsts { get; set; }
+
+        [Display(Name = "Use WebRTC")]
+        public bool UseWebRtc { get; set; }
     }
 
     public class ConnectionStringsModel
@@ -142,7 +141,7 @@ namespace Remotely.Server.Pages
 
 
         [Inject]
-        private IHubContext<ServiceHub> AgentHubContext { get; set; }
+        private IHubContext<AgentHub> AgentHubContext { get; set; }
 
         [Inject]
         private IConfiguration Configuration { get; set; }
@@ -158,20 +157,14 @@ namespace Remotely.Server.Pages
         [Inject]
         private IWebHostEnvironment HostEnv { get; set; }
 
-        [Inject]
-        private ILogger<ServerConfig> Logger { get; set; }
-
-        [Inject]
-        private IServiceHubSessionCache ServiceSessionCache { get; init; }
-
         private AppSettingsModel Input { get; } = new();
 
         [Inject]
         private IModalService ModalService { get; set; }
 
-        [Inject]
+		[Inject]
         private ICircuitManager CircuitManager { get; set; }
-
+		
         private IEnumerable<string> OutdatedDevices => GetOutdatedDevices();
 
         [Inject]
@@ -236,28 +229,12 @@ namespace Remotely.Server.Pages
 
         private IEnumerable<string> GetOutdatedDevices()
         {
-            try
-            {
-                if (!System.IO.File.Exists("Remotely_Server.dll"))
-                {
-                    return Enumerable.Empty<string>();
-                }
+            var highestVersion = AgentHub.ServiceConnections.Values.Max(x =>
+                Version.TryParse(x.AgentVersion, out var result) ? result : default);
 
-                if (!Version.TryParse(FileVersionInfo.GetVersionInfo("Remotely_Server.dll").FileVersion, out var serverVersion))
-                {
-                    return Enumerable.Empty<string>();
-                }
-
-                return ServiceSessionCache.GetAllDevices()
-                    .Where(x => Version.TryParse(x.AgentVersion, out var result) && result < serverVersion)
-                    .Select(x => x.ID);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "Error while getting outdated devices.");
-            }
-
-            return Enumerable.Empty<string>();
+            return AgentHub.ServiceConnections.Values
+                .Where(x => Version.TryParse(x.AgentVersion, out var result) && result != highestVersion)
+                .Select(x => x.ID);
         }
 
         private void HandleBannedDeviceKeyDown(KeyboardEventArgs args)
@@ -416,15 +393,17 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            if (!OutdatedDevices.Any())
+            var outdatedDevices = OutdatedDevices;
+
+            if (!outdatedDevices.Any())
             {
                 ToastService.ShowToast("Aucune mise à jour n'est nécessaire.");
                 return;
             }
 
-            var agentConnections = ServiceSessionCache.GetConnectionIdsByDeviceIds(OutdatedDevices);
+            var agentConnections = AgentHub.ServiceConnections.Where(x => outdatedDevices.Contains(x.Value.ID));
 
-            await AgentHubContext.Clients.Clients(agentConnections).SendAsync("ReinstallAgent");
+            await AgentHubContext.Clients.Clients(agentConnections.Select(x => x.Key)).SendAsync("ReinstallAgent");
             ToastService.ShowToast("Mise à jour déclenchée.");
         }
     }

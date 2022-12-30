@@ -1,5 +1,4 @@
-﻿using Immense.RemoteControl.Server.Abstractions;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -26,33 +25,27 @@ namespace Remotely.Server.API
         { ExpirationScanFrequency = TimeSpan.FromSeconds(10) });
 
 
-        private readonly IHubContext<ServiceHub> _agentHubContext;
-
-        private readonly IApplicationConfig _appConfig;
-
-        private readonly IDataService _dataService;
-
-        private readonly IWebHostEnvironment _hostEnv;
-
-        private readonly IServiceHubSessionCache _serviceSessionCache;
-
         public AgentUpdateController(IWebHostEnvironment hostingEnv,
-                                                    IDataService dataService,
+            IDataService dataService,
             IApplicationConfig appConfig,
-            IServiceHubSessionCache serviceSessionCache,
-            IHubContext<ServiceHub> agentHubContext)
+            IHubContext<AgentHub> agentHubContext)
         {
-            _hostEnv = hostingEnv;
-            _dataService = dataService;
-            _appConfig = appConfig;
-            _serviceSessionCache = serviceSessionCache;
-            _agentHubContext = agentHubContext;
+            HostEnv = hostingEnv;
+            DataService = dataService;
+            AppConfig = appConfig;
+            AgentHubContext = agentHubContext;
         }
+
+        private IDataService DataService { get; }
+        private IApplicationConfig AppConfig { get; }
+        private IHubContext<AgentHub> AgentHubContext { get; }
+        private IWebHostEnvironment HostEnv { get; }
+
 
         [HttpGet("[action]/{downloadId}")]
         public ActionResult ClearDownload(string downloadId)
         {
-            _dataService.WriteEvent($"Clearing download ID {downloadId}.", EventType.Debug, null);
+            DataService.WriteEvent($"Clearing download ID {downloadId}.", EventType.Debug, null);
             _downloadingAgents.Remove(downloadId);
             return Ok();
         }
@@ -71,7 +64,7 @@ namespace Remotely.Server.API
 
                 var startWait = DateTimeOffset.Now;
 
-                while (_downloadingAgents.Count >= _appConfig.MaxConcurrentUpdates)
+                while (_downloadingAgents.Count >= AppConfig.MaxConcurrentUpdates)
                 {
                     await Task.Delay(new Random().Next(100, 10000));
 
@@ -92,10 +85,10 @@ namespace Remotely.Server.API
                 _downloadingAgents.Set(downloadId, string.Empty, cacheOptions);
 
                 var waitTime = DateTimeOffset.Now - startWait;
-                _dataService.WriteEvent($"Download started after wait time of {waitTime}.  " + 
+                DataService.WriteEvent($"Download started after wait time of {waitTime}.  " + 
                     $"ID: {downloadId}. " +
                     $"IP: {remoteIp}. " +
-                    $"Current Downloads: {_downloadingAgents.Count}.  Max Allowed: {_appConfig.MaxConcurrentUpdates}", EventType.Debug, null);
+                    $"Current Downloads: {_downloadingAgents.Count}.  Max Allowed: {AppConfig.MaxConcurrentUpdates}", EventType.Debug, null);
 
 
                 string filePath;
@@ -103,19 +96,19 @@ namespace Remotely.Server.API
                 switch (platform.ToLower())
                 {
                     case "win-x64":
-                        filePath = Path.Combine(_hostEnv.WebRootPath, "Content", "Remotely-Win10-x64.zip");
+                        filePath = Path.Combine(HostEnv.WebRootPath, "Content", "Remotely-Win10-x64.zip");
                         break;
                     case "win-x86":
-                        filePath = Path.Combine(_hostEnv.WebRootPath, "Content", "Remotely-Win10-x86.zip");
+                        filePath = Path.Combine(HostEnv.WebRootPath, "Content", "Remotely-Win10-x86.zip");
                         break;
                     case "linux":
-                        filePath = Path.Combine(_hostEnv.WebRootPath, "Content", "Remotely-Linux.zip");
+                        filePath = Path.Combine(HostEnv.WebRootPath, "Content", "Remotely-Linux.zip");
                         break;
                     case "macos-x64":
-                        filePath = Path.Combine(_hostEnv.WebRootPath, "Content", "Remotely-MacOS-x64.zip");
+                        filePath = Path.Combine(HostEnv.WebRootPath, "Content", "Remotely-MacOS-x64.zip");
                         break;
                     default:
-                        _dataService.WriteEvent($"Unknown platform requested in {nameof(AgentUpdateController)}. " +
+                        DataService.WriteEvent($"Unknown platform requested in {nameof(AgentUpdateController)}. " +
                             $"Platform: {platform}. " +
                             $"IP: {remoteIp}.",
                             EventType.Warning,
@@ -130,7 +123,7 @@ namespace Remotely.Server.API
             catch (Exception ex)
             {
                 _downloadingAgents.Remove(downloadId);
-                _dataService.WriteEvent(ex, null);
+                DataService.WriteEvent(ex, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -142,23 +135,23 @@ namespace Remotely.Server.API
                 return false;
             }
 
-            if (_appConfig.BannedDevices.Contains(deviceIp))
+            if (AppConfig.BannedDevices.Contains(deviceIp))
             {
-                _dataService.WriteEvent($"Device IP ({deviceIp}) is banned.  Sending uninstall command.", null);
+                DataService.WriteEvent($"L'IP ({deviceIp}) est bannie.  Instruction de désinstallation envoyée.", null);
 
-                
-                var bannedDevices = _serviceSessionCache.GetAllDevices().Where(x => x.PublicIP == deviceIp);
-                var connectionIds = _serviceSessionCache.GetConnectionIdsByDeviceIds(bannedDevices.Select(x => x.ID));
+                var bannedDevices = AgentHub.ServiceConnections.Where(x => x.Value.PublicIP == deviceIp);
+                foreach (var bannedDevice in bannedDevices)
+                {
+                    // TODO: Remove when devices have been removed.
+                    var command = "sc delete Remotely_Service & taskkill /im Remotely_Agent.exe /f";
+                    await AgentHubContext.Clients.Client(bannedDevice.Key).SendAsync("ExecuteCommand", 
+                        "cmd", 
+                        command,
+                        Guid.NewGuid().ToString(), 
+                        Guid.NewGuid().ToString());
 
-                // TODO: Remove when devices have been removed.
-                var command = "sc delete Remotely_Service & taskkill /im Remotely_Agent.exe /f";
-                await _agentHubContext.Clients.Clients(connectionIds).SendAsync("ExecuteCommand",
-                    "cmd",
-                    command,
-                    Guid.NewGuid().ToString(),
-                    Guid.NewGuid().ToString());
-
-                await _agentHubContext.Clients.Clients(connectionIds).SendAsync("UninstallAgent");
+                    await AgentHubContext.Clients.Client(bannedDevice.Key).SendAsync("UninstallAgent");    
+                }
 
                 return true;
             }

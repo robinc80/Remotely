@@ -11,7 +11,6 @@ using System.IO;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Versioning;
 
 namespace Remotely.Agent
 {
@@ -98,10 +97,20 @@ namespace Remotely.Agent
                 SetWorkingDirectory();
 
 
-                if (OperatingSystem.IsWindows() &&
+                if (EnvironmentHelper.IsWindows &&
                     Process.GetCurrentProcess().SessionId == 0)
                 {
-                    _ = Task.Run(StartService);
+                    _ = Task.Run(() =>
+                    {
+                        try
+                        {
+                            ServiceBase.Run(new WindowsService());
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Write(ex, "Failed to start service.", EventType.Warning);
+                        }
+                    });
                 }
 
                 await Services.GetRequiredService<IUpdater>().BeginChecking();
@@ -120,19 +129,5 @@ namespace Remotely.Agent
             var assemblyDir = Path.GetDirectoryName(assemblyPath);
             Directory.SetCurrentDirectory(assemblyDir);
         }
-
-        [SupportedOSPlatform("windows")]
-        private static void StartService()
-        {
-            try
-            {
-                ServiceBase.Run(new WindowsService());
-            }
-            catch (Exception ex)
-            {
-                Logger.Write(ex, "Failed to start service.", EventType.Warning);
-            }
-        }
     }
 }
-s

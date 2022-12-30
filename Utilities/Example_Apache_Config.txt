@@ -16,22 +16,22 @@
 		ProxyPass http://localhost:5000/ 
 		ProxyPassReverse http://localhost:5000/
 	</LocationMatch>
-	<Location "/hubs/user">
+	<Location "/BrowserHub">
 		ProxyPass http://localhost:5000/
 		ProxyPassReverse http://localhost:5000/
 	</Location>
 
-	<LocationMatch "/hubs/service">
+	<LocationMatch "/AgentHub">
 		ProxyPass http://localhost:5000/
 		ProxyPassReverse http://localhost:5000/
 	</LocationMatch>
 
-	<LocationMatch "/hubs/viewer">
+	<LocationMatch "/ViewerHub">
 		ProxyPass http://localhost:5000/
 		ProxyPassReverse http://localhost:5000/
 	</LocationMatch>
 
-	<LocationMatch "/hubs/desktop">
+	<LocationMatch "/CasterHub">
 		ProxyPass http://localhost:5000/
 		ProxyPassReverse http://localhost:5000/
 	</LocationMatch>
