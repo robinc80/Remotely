@@ -1,4 +1,4 @@
-﻿using Immense.RemoteControl.Desktop.Shared.Abstractions;
+using Immense.RemoteControl.Desktop.Shared.Abstractions;
 using Immense.RemoteControl.Desktop.UI.WPF.Services;
 using System.Threading.Tasks;
 using System.Threading;

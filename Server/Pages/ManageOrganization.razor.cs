@@ -81,7 +81,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            ToastService.ShowToast("Device group created.");
+            ToastService.ShowToast("Groupe d'appareils créé.");
             _deviceGroups.Add(deviceGroup);
             _newDeviceGroupName = string.Empty;
         }
@@ -95,7 +95,7 @@ namespace Remotely.Server.Pages
 
             var isDefault = (bool)args.Value;
             DataService.SetIsDefaultOrganization(_organization.ID, isDefault);
-            ToastService.ShowToast("Default organization set.");
+            ToastService.ShowToast("Entreprise par défaut enregistrée.");
         }
 
         private async Task DeleteInvite(InviteLink invite)
@@ -105,7 +105,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var result = await JsInterop.Confirm("Are you sure you want to delete this invitation?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir retirer cette invitation ?");
             if (!result)
             {
                 return;
@@ -113,7 +113,7 @@ namespace Remotely.Server.Pages
 
             DataService.DeleteInvite(User.OrganizationID, invite.ID);
             _invites.RemoveAll(x => x.ID == invite.ID);
-            ToastService.ShowToast("Invitation deleted.");
+            ToastService.ShowToast("Invitation retirée.");
         }
 
         private async Task DeleteSelectedDeviceGroup()
@@ -128,7 +128,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var result = await JsInterop.Confirm("Are you sure you want to delete this device group?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir supprimer ce groupe ?");
             if (!result)
             {
                 return;
@@ -152,7 +152,7 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var result = await JsInterop.Confirm("Are you sure you want to delete this user?");
+            var result = await JsInterop.Confirm("Etes-vous sûr de vouloir supprimer cet utilisateur ?");
             if (!result)
             {
                 return;
@@ -160,7 +160,7 @@ namespace Remotely.Server.Pages
 
             await DataService.DeleteUser(User.OrganizationID, user.Id);
             _orgUsers.RemoveAll(x => x.Id == user.Id);
-            ToastService.ShowToast("User deleted.");
+            ToastService.ShowToast("Utilisateur supprimé.");
         }
 
         private async Task EditDeviceGroups(RemotelyUser user)
@@ -174,7 +174,7 @@ namespace Remotely.Server.Pages
                 builder.AddAttribute(2, EditDeviceGroup.DeviceGroupsPropName, deviceGroups);
                 builder.CloseComponent();
             }
-            await ModalService.ShowModal("Device Groups", editDeviceGroupsModal);
+            await ModalService.ShowModal("Groupes d'appareils", editDeviceGroupsModal);
         }
 
         private async Task EvaluateInviteInputKeypress(KeyboardEventArgs args)
@@ -207,14 +207,14 @@ namespace Remotely.Server.Pages
 
             if (newName.Length > 25)
             {
-                ToastService.ShowToast("Must be 25 characters or less.",
+                ToastService.ShowToast("Maxi 25 caractères.",
                     classString: "bg-warning");
                 return;
             }
 
             DataService.UpdateOrganizationName(_organization.ID, newName);
             _organization.OrganizationName = newName;
-            ToastService.ShowToast("Organization name changed.");
+            ToastService.ShowToast("Le nom de l'entreprise a été changé.");
         }
 
         private async Task RefreshData()
@@ -269,12 +269,12 @@ namespace Remotely.Server.Pages
 
                     _inviteAsAdmin = false;
                     _inviteEmail = string.Empty;
-                    ToastService.ShowToast("User account created.");
+                    ToastService.ShowToast("Compte créé.");
                     return;
                 }
                 else
                 {
-                    ToastService.ShowToast("Create user failed.", classString: "bg-danger");
+                    ToastService.ShowToast("La création de l'utilisateur a échoué.", classString: "bg-danger");
                     return;
                 }
             }
@@ -300,7 +300,7 @@ namespace Remotely.Server.Pages
                         User.OrganizationID);
                 if (emailResult)
                 {
-                    ToastService.ShowToast("Invitation sent.");
+                    ToastService.ShowToast("Invitation envoyée.");
                     
                     _inviteAsAdmin = false;
                     _inviteEmail = string.Empty;
@@ -308,7 +308,7 @@ namespace Remotely.Server.Pages
                 }
                 else
                 {
-                    ToastService.ShowToast("Error sending invititation email.", classString: "bg-danger");
+                    ToastService.ShowToast("Une erreur s'est produite.", classString: "bg-danger");
                 }
             }
         }
@@ -322,27 +322,25 @@ namespace Remotely.Server.Pages
 
             var isAdmin = (bool)args.Value;
             DataService.ChangeUserIsAdmin(User.OrganizationID, orgUser.Id, isAdmin);
-            ToastService.ShowToast("Administrator value set.");
+            ToastService.ShowToast("Administrateur enregistré.");
         }
 
         private void ShowDefaultOrgHelp()
         {
-            ModalService.ShowModal("Default Organization", new[]
+            ModalService.ShowModal("Organisation par défaut", new[]
             {
-                @"This option is only available for server administrators.  When selected,
-                it sets this organization as the default for the server.  If the organization can't
-                be determined in the quick support apps, they will use the default organization's branding."
+                @"Option disponible uniquement pour les administrateurs du serveur.  Lorsque sélectionnée,
+                cette option définit l'entreprise courante comme entreprise par défaut."
             });
         }
 
         private void ShowDeviceGroupHelp()
         {
-            ModalService.ShowModal("Device Groups", new[]
+            ModalService.ShowModal("Groupes d'appareils", new[]
            {
-                "Device groups can be used to restrict user permissions and to filter computers on " +
-                "the main page.",
-                "Everyone will have access to devices that are not in a group.  Only " +
-                "administrators and users in a device group will have access to devices in that group."
+                "Les groupes permettent de restreindre l'accès à certains utilisateurs " +
+                "et filtrer la page principale.",
+                "Les appareils qui ne sont pas dans un groupe sont accessibles à tous."
             });
         }
 
@@ -350,12 +348,12 @@ namespace Remotely.Server.Pages
         {
             ModalService.ShowModal("Invitations", new[]
            {
-                "All pending invitations will be shown here and can be revoked by deleting them.",
+                "Toutes les invitations en cours sont répertoriées ici et peuvent être annulées si besoin.",
 
-                "If a user does not exist, sending an invite will create their account and add them to the current organization. " +
-                "A password reset URL can be generated from the user table.",
+                "Si l'utilisateur n'existe pas, l'envoi du mail leur permettra de créer un compte et les ajouter à l'entreprise actuelle. " +
+                "Un lien de réinitialisation du mot de passe peut être envoyé depuis le tableau.",
 
-                "The Admin checkbox determines if the new user will have administrator privileges in this organization."
+                "La case à cocher permet de déclarer un utilisateur comme administrateur."
             });
         }
 
@@ -363,17 +361,15 @@ namespace Remotely.Server.Pages
         {
             ModalService.ShowModal("Relay Code", new[]
             {
-                @"This relay code will be appended to EXE filenames.  If the clients were built
-                from source and have the server URL embedded, they will use this code to look
-                up your organization's branding to use."
+                @"Le relay code est ajouté à la fin du nom des fichiers EXE.  Si les clients ont été compilés depuis la source et intègrent l'URL du serveur, ils utiliseront ce code pour trouver les informations de branding à utiliser."
             });
         }
         private void ShowUsersHelp()
         {
-            ModalService.ShowModal("Users", new[]
+            ModalService.ShowModal("Utilisateurs", new[]
             {
-                "All users for the organization are managed here",
-                "Administrators will have access to this management screen as well as all computers."
+                "Tous les utilisateurs sont gérés ici",
+                "Les administrateurs auront accès à cet écran de contrôle aussi bien qu'aux ordinateurs."
             });
         }
     }
