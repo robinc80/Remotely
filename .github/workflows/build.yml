@@ -26,7 +26,6 @@ on:
       serverUrl:
         description: 'URL du serveur'     
         required: true
-        default: "https://sos.pcenpanne.fr"
       rid:
         description: 'Plateforme'     
         required: false
