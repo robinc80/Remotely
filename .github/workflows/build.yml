@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
     inputs:
       serverUrl:
-        description: 'URL du serveur'     
+        description: 'Server URL'     
         required: true
       rid:
         description: 'Server Runtime Identifier'     
@@ -111,7 +111,7 @@ jobs:
       with:
         # Comment out the below 'repository' line if you want to build from
         # your fork instead of the author's.
-        #repository: immense/Remotely
+        repository: immense/Remotely
         submodules: recursive
         fetch-depth: 0
 
