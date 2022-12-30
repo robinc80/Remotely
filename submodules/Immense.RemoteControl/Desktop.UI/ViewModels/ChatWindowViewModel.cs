@@ -50,7 +50,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
 
         public ObservableCollection<ChatMessage> ChatMessages { get; } = new ObservableCollection<ChatMessage>();
 
-        public string ChatSessionHeader => $"Tchat avec {OrganizationName}";
+        public string ChatSessionHeader => $"Chat session with {OrganizationName}";
 
         public ICommand CloseCommand { get; }
 
@@ -64,7 +64,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
 
         public string OrganizationName
         {
-            get => Get<string>() ?? "Le garage à PC";
+            get => Get<string>() ?? "your IT provider";
             set
             {
                 Set(value);
@@ -74,7 +74,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
 
         public string SenderName
         {
-            get => Get<string>() ?? "un technicien";
+            get => Get<string>() ?? "a technician";
             set => Set(value);
         }
 
@@ -90,7 +90,7 @@ namespace Immense.RemoteControl.Desktop.UI.ViewModels
             InputText = string.Empty;
             await _streamWriter.WriteLineAsync(JsonSerializer.Serialize(chatMessage));
             await _streamWriter.FlushAsync();
-            chatMessage.SenderName = "Vous";
+            chatMessage.SenderName = "You";
             ChatMessages.Add(chatMessage);
         }
 

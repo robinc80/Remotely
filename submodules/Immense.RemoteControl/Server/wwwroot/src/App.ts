@@ -48,7 +48,7 @@ export const ViewerApp = {
 
         if (ViewerApp.Mode == RemoteControlMode.Unattended) {
             ViewerApp.ViewerHubConnection.Connect();
-            UI.StatusMessage.innerHTML = "Connexion en cours...";
+            UI.StatusMessage.innerHTML = "Connecting to remote device...";
         }
         else {
             UI.ConnectBox.style.removeProperty("display");
@@ -62,7 +62,7 @@ export const ViewerApp = {
         ViewerApp.RequesterName = UI.RequesterNameInput.value;
         ViewerApp.Mode = RemoteControlMode.Attended;
         ViewerApp.ViewerHubConnection.Connect();
-        UI.StatusMessage.innerHTML = "Demande d'accès en cours...";
+        UI.StatusMessage.innerHTML = "Requesting access on remote device...";
 
         ViewerApp.Settings.displayName = ViewerApp.RequesterName;
         SetSettings(ViewerApp.Settings);

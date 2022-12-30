@@ -84,10 +84,10 @@ namespace Immense.RemoteControl.Desktop.Windows.Services
                     _notifyIcon = new NotifyIcon(_container)
                     {
                         Icon = icon,
-                        Text = "Session de téléassistance",
+                        Text = "Remote Control Session",
                         BalloonTipIcon = ToolTipIcon.Info,
-                        BalloonTipText = "Une session de téléassistance a débuté.",
-                        BalloonTipTitle = "Début de téléassistance",
+                        BalloonTipText = "A remote control session has started.",
+                        BalloonTipTitle = "Remote Control Started",
                         ContextMenuStrip = _contextMenuStrip,
                         Visible = true
                     };

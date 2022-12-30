@@ -8,10 +8,10 @@ const PartialDownloads: Record<string, Array<Uint8Array>> = {};
 export async function UploadFiles(fileList: FileList) {
     if (!FileTransferProgress.parentElement.hasAttribute("hidden")) {
         FileTransferInput.value = null;
-        ShowMessage("Un transfert est déjà en cours.");
+        ShowMessage("File transfer already in progress.");
         return;
     }
-    ShowMessage("Transfert commencé...");
+    ShowMessage("File upload started...");
     FileTransferProgress.value = 0;
     FileTransferProgress.parentElement.removeAttribute("hidden");
 
@@ -21,10 +21,10 @@ export async function UploadFiles(fileList: FileList) {
             var buffer = await fileList[i].arrayBuffer();
             await ViewerApp.MessageSender.SendFile(new Uint8Array(buffer), fileList[i].name);
         }
-        ShowMessage("Transfert terminé.");
+        ShowMessage("File upload completed.");
     }
     catch {
-        ShowMessage("Le transfert a échoué.");
+        ShowMessage("File upload failed.");
     }
     FileTransferInput.value = null;
     FileTransferProgress.parentElement.setAttribute("hidden", "hidden");
@@ -32,7 +32,7 @@ export async function UploadFiles(fileList: FileList) {
 
 export async function ReceiveFile(file: FileDto) {
     if (file.StartOfFile) {
-        ShowMessage(`Téléchargement de ${file.FileName}...`);
+        ShowMessage(`Downloading file ${file.FileName}...`);
     }
 
     var partial = PartialDownloads[file.MessageId];

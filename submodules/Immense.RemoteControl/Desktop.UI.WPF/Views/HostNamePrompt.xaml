@@ -22,7 +22,7 @@
     </Window.Resources>
 
     <StackPanel Margin="10">
-        <TextBlock Margin="0,0,0,5" Style="{StaticResource SectionHeader}"><Run Text="URL du serveur :"/></TextBlock>
+        <TextBlock Margin="0,0,0,5" Style="{StaticResource SectionHeader}"><Run Text="Enter the server URL:"/></TextBlock>
         <TextBox x:Name="HostTextBox" Height="25" Text="{Binding Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Width="40" Height="30" Margin="0,5,0,0" IsDefault="True" Click="OKButton_Click" Content="OK"/>
     </StackPanel>

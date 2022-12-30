@@ -18,7 +18,7 @@ export class ClipboardWatcher {
                     navigator.clipboard.writeText(this.NewClipboardText);
                     this.LastClipboardText = this.NewClipboardText;
                     this.NewClipboardText = null;
-                    ShowMessage("Presse-papier modifié.");
+                    ShowMessage("Clipboard updated.");
                     return;
                 }
 

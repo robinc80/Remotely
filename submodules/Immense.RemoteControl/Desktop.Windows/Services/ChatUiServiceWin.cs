@@ -41,7 +41,7 @@ namespace Immense.RemoteControl.Desktop.Windows.Services
                 if (chatMessage.Disconnected)
                 {
                     // TODO: IDialogService
-                    System.Windows.MessageBox.Show("Votre interlocuteur s'est déconnecté.", "Déconnexion de l'interlocuteur", MessageBoxButton.OK, MessageBoxImage.Information);
+                    System.Windows.MessageBox.Show("Your partner has disconnected.", "Partner Disconnected", MessageBoxButton.OK, MessageBoxImage.Information);
                     _shutdownService.Shutdown();
                     return;
                 }

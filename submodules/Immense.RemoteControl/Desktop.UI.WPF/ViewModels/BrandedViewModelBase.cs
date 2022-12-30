@@ -82,7 +82,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
                 {
                     _brandingInfo ??= await _brandingProvider.GetBrandingInfo();
 
-                    ProductName = "Le garage à PC";
+                    ProductName = "Remote Control";
 
                     if (!string.IsNullOrWhiteSpace(_brandingInfo.Product))
                     {

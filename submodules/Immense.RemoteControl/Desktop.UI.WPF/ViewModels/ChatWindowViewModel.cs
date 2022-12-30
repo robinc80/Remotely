@@ -49,13 +49,13 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
 
         public string OrganizationName
         {
-            get => Get<string>() ?? "Le garage à PC";
+            get => Get<string>() ?? "your IT provider";
             set => Set(value);
         }
 
         public string SenderName
         {
-            get => Get<string>() ?? "un technicien";
+            get => Get<string>() ?? "a technician";
             set => Set(value);
         }
 
@@ -70,7 +70,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
             InputText = string.Empty;
             await _streamWriter.WriteLineAsync(JsonSerializer.Serialize(chatMessage));
             await _streamWriter.FlushAsync();
-            chatMessage.SenderName = "Vous";
+            chatMessage.SenderName = "You";
             ChatMessages.Add(chatMessage);
         }
     }

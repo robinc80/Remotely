@@ -14,7 +14,7 @@
         MinHeight="250"
         MinWidth="200"
         Topmost="True"
-        Title="Tchat" Height="450" Width="450">
+        Title="Chat Session" Height="450" Width="450">
 
 	<Design.DataContext>
 		<fakes:FakeChatWindowViewModel />

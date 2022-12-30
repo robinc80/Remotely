@@ -84,7 +84,7 @@ export function ApplyInputHandlers() {
         }
 
         if (ViewerApp.ViewOnlyMode) {
-            alert("Consultation uniquement.");
+            alert("View-only mode is enabled.");
             return;
         }
 

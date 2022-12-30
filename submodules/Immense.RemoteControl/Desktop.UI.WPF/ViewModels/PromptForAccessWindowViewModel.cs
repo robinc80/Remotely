@@ -49,14 +49,14 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
 
         public string OrganizationName
         {
-            get => Get<string>() ?? "Le garage à PC";
+            get => Get<string>() ?? "your IT provider";
             set => Set(value);
         }
 
         public bool PromptResult { get; set; }
         public string RequesterName
         {
-            get => Get<string>() ?? "un technicien";
+            get => Get<string>() ?? "a technician";
             set => Set(value);
         }
 

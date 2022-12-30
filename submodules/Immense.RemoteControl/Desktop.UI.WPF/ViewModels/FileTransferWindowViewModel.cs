@@ -81,7 +81,7 @@ namespace Immense.RemoteControl.Desktop.UI.WPF.ViewModels
 
             var ofd = new OpenFileDialog()
             {
-                Title = "Transfert de fichiers",
+                Title = "Upload File via Remotely",
                 Multiselect = true,
                 CheckFileExists = true,
                 InitialDirectory = Directory.Exists(userDir) ? userDir : rootDir
