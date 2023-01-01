@@ -1,4 +1,5 @@
-﻿using Remotely.Shared.Enums;
+﻿using Immense.RemoteControl.Shared.Models;
+using Remotely.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,8 +38,6 @@ namespace Remotely.Shared.Models
 
         [StringLength(25)]
         public string OrganizationName { get; set; }
-
-        public string RelayCode { get; set; }
 
         public ICollection<RemotelyUser> RemotelyUsers { get; set; }
         public ICollection<SharedFile> SharedFiles { get; set; }

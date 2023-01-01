@@ -5,7 +5,7 @@
    Publishes the Remotely clients.
    To deploy the server, supply the following arguments: -rid win10-x64 -outdir path\to\dir -hostname https://mysite.mydomain.com
 .COPYRIGHT
-   Copyright 2020 Translucency Software.  All rights reserved.
+   Copyright 2023 Immense Networks.  All rights reserved.
 .EXAMPLE
    Run it from the Utilities folder (located in the solution directory).
    Or run "powershell -f Publish.ps1 -rid win10-x64 -outdir path\to\dir -hostname https://mysite.mydomain.com
@@ -15,7 +15,6 @@ param (
 	[string]$OutDir = "",
     # RIDs are described here: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
 	[string]$RID = "",
-	[string]$Hostname = "",
 	[string]$CertificatePath = "",
     [string]$CertificatePassword = "",
     [string]$CurrentVersion = ""
@@ -75,6 +74,17 @@ function Replace-LineInFile($FilePath, $MatchPattern, $ReplaceLineWith, $MaxCoun
     ($Content | Out-String).Trim() | Out-File -FilePath $FilePath -Force -Encoding utf8
 }
 
+function Add-DataBlock($FilePath) {
+    [System.Byte[]]$ImmySignature = @(73, 109, 109, 121, 66, 111, 116, 32, 114, 111, 99, 107, 115, 32, 116, 104, 101, 32, 115, 111, 99, 107, 115, 32, 117, 110, 116, 105, 108, 32, 116, 104, 101, 32, 101, 113, 117, 105, 110, 111, 120, 33)
+    $DataBlock = New-Object System.Byte[] 256
+
+    $FS = [System.IO.File]::OpenWrite($FilePath)
+    $FS.Seek(0, [System.IO.SeekOrigin]::End)
+
+    $FS.Write($ImmySignature, 0, $ImmySignature.Length)
+    $FS.Write($DataBlock, 0, $DataBlock.Length)
+    $FS.Close()
+}
 #endregion
 
 if ([string]::IsNullOrWhiteSpace($MSBuildPath) -or !(Test-Path -Path $MSBuildPath)) {
@@ -83,26 +93,6 @@ if ([string]::IsNullOrWhiteSpace($MSBuildPath) -or !(Test-Path -Path $MSBuildPat
     Write-Host
     pause
     return
-}
-
-
-# Update hostname.
-if ($Hostname) {
-    [Uri]$HostNameUri = $null
-
-    if (![System.Uri]::TryCreate($HostName, [System.UriKind]::Absolute, [ref] $HostNameUri) -or 
-        ($HostNameUri.Scheme -notlike [System.Uri]::UriSchemeHttp -and $HostNameUri.Scheme -notlike [System.Uri]::UriSchemeHttps)) {
-            Write-Error "`nThe HostName variable is not a valid HTTP Uri."
-            return
-    }
-
-    Replace-LineInFile -FilePath "$Root\Agent.Installer.Win\ViewModels\MainWindowViewModel.cs" -MatchPattern "private string _serverUrl" -ReplaceLineWith "private string _serverUrl = `"$($Hostname)`";" -MaxCount 1
-    Replace-LineInFile -FilePath "$Root\Shared\Models\DesktopAppConfig.cs" -MatchPattern "private string _host" -ReplaceLineWith "private string _host = `"$($Hostname)`";" -MaxCount 1
-    Replace-LineInFile -FilePath "$Root\Desktop.Win\Properties\PublishProfiles\ClickOnce-x64.pubxml" -MatchPattern "<InstallUrl>" -ReplaceLineWith "    <InstallUrl>$Hostname/Content/Win-x64/ClickOnce/</InstallUrl>"
-    Replace-LineInFile -FilePath "$Root\Desktop.Win\Properties\PublishProfiles\ClickOnce-x86.pubxml" -MatchPattern "<InstallUrl>" -ReplaceLineWith "    <InstallUrl>$Hostname/Content/Win-x86/ClickOnce/</InstallUrl>"
-}
-else {
-    Write-Warning "`nNo hostname parameter was specified.  The server name will need to be entered manually in the desktop client.`n"
 }
 
     
@@ -129,11 +119,11 @@ New-Item -Path "$Root\Agent\bin\Release\net6.0\linux-x64\publish\Desktop\" -Item
 
 
 # Publish Linux ScreenCaster
-dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=packaged-linux-x64 --configuration Release "$Root\Desktop.XPlat\"
+dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=packaged-linux-x64 --configuration Release "$Root\Desktop.Linux\"
 
 # Publish Linux GUI App
-dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=desktop-linux-x64 --configuration Release "$Root\Desktop.XPlat\"
-
+dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=desktop-linux-x64 --configuration Release "$Root\Desktop.Linux\"
+Add-DataBlock -FilePath "$Root\Server\wwwroot\Content\Linux-x64\Remotely_Desktop"
 
 # Publish Windows ScreenCaster (32-bit)
 dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=packaged-win-x86 --configuration Release "$Root\Desktop.Win"
@@ -144,48 +134,53 @@ dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:Publ
 
 # Publish Windows GUI App (64-bit)
 dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=desktop-win-x64 --configuration Release "$Root\Desktop.Win"
-&"$MSBuildPath" "$Root\Desktop.Win" -t:Restore -t:Publish -p:PublishProfile="ClickOnce-x64.pubxml" -p:Configuration=Release -p:Platform=x64 -p:ApplicationVersion=$CurrentVersion -p:Version=$CurrentVersion -p:FileVersion=$CurrentVersion -p:PublishDir="$Root\Server\wwwroot\Content\Win-x64\ClickOnce\"
+Add-DataBlock -FilePath "$Root\Server\wwwroot\Content\Win-x64\Remotely_Desktop.exe"
 
 if ($SignAssemblies) {
-    &"$Root\Utilities\signtool.exe" sign /f "$CertificatePath" /p $CertificatePassword /t http://timestamp.digicert.com "$Root\Server\wwwroot\Content\Win-x64\Remotely_Desktop.exe"
+    &"$Root\Utilities\signtool.exe" sign /fd SHA256 /f "$CertificatePath" /p $CertificatePassword /t http://timestamp.digicert.com "$Root\Server\wwwroot\Content\Win-x64\Remotely_Desktop.exe"
 }
 
 
 # Publish Windows GUI App (32-bit)
 dotnet publish /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion -p:PublishProfile=desktop-win-x86 --configuration Release "$Root\Desktop.Win"
-&"$MSBuildPath" "$Root\Desktop.Win" -t:Restore -t:Publish -p:PublishProfile="ClickOnce-x86.pubxml" -p:Configuration=Release -p:Platform=x86 -p:ApplicationVersion=$CurrentVersion -p:Version=$CurrentVersion -p:FileVersion=$CurrentVersion -p:PublishDir="$Root\Server\wwwroot\Content\Win-x86\ClickOnce\"
+Add-DataBlock -FilePath "$Root\Server\wwwroot\Content\Win-x86\Remotely_Desktop.exe"
 
 if ($SignAssemblies) {
-    &"$Root\Utilities\signtool.exe" sign /f "$CertificatePath" /p $CertificatePassword /t http://timestamp.digicert.com "$Root\Server\wwwroot\Content\Win-x86\Remotely_Desktop.exe"
+    &"$Root\Utilities\signtool.exe" sign /fd SHA256 /f "$CertificatePath" /p $CertificatePassword /t http://timestamp.digicert.com "$Root\Server\wwwroot\Content\Win-x86\Remotely_Desktop.exe"
 }
 
 # Build installer.
 &"$MSBuildPath" "$Root\Agent.Installer.Win" /t:Restore 
 &"$MSBuildPath" "$Root\Agent.Installer.Win" /t:Build /p:Configuration=Release /p:Platform=AnyCPU /p:Version=$CurrentVersion /p:FileVersion=$CurrentVersion
 Copy-Item -Path "$Root\Agent.Installer.Win\bin\Release\Remotely_Installer.exe" -Destination "$Root\Server\wwwroot\Content\Remotely_Installer.exe" -Force
+Add-DataBlock -FilePath "$Root\Server\wwwroot\Content\Remotely_Installer.exe"
+
 if ($SignAssemblies) {
-    &"$Root\Utilities\signtool.exe" sign /f "$CertificatePath" /p $CertificatePassword /t http://timestamp.digicert.com "$Root\Server\wwwroot\Content\Remotely_Installer.exe"
+    &"$Root\Utilities\signtool.exe" sign /fd SHA256 /f "$CertificatePath" /p $CertificatePassword /t http://timestamp.digicert.com "$Root\Server\wwwroot\Content\Remotely_Installer.exe"
 }
 
 # Compress Core clients.
 $PublishDir =  "$Root\Agent\bin\Release\net6.0\win10-x64\publish"
 Compress-Archive -Path "$PublishDir\*" -DestinationPath "$PublishDir\Remotely-Win10-x64.zip" -Force
 while ((Test-Path -Path "$PublishDir\Remotely-Win10-x64.zip") -eq $false){
-    Start-Sleep -Seconds 1
+    Write-Host "Waiting for archive to finish: $PublishDir\Remotely-Win10-x64.zip"
+    Start-Sleep -Seconds 3
 }
 Move-Item -Path "$PublishDir\Remotely-Win10-x64.zip" -Destination "$Root\Server\wwwroot\Content\Remotely-Win10-x64.zip" -Force
 
 $PublishDir =  "$Root\Agent\bin\Release\net6.0\win10-x86\publish"
 Compress-Archive -Path "$PublishDir\*" -DestinationPath "$PublishDir\Remotely-Win10-x86.zip" -Force
 while ((Test-Path -Path "$PublishDir\Remotely-Win10-x86.zip") -eq $false){
-    Start-Sleep -Seconds 1
+    Write-Host "Waiting for archive to finish: $PublishDir\Remotely-Win10-x86.zip"
+    Start-Sleep -Seconds 3
 }
 Move-Item -Path "$PublishDir\Remotely-Win10-x86.zip" -Destination "$Root\Server\wwwroot\Content\Remotely-Win10-x86.zip" -Force
 
 $PublishDir =  "$Root\Agent\bin\Release\net6.0\linux-x64\publish"
 Compress-Archive -Path "$PublishDir\*" -DestinationPath "$PublishDir\Remotely-Linux.zip" -Force
 while ((Test-Path -Path "$PublishDir\Remotely-Linux.zip") -eq $false){
-    Start-Sleep -Seconds 1
+    Write-Host "Waiting for archive to finish: $PublishDir\Remotely-Win10-x86.zip"
+    Start-Sleep -Seconds 3
 }
 Move-Item -Path "$PublishDir\Remotely-Linux.zip" -Destination "$Root\Server\wwwroot\Content\Remotely-Linux.zip" -Force
 

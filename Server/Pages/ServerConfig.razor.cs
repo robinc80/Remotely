@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Remotely.Server.Components;
 using Remotely.Server.Hubs;
 using Remotely.Server.Services;
@@ -42,9 +43,6 @@ namespace Remotely.Server.Pages
 
         [Display(Name = "Enforce Attended Access")]
         public bool EnforceAttendedAccess { get; set; }
-
-        [Display(Name = "Ice Servers")]
-        public IceServerModel[] IceServers { get; set; }
 
         [Display(Name = "Known Proxies")]
         public List<string> KnownProxies { get; set; } = new();
@@ -105,9 +103,6 @@ namespace Remotely.Server.Pages
 
         [Display(Name = "Use HSTS")]
         public bool UseHsts { get; set; }
-
-        [Display(Name = "Use WebRTC")]
-        public bool UseWebRtc { get; set; }
     }
 
     public class ConnectionStringsModel
@@ -141,7 +136,7 @@ namespace Remotely.Server.Pages
 
 
         [Inject]
-        private IHubContext<AgentHub> AgentHubContext { get; set; }
+        private IHubContext<ServiceHub> AgentHubContext { get; set; }
 
         [Inject]
         private IConfiguration Configuration { get; set; }
@@ -157,14 +152,23 @@ namespace Remotely.Server.Pages
         [Inject]
         private IWebHostEnvironment HostEnv { get; set; }
 
+        [Inject]
+        private ILogger<ServerConfig> Logger { get; set; }
+
+        [Inject]
+        private IServiceHubSessionCache ServiceSessionCache { get; init; }
+
         private AppSettingsModel Input { get; } = new();
 
         [Inject]
         private IModalService ModalService { get; set; }
 
-		[Inject]
+        [Inject]
+        private IUpgradeService UpgradeService { get; init; }
+
+        [Inject]
         private ICircuitManager CircuitManager { get; set; }
-		
+
         private IEnumerable<string> OutdatedDevices => GetOutdatedDevices();
 
         [Inject]
@@ -229,12 +233,20 @@ namespace Remotely.Server.Pages
 
         private IEnumerable<string> GetOutdatedDevices()
         {
-            var highestVersion = AgentHub.ServiceConnections.Values.Max(x =>
-                Version.TryParse(x.AgentVersion, out var result) ? result : default);
+            try
+            {
+                var currentVersion = UpgradeService.GetCurrentVersion();
 
-            return AgentHub.ServiceConnections.Values
-                .Where(x => Version.TryParse(x.AgentVersion, out var result) && result != highestVersion)
-                .Select(x => x.ID);
+                return ServiceSessionCache.GetAllDevices()
+                    .Where(x => Version.TryParse(x.AgentVersion, out var result) && result < currentVersion)
+                    .Select(x => x.ID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error while getting outdated devices.");
+            }
+
+            return Enumerable.Empty<string>();
         }
 
         private void HandleBannedDeviceKeyDown(KeyboardEventArgs args)
@@ -310,8 +322,8 @@ namespace Remotely.Server.Pages
 
             resetEvent.Wait(5_000);
 
-            ToastService.ShowToast("Configuration enregistrée.");
-            _alertMessage = "Configuration enregistrée.";
+            ToastService.ShowToast("Configuration saved.");
+            _alertMessage = "Configuration saved.";
         }
 
         private async Task SaveAndTestSmtpSettings()
@@ -321,8 +333,8 @@ namespace Remotely.Server.Pages
             var success = await EmailSender.SendEmailAsync(User.Email, "Remotely Test Email", "Congratulations! Your SMTP settings are working!", User.OrganizationID);
             if (success)
             {
-                ToastService.ShowToast($"Email de test envoyé à {User.Email}.  Vérifiez votre boîte de réception ou vos spams.");
-                _alertMessage = $"Email de test envoyé à {User.Email}.  Vérifiez votre boîte de réception ou vos spams.";
+                ToastService.ShowToast($"Test email sent to {User.Email}.  Check your inbox (or spam folder).");
+                _alertMessage = $"Test email sent to {User.Email}.  Check your inbox (or spam folder).";
             }
             else
             {
@@ -356,11 +368,15 @@ namespace Remotely.Server.Pages
             }
 
             var settingsJson = JsonSerializer.Deserialize<IDictionary<string, object>>(await System.IO.File.ReadAllTextAsync(savePath));
-            Input.IceServers = Configuration.GetSection("ApplicationOptions:IceServers").Get<IceServerModel[]>();
             settingsJson["ApplicationOptions"] = Input;
             settingsJson["ConnectionStrings"] = ConnectionStrings;
 
             await System.IO.File.WriteAllTextAsync(savePath, JsonSerializer.Serialize(settingsJson, new JsonSerializerOptions() { WriteIndented = true }));
+
+            if (Configuration is IConfigurationRoot root)
+            {
+                root.Reload();
+            }
         }
         private void SetIsServerAdmin(ChangeEventArgs ev, RemotelyUser user)
         {
@@ -378,11 +394,11 @@ namespace Remotely.Server.Pages
                     .Select(x => x.DeviceName);
 
                 ModalService.ShowModal("Outdated Devices",
-                    (new[] { "Appareils à mettre à jour:" }).Concat(outdatedDeviceNames).ToArray());
+                    (new[] { "Outdated Devices:" }).Concat(outdatedDeviceNames).ToArray());
             }
             else
             {
-                ModalService.ShowModal("Appareils à mettre à jour", new[] { "Tous les appareils ont la dernière version." });
+                ModalService.ShowModal("Outdated Devices", new[] { "There are no outdated devices currently online." });
             }
         }
 
@@ -393,18 +409,16 @@ namespace Remotely.Server.Pages
                 return;
             }
 
-            var outdatedDevices = OutdatedDevices;
-
-            if (!outdatedDevices.Any())
+            if (!OutdatedDevices.Any())
             {
-                ToastService.ShowToast("Aucune mise à jour n'est nécessaire.");
+                ToastService.ShowToast("No agents need updating.");
                 return;
             }
 
-            var agentConnections = AgentHub.ServiceConnections.Where(x => outdatedDevices.Contains(x.Value.ID));
+            var agentConnections = ServiceSessionCache.GetConnectionIdsByDeviceIds(OutdatedDevices);
 
-            await AgentHubContext.Clients.Clients(agentConnections.Select(x => x.Key)).SendAsync("ReinstallAgent");
-            ToastService.ShowToast("Mise à jour déclenchée.");
+            await AgentHubContext.Clients.Clients(agentConnections).SendAsync("ReinstallAgent");
+            ToastService.ShowToast("Update command sent.");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Immense.RemoteControl.Server.Abstractions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
@@ -54,6 +55,7 @@ namespace Remotely.Server.Components.Devices
 
         [Inject]
         private ILogger<Terminal> Logger { get; set; }
+
 
         [Inject]
         private IModalService ModalService { get; set; }
@@ -161,7 +163,7 @@ namespace Remotely.Server.Components.Devices
         private void DisplayCompletions(List<PwshCompletionResult> completionMatches)
         {
             var deviceId = AppState.DevicesFrameSelectedDevices.FirstOrDefault();
-            var device = AgentHub.GetDevice(deviceId);
+            var device = DataService.GetDevice(deviceId);
 
             AppState.AddTerminalLine($"Completions for {device?.DeviceName}", className: "font-weight-bold");
 
@@ -299,18 +301,17 @@ namespace Remotely.Server.Components.Devices
             ModalService.ShowModal("Terminal", new[]
             {
                 "Entrez les commandes qui seront exécutées sur tous les appareils sélectionnés.",
-
+				
                 "L'autocomplétion est disponible pour PowerShell Core et Windows PowerShell.  Tab and Shift + Tab " +
                 "will cycle through potential completions.  Utilisez Ctrl + Space pour voir toutes les possibilités.",
-
+				
                 "Si plus d'un appareil est sélectionné, le système du premier sera utilisé " +
                 "pour l'autocomplétion et les chemins d'accès.",
-
+				
                 "PowerShell Core est multiplateforme et disponible pour tous les clients.  Bash est disponible " +
                 "sur Windows 10 uniquement si WSL (Windows Subsystem for Linux) est installé.",
-
+				
                 "Utilisez les touches fléchées pour naviguer dans l'historique de commandes.  Appuyez sur Ctrl + Q pour vider le terminal.",
-
                 "Note : les premières commandes PS Core peuvent prendre un moment le temps " +
                 "que le service démarre."
             });

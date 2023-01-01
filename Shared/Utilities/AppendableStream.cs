@@ -57,6 +57,7 @@ namespace Remotely.Shared.Utilities
 
         public override ValueTask DisposeAsync()
         {
+            GC.SuppressFinalize(this);
             return _underlyingStream.DisposeAsync();
         }
 

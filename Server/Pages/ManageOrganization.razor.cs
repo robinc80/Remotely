@@ -148,7 +148,7 @@ namespace Remotely.Server.Pages
 
             if (User.Id == user.Id)
             {
-                ToastService.ShowToast("You can't delete yourself.", classString: "bg-warning");
+                ToastService.ShowToast("Vous ne pouvez pas vous supprimmer vous-même.", classString: "bg-warning");
                 return;
             }
 
@@ -357,13 +357,6 @@ namespace Remotely.Server.Pages
             });
         }
 
-        private void ShowRelayCodeHelp()
-        {
-            ModalService.ShowModal("Relay Code", new[]
-            {
-                @"Le relay code est ajouté à la fin du nom des fichiers EXE.  Si les clients ont été compilés depuis la source et intègrent l'URL du serveur, ils utiliseront ce code pour trouver les informations de branding à utiliser."
-            });
-        }
         private void ShowUsersHelp()
         {
             ModalService.ShowModal("Utilisateurs", new[]

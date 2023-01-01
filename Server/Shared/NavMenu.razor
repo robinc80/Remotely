@@ -7,7 +7,7 @@
         <div class="logo-title">
             @if (!string.IsNullOrWhiteSpace(_organization?.OrganizationName))
             {
-                 @_organization.OrganizationName
+                @_organization.OrganizationName
             }
             else
             {
@@ -30,7 +30,7 @@
         </li>
 
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/RemoteControl" target="_blank">
+            <NavLink class="nav-link" href="/RemoteControl/Viewer" target="_blank">
                 <span class="oi oi-monitor" aria-hidden="true"></span> Téléassistance
             </NavLink>
 
@@ -48,7 +48,7 @@
                         <span class="oi oi-script" aria-hidden="true"></span> Scripts
                     </NavLink>
                 </li>
-				<li class="nav-item px-3">
+                <li class="nav-item px-3">
                     <NavLink class="nav-link" href="device-details">
                         <span class="oi oi-info" aria-hidden="true"></span> Détails
                     </NavLink>
@@ -131,21 +131,19 @@
     </ul>
 </div>
 
-@code {
+@code {       
     private bool collapseNavMenu = true;
-    private Dictionary<string, object> _remoteControlAttributes
-        = new() { ["target"] = "blank", ["href"] = "/RemoteControl" };
 
     private RemotelyUser _user;
-	private Organization _organization;
+    private Organization _organization;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-		
-		_user = await AuthService.GetUser();
-		
-		if (!string.IsNullOrWhiteSpace(_user?.OrganizationID))
+
+        _user = await AuthService.GetUser();
+
+        if (!string.IsNullOrWhiteSpace(_user?.OrganizationID))
         {
             _organization = DataService.GetOrganizationById(_user.OrganizationID);
         }
@@ -155,7 +153,7 @@
         }
     }
 
-private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
 
     private void ToggleNavMenu()

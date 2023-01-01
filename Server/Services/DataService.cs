@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Immense.RemoteControl.Shared.Models;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Remotely.Server.Data;
 using Remotely.Server.Models;
+using Remotely.Shared;
 using Remotely.Shared.Enums;
 using Remotely.Shared.Models;
 using Remotely.Shared.Utilities;
@@ -117,8 +119,6 @@ namespace Remotely.Server.Services
 
         Task<Organization> GetDefaultOrganization();
 
-        Task<string> GetDefaultRelayCode();
-
         Device GetDevice(string deviceID);
 
         Device GetDevice(string orgID, string deviceID);
@@ -139,8 +139,6 @@ namespace Remotely.Server.Services
         EventLog[] GetEventLogs(string userName, DateTimeOffset from, DateTimeOffset to, EventType? type, string message);
 
         Organization GetOrganizationById(string organizationID);
-
-        Task<Organization> GetOrganizationByRelayCode(string relayCode);
 
         Task<Organization> GetOrganizationByUserName(string userName);
 
@@ -184,8 +182,6 @@ namespace Remotely.Server.Services
 
         bool JoinViaInvitation(string userName, string inviteID);
 
-        void PopulateRelayCodes();
-
         void RemoveDevices(string[] deviceIDs);
 
         Task<bool> RemoveUserFromDeviceGroup(string orgID, string groupID, string userID);
@@ -216,7 +212,7 @@ namespace Remotely.Server.Services
 
         Task<Device> UpdateDevice(DeviceSetupOptions deviceOptions, string organizationId);
 
-        void UpdateDevice(string deviceID, string tag, string alias, string deviceGroupID, string notes, WebRtcSetting webRtcSetting);
+        void UpdateDevice(string deviceID, string tag, string alias, string deviceGroupID, string notes);
 
         void UpdateOrganizationName(string orgID, string organizationName);
 
@@ -1167,7 +1163,14 @@ namespace Remotely.Server.Services
 
             if (organization.BrandingInfo is null)
             {
-                organization.BrandingInfo = new BrandingInfo();
+                var brandingInfo = new BrandingInfo()
+                {
+                    OrganizationId = organizationId
+                };
+
+                dbContext.BrandingInfos.Add(brandingInfo);
+                organization.BrandingInfo = brandingInfo;
+
                 await dbContext.SaveChangesAsync();
             }
             return organization.BrandingInfo;
@@ -1178,18 +1181,6 @@ namespace Remotely.Server.Services
             using var dbContext = _appDbFactory.GetContext();
 
             return await dbContext.Organizations.FirstOrDefaultAsync(x => x.IsDefaultOrganization);
-        }
-
-        public async Task<string> GetDefaultRelayCode()
-        {
-            using var dbContext = _appDbFactory.GetContext();
-
-            var relayCode = await dbContext.Organizations
-                .Where(x => x.IsDefaultOrganization)
-                .Select(x => x.RelayCode)
-                .FirstOrDefaultAsync();
-
-            return relayCode;
         }
 
         public Device GetDevice(string orgID, string deviceID)
@@ -1375,17 +1366,6 @@ namespace Remotely.Server.Services
             return dbContext.Organizations.Find(organizationID);
         }
 
-        public async Task<Organization> GetOrganizationByRelayCode(string relayCode)
-        {
-            using var dbContext = _appDbFactory.GetContext();
-
-            if (string.IsNullOrWhiteSpace(relayCode))
-            {
-                return null;
-            }
-
-            return await dbContext.Organizations.FirstOrDefaultAsync(x => x.RelayCode == relayCode.ToLower());
-        }
 
         public async Task<Organization> GetOrganizationByUserName(string userName)
         {
@@ -1648,24 +1628,6 @@ namespace Remotely.Server.Services
             return true;
         }
 
-        public void PopulateRelayCodes()
-        {
-            using var dbContext = _appDbFactory.GetContext();
-
-            foreach (var organization in dbContext.Organizations)
-            {
-                if (string.IsNullOrWhiteSpace(organization.RelayCode))
-                {
-                    do
-                    {
-                        organization.RelayCode = new string(Guid.NewGuid().ToString().Take(4).ToArray());
-                    }
-                    while (dbContext.Organizations.Any(x => x.ID != organization.ID && x.RelayCode == organization.RelayCode));
-                }
-            }
-            dbContext.SaveChanges();
-        }
-
         public void RemoveDevices(string[] deviceIDs)
         {
             using var dbContext = _appDbFactory.GetContext();
@@ -1728,13 +1690,14 @@ namespace Remotely.Server.Services
                .Include(x => x.BrandingInfo)
                .FirstOrDefaultAsync(x => x.ID == organizationId);
 
-            if (organization is null)
+            if (organization?.BrandingInfo is null)
             {
                 return;
             }
 
-            organization.BrandingInfo = new BrandingInfo();
-
+            var entry = dbContext.Entry(organization.BrandingInfo);
+            entry.CurrentValues.SetValues(BrandingInfoBase.Default);
+            
             await dbContext.SaveChangesAsync();
         }
 
@@ -1860,10 +1823,7 @@ namespace Remotely.Server.Services
                 return;
             }
 
-            if (organization.BrandingInfo is null)
-            {
-                organization.BrandingInfo = new BrandingInfo();
-            }
+            organization.BrandingInfo ??= new BrandingInfo();
 
             organization.BrandingInfo.Product = productName;
 
@@ -1887,7 +1847,7 @@ namespace Remotely.Server.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public void UpdateDevice(string deviceID, string tag, string alias, string deviceGroupID, string notes, WebRtcSetting webRtcSetting)
+        public void UpdateDevice(string deviceID, string tag, string alias, string deviceGroupID, string notes)
         {
             using var dbContext = _appDbFactory.GetContext();
 
@@ -1913,7 +1873,6 @@ namespace Remotely.Server.Services
             device.Tags = tag;
             device.Alias = alias;
             device.Notes = notes;
-            device.WebRtcSetting = webRtcSetting;
             dbContext.SaveChanges();
         }
 

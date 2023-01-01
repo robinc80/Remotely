@@ -8,10 +8,10 @@
 @inject IDataService DataService
 
 @{
-var organizationName = "Le garage à PC";
+    var organizationName = "Remotely";
     var user = DataService.GetUserByNameWithOrg(User?.Identity?.Name);
-	
-	if (user is null)
+
+    if (user is null)
     {
         var defaultOrg = await DataService.GetDefaultOrganization();
         if (!string.IsNullOrWhiteSpace(defaultOrg?.OrganizationName))
@@ -31,7 +31,7 @@ var organizationName = "Le garage à PC";
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=550, user-scalable=no" />
-    <title>@ViewData["Title"] - Le garage à PC</title>
+    <title>@ViewData["Title"] - Remotely</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="description" content="Remote access tools designed to get things done quickly." />
@@ -79,7 +79,7 @@ var organizationName = "Le garage à PC";
                     <div>
                         @organizationName
                     </div>
-                    <div class="logo-subtitle">Portail de téléassistance</div>
+                    <div class="logo-subtitle">Support Portal</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -111,7 +111,7 @@ var organizationName = "Le garage à PC";
     </div>
     <footer class="footer border-top text-muted mt-4">
         <div class="container">
-            &copy; @DateTimeOffset.Now.Year - <a href="https://lucency.co">Translucency Software</a>
+            &copy; @DateTimeOffset.Now.Year - <a href="https://lucency.co">Immense Networks</a>
         </div>
     </footer>
     <script src="~/Identity/lib/jquery/dist/jquery.min.js"></script>

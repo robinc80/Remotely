@@ -16,19 +16,18 @@
                 <div class="d-inline-block text-center mr-2">
                     <label>Appareils en ligne</label>
                     <br />
-                    <span class="badge badge-primary p-2">@AgentHub.ServiceConnections.Count</span>
+                    <span class="badge badge-primary p-2">@ServiceSessionCache.GetAllDevices().Count</span>
                 </div>
-				
+             
                 <div class="d-inline-block text-center mr-2">
                     <label>Appareils à mettre à jour</label>
-					<br />
-					
+                    <br />
+
                     <button class="btn btn-sm btn-secondary" @onclick="ShowOutdatedDevices">
                         <i class="oi oi-question-mark"></i>
                     </button>
-                    <br />
-                    <span class="badge badge-primary p-2">@(OutdatedDevices?.Count() ?? 0)</span>
-                    <button class="btn btn-secondary btn-sm ml-1" type="button" title="Tout mettre à jour" @onclick="UpdateAllDevices">
+                    <span class="badge badge-primary p-2 mx-2">@(OutdatedDevices?.Count() ?? 0)</span>
+                    <button class="btn btn-secondary btn-sm" type="button" title="Tout mettre à jour" @onclick="UpdateAllDevices">
                         <span class="oi oi-reload"></span>
                     </button>
                 </div>
@@ -38,14 +37,14 @@
                     <br />
                     <span class="badge badge-primary p-2">@TotalDevices</span>
                 </div>
-					<div class="d-inline-block text-center mr-2">
+                <div class="d-inline-block text-center mr-2">
                     <label>Utilisateurs actifs</label>
                     <br />
                     <span class="badge badge-primary p-2">@CircuitManager.Connections.Count</span>
                 </div>
-                </div>
             </div>
         </div>
+    </div>
 
     <div class="row">
         <div class="col-md-8">
@@ -53,7 +52,7 @@
 
             <div class="form-group">
                 <label class="control-label">Administrateurs</label>
-				<br />
+                <br />
 
                 <div class="small">
                     <input class="align-middle mr-1" type="checkbox" @bind="_showMyOrgAdminsOnly" />
@@ -63,7 +62,7 @@
                     <input class="align-middle mr-1" type="checkbox" @bind="_showAdminsOnly" />
                     <span class="align-middle">Afficher les admins uniquement</span>
                 </div>
-				
+
                 <br />
                 <div class="list-box">
                     @foreach (var user in UserList)
@@ -259,7 +258,7 @@
                     <br />
                     <ValidationMessage For="() => Input.SmtpPort" />
                 </div>
-				<div class="form-group">
+                <div class="form-group">
                     <label class="control-label">SMTP Check Certificate Revocation</label>
                     <div class="small text-muted">
                         This sometimes needs to be disabled for Let's Encrypt certificates.
@@ -283,7 +282,7 @@
                     <br />
                     <ValidationMessage For="() => Input.SmtpUserName" />
                 </div>
-				<div class="form-group">
+                <div class="form-group">
                     <label class="control-label">Mot de passe SMTP</label>
                     <br />
                     <InputText type="password" @bind-Value="Input.SmtpPassword" class="form-control" autocomplete="new-password" />
@@ -294,7 +293,7 @@
                     <button id="sendTestEmailButton" type="button" class="btn btn-secondary" @onclick="SaveAndTestSmtpSettings">Test</button>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Theme</label>
+                    <label class="control-label">Thème</label>
                     <br />
                     <select class="form-control" @bind="Input.Theme">
                         @foreach (var theme in Enum.GetValues<Theme>())
@@ -337,14 +336,6 @@
                     <InputCheckbox @bind-Value="Input.UseHsts" autocomplete="off" />
                     <br />
                     <ValidationMessage For="() => Input.UseHsts" />
-                </div>
-
-                <div class="form-group">
-                    <label>Utiliser WebRTC</label>
-                    <br />
-                    <InputCheckbox @bind-Value="Input.UseWebRtc" autocomplete="off" />
-                    <br />
-                    <ValidationMessage For="() => Input.UseWebRtc" />
                 </div>
 
                 <div class="form-group">
