@@ -1,5 +1,4 @@
-﻿using Immense.RemoteControl.Server.Hubs;
-using Immense.RemoteControl.Server.Services;
+﻿using Immense.RemoteControl.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
