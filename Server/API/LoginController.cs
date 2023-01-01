@@ -23,7 +23,7 @@ namespace Remotely.Server.API
         private readonly IHubContext<DesktopHub> _desktopHub;
         private readonly IDesktopHubSessionCache _desktopSessionCache;
         private readonly SignInManager<RemotelyUser> _signInManager;
-        private readonly IHubContext<ViewerHub> _viewerHub;
+        private readonly IHubContext<Hubs.ViewerHub> _viewerHub;
 
         public LoginController(
             SignInManager<RemotelyUser> signInManager,
@@ -31,7 +31,7 @@ namespace Remotely.Server.API
             IApplicationConfig appConfig,
             IHubContext<DesktopHub> casterHubContext,
             IDesktopHubSessionCache desktopSessionCache,
-            IHubContext<ViewerHub> viewerHubContext)
+            IHubContext<Immense.RemoteControl.Server.Hubs.ViewerHub> viewerHubContext)
         {
             _signInManager = signInManager;
             _dataService = dataService;
